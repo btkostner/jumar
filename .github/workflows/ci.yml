@@ -52,7 +52,7 @@ jobs:
         run: mix compile
 
       - name: Sabelow
-        run: mix sobelow --strict --format sarif | tee ../results
+        run: mix sobelow --strict --format sarif 2>/dev/null > ../results
 
       - name: Debug
         run: cat ../results
