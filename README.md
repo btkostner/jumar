@@ -1,6 +1,6 @@
-<p align="center">
+<h1 align="center">
   <img width="575.618" height="273.777" src="./assets/logos/logotype.svg" alt="Jumar">
-</p>
+</h1>
 
 Jumar is a heavily opinionated Elixir boilerplate repository. It contains a _ton_ of useful features and documentation explaining the how and why.
 
