@@ -13,9 +13,10 @@ Jumar is a heavily opinionated Elixir boilerplate repository. It contains a _ton
 - [ ] User organizations
 - [ ] User and organization permissions
 
-- [ ] Code documentation via `exdoc`
+- [x] Code documentation via `ex_doc`
+- [ ] Published documentation to GitHub pages
 
-- [ ] Code formatting via `mix format`
+- [x] Code formatting via `mix format`
 - [ ] Code linting via `dialyzer`
 - [ ] Code linting via `credo`
 - [ ] Code linting via `boundary`
@@ -25,8 +26,5 @@ Jumar is a heavily opinionated Elixir boilerplate repository. It contains a _ton
 
 - [ ] Continuous integration with GitHub actions
 - [ ] Releasing via `release-please`
-- [ ] Continuous deployment with GitHub actions to <Fly.io> with `docker`
-
-## Running
-
-## Deploying
+- [ ] Container building on PRs and releases
+- [ ] Continuous deployment with GitHub actions to [Fly.io](https://fly.io)

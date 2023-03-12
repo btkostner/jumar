@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 135.46667 135.46667"
+   version="1.1"
+   id="svg3765"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs3762">
+    <filter
+       id="colors6733396673"
+       x="0"
+       y="0"
+       width="1"
+       height="1">
+      <feColorMatrix
+         type="matrix"
+         values="0 0 0 0 0.265625  0 0 0 0 0.265625  0 0 0 0 0.265625  0 0 0 1 0"
+         class="icon-feColorMatrix "
+         id="feColorMatrix1095" />
+    </filter>
+  </defs>
+  <g
+     id="layer1"
+     transform="translate(-23.814427,-62.506285)">
+    <path
+       fill="#333333"
+       d="m 142.23042,165.16426 -34.92088,-86.640893 -0.33849,-0.50146 c -3.19058,-5.54497 -8.901025,-8.901035 -15.448935,-8.901035 -6.5479,0 -12.24832,3.364841 -15.44015,8.901035 l -0.16423,0.33723 -34.92966,86.803863 c -2.69037,6.21317 -2.01589,13.26379 1.51318,18.64328 3.19183,4.87049 8.39079,7.55208 14.09998,7.55208 h 70.180255 c 5.70919,0 10.74392,-2.51736 13.93575,-7.22362 3.36484,-5.19896 4.03054,-12.42133 1.51318,-18.97048 z M 56.938475,148.03792 83.634055,82.053697 c 1.6774,-2.8546 4.69623,-4.53201 8.06107,-4.53201 3.36484,0 6.21192,1.67741 8.06233,4.53201 l 13.935755,34.583633 c -13.0958,17.62906 -33.580705,29.72193 -56.753485,31.40059 z"
+       id="path1089"
+       style="mix-blend-mode:normal;color-interpolation-filters:sRGB;fill:#674773;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.25367;stroke-opacity:0.75" />
+  </g>
+</svg>
