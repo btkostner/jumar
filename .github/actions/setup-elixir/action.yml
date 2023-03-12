@@ -63,7 +63,6 @@ runs:
       with:
         otp-version: ${{ inputs.otp-version }}
         elixir-version: ${{ inputs.elixir-version }}
-        # yamllint disable-line rule:line-length
         version-file: ${{ (inputs.otp-version || inputs.elixir-version) || inputs.version-files }}
         version-type: strict
 
@@ -72,12 +71,8 @@ runs:
       uses: actions/cache@v3
       with:
         key: |
-          # yamllint disable-line rule:line-length
-          # yamllint disable-line rule:line-length
           elixir-setup-deps-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-${{ inputs.cache-name }}-${{ hashFiles('mix.lock') }}
         restore-keys: |
-          # yamllint disable-line rule:line-length
-          # yamllint disable-line rule:line-length
           elixir-setup-deps-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-${{ inputs.cache-name }}-
         path: deps
 
@@ -85,22 +80,15 @@ runs:
     - if: steps.cache_dependencies.outputs.cache-hit != 'true'
       name: Install Dependencies
       run: mix deps.get
+      shell: bash
 
     - name: Cache Build
       uses: actions/cache@v3
       with:
         key: |
-          # yamllint disable-line rule:line-length
-          # yamllint disable-line rule:line-length
           elixir-setup-build-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-${{ inputs.cache-name }}-${{ hashFiles('mix.lock') }}-${{ github.ref }}
         restore-keys: |
-          # yamllint disable-line rule:line-length
-          # yamllint disable-line rule:line-length
           elixir-setup-build-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-${{ inputs.cache-name }}-${{ hashFiles('mix.lock') }}-
-          # yamllint disable-line rule:line-length
-          # yamllint disable-line rule:line-length
           elixir-setup-build-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-${{ inputs.cache-name }}-
-          # yamllint disable-line rule:line-length
-          # yamllint disable-line rule:line-length
           elixir-setup-build-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-
         path: _build
