@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup Elixir
-        uses: .github/actions/setup-elixir
+        uses: ./.github/actions/setup-elixir
 
       - name: Format
         run: mix format --check-formatted
@@ -46,7 +46,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup Elixir
-        uses: .github/actions/setup-elixir
+        uses: ./.github/actions/setup-elixir
 
       - name: Sabelow
         uses: sobelow/action@v1
