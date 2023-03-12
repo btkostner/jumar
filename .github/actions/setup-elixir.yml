@@ -1,0 +1,93 @@
+---
+
+name: Setup Elixir
+
+branding:
+  color: purple
+  icon: code
+
+description: >-
+  GitHub Composite Action for installing Elixir & Beam, setting up and
+  retrieving dependencies along with caching.
+
+inputs:
+  cache-name:
+    default: ${{ github.job }}
+    description: >-
+      (Optional) The name of the cache. This is used to build the full cache
+      key. By default this uses the job name which should suffice is most
+      scenarios. If you have a custom naming scheme or want to share caches
+      between different actions you can set it here. The reason we set this
+      differently for each job is because tools will have different compile
+      settings, like credo and dialyzer, and therefor have different files
+      cached.
+    required: false
+    type: string
+  elixir-version:
+    description: >-
+      (Optional) Version range or exact version of Elixir to use. If this is
+      not set, we attempt to read the "elixir" field from the .tool-versions
+      file.
+    required: false
+    type: string
+  otp-version:
+    description: >-
+      (Optional) Version range or exact version of Erlang/OTP to use. If this
+      is not set, we attempt to read the "erlang" field from the .tool-versions
+      file.
+    required: false
+    type: string
+  version-file:
+    default: .tool-versions
+    description: >-
+      (Optional) A version file to pull the Erlang/OTP and ELixir version from.
+    required: false
+    type: string
+
+outputs:
+  elixir-version:
+    description: >-
+      The exact version of Elixir installed.
+    value: ${{ steps.beam.outputs.elixir-version }}
+  otp-version:
+    description: >-
+      The exact version of Erlang/OTP installed.
+    value: ${{ steps.beam.outputs.otp-version }}
+
+runs:
+  using: composite
+  steps:
+    - id: beam
+      name: Install Elixir
+      uses: erlef/setup-beam@v1
+      with:
+        otp-version: ${{ inputs.otp-version }}
+        elixir-version: ${{ inputs.elixir-version }}
+        version-file: ${{ (inputs.otp-version || inputs.elixir-version) || inputs.version-files }}
+        version-type: strict
+
+    - id: cache_dependencies
+      name: Cache Dependencies
+      uses: actions/cache@v3
+      with:
+        key: |
+          elixir-setup-deps-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-${{ inputs.cache-name }}-${{ hashFiles('mix.lock') }}
+        restore-keys: |
+          elixir-setup-deps-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-${{ inputs.cache-name }}-
+        path: deps
+
+
+    - if: steps.cache_dependencies.outputs.cache-hit != 'true'
+      name: Install Dependencies
+      run: mix deps.get
+
+    - name: Cache Build
+      uses: actions/cache@v3
+      with:
+        key: |
+          elixir-setup-build-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-${{ inputs.cache-name }}-${{ hashFiles('mix.lock') }}-${{ github.ref }}
+        restore-keys: |
+          elixir-setup-build-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-${{ inputs.cache-name }}-${{ hashFiles('mix.lock') }}-
+          elixir-setup-build-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-${{ inputs.cache-name }}-
+          elixir-setup-build-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-
+        path: _build

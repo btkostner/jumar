@@ -1,0 +1,20 @@
+---
+
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Please:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Release Please
+        uses: google-github-actions/release-please-action@v3
+        with:
+          release-type: elixir
+          package-name: jumar
+          extra-files: README.md
