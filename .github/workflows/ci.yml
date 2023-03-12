@@ -54,6 +54,9 @@ jobs:
       - name: Sabelow
         run: mix sobelow --strict --format sarif > ../results
 
+      - name: Debug
+        run: cat ../results
+
       - if: ${{ always() }}
         name: Upload Report
         uses: github/codeql-action/upload-sarif@v2
