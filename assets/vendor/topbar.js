@@ -4,6 +4,9 @@
  * https://buunguyen.github.io/topbar
  * Copyright (c) 2021 Buu Nguyen
  */
+
+/* eslint-disable */
+
 (function (window, document) {
   "use strict";
 
