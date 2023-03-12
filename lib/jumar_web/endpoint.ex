@@ -11,6 +11,11 @@ defmodule JumarWeb.Endpoint do
     same_site: "Lax"
   ]
 
+  # Use the real client IP set in the `x-forwarded-for` header
+  # by a reverse proxy.
+  plug RemoteIp,
+    headers: ["x-forwarded-for"]
+
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
   # Serve at "/" the static files from "priv/static" directory.

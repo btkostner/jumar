@@ -41,25 +41,26 @@ defmodule Jumar.MixProject do
     [
       {:ecto_sql, "~> 3.6"},
       {:esbuild, "~> 0.5", runtime: Mix.env() == :dev},
+      {:ex_doc, "~> 0.27", only: :dev, runtime: false},
       {:finch, "~> 0.13"},
+      {:floki, ">= 0.30.0", only: :test},
       {:gettext, "~> 0.20"},
       {:heroicons, "~> 0.5"},
       {:jason, "~> 1.2"},
       {:phoenix_ecto, "~> 4.4"},
       {:phoenix_html, "~> 3.3"},
       {:phoenix_live_dashboard, "~> 0.7.2"},
+      {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_view, "~> 0.18.16"},
       {:phoenix, "~> 1.7.0"},
       {:plug_cowboy, "~> 2.5"},
       {:postgrex, ">= 0.0.0"},
+      {:remote_ip, "~> 1.1"},
+      {:sobelow, "~> 0.11", only: [:dev, :test], runtime: false},
       {:swoosh, "~> 1.3"},
       {:tailwind, "~> 0.1.8", runtime: Mix.env() == :dev},
       {:telemetry_metrics, "~> 0.6"},
-      {:telemetry_poller, "~> 1.0"},
-      {:ex_doc, "~> 0.27", only: :dev, runtime: false},
-      {:floki, ">= 0.30.0", only: :test},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:sobelow, "~> 0.11", only: [:dev, :test], runtime: false}
+      {:telemetry_poller, "~> 1.0"}
     ]
   end
 
