@@ -48,15 +48,10 @@ jobs:
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir
 
-      - name: Compile
-        run: mix compile
+      - name: Sobelow
+        uses: sobelow/action@v1
 
-      - name: Sabelow
-        run: mix sobelow --strict --format sarif 2>/dev/null > ../results
-
-      - name: Debug
-        run: cat ../results
-
-      - if: ${{ always() }}
-        name: Upload Report
+      - name: Upload Report
         uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: results.sarif
