@@ -6,9 +6,6 @@
 # You can disable line with:              #
 # # yamllint disable-line                 #
 ###########################################
-ignore:
-  - .github/actions/setup-elixir/action.yml
-
 rules:
   braces:
     level: warning
@@ -56,6 +53,8 @@ rules:
     max: 80
     allow-non-breakable-words: true
     allow-non-breakable-inline-mappings: true
+    ignore: |
+      *.github*
   new-line-at-end-of-file: disable
   new-lines:
     type: unix

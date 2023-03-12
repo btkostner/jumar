@@ -33,8 +33,6 @@ jobs:
 
       - name: Lint
         uses: github/super-linter/slim@v4
-        env:
-          FILTER_REGEX_EXCLUDE: .*(vendor|.github\/actions)/.*
 
   Sobelow:
     runs-on: ubuntu-latest
