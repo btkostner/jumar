@@ -63,7 +63,7 @@ runs:
       with:
         otp-version: ${{ inputs.otp-version }}
         elixir-version: ${{ inputs.elixir-version }}
-        version-file: ${{ (inputs.otp-version || inputs.elixir-version) || inputs.version-files }}
+        version-file: ${{ (inputs.otp-version || inputs.elixir-version) || inputs.version-file }}
         version-type: strict
 
     - id: cache_dependencies
