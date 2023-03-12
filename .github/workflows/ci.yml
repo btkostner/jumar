@@ -48,11 +48,8 @@ jobs:
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir
 
-      - name: Compile
-        run: mix compile
-
       - name: Sabelow
-        run: mix sobelow --strict --format sarif > ../results
+        run: mix sobelow --strict --format sarif | tee ../results
 
       - name: Debug
         run: cat ../results
