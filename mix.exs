@@ -85,14 +85,15 @@ defmodule Jumar.MixProject do
   # ExUnit documentation
   defp docs do
     [
-      source_ref: "v#{@version}",
-      main: "readme",
-      logo: "docs/assets/logos/logomark.svg",
       assets: "docs/assets",
-      formatters: ["html", "epub"],
+      canonical: "https://jumar.btkostner.io",
       extras: extras(),
+      formatters: ["html", "epub"],
       groups_for_extras: groups_for_extras(),
-      skip_undefined_reference_warnings_on: ["CHANGELOG.md"]
+      logo: "docs/assets/logos/logomark.svg",
+      main: "readme",
+      skip_undefined_reference_warnings_on: ["CHANGELOG.md"],
+      source_ref: "main"
     ]
   end
 

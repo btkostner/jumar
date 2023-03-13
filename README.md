@@ -38,7 +38,7 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
 - 🟨 Rabbitmq message consuming with Broadway
 - 🟨 Unique CLI arg to start message consuming separately from web server
 
-### Documentation
+### Documentation Generation
 
 - ✅ Code documentation via `ex_doc`
 - ✅ Published documentation to GitHub pages
