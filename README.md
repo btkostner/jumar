@@ -46,6 +46,7 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
 ### Continuous Integration
 
 - ✅ Code formatting via `mix format`
+- ✅ Tailwind class ordering via [`tailwind_formatter`](https://github.com/100phlecs/tailwind_formatter)
 - 🟨 Code linting via `dialyzer`
 - 🟨 Code linting via `credo`
 - 🟨 Code linting via `boundary`

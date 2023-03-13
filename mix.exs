@@ -59,6 +59,7 @@ defmodule Jumar.MixProject do
       {:sobelow, "~> 0.11", only: [:dev, :test], runtime: false},
       {:swoosh, "~> 1.3"},
       {:tailwind, "~> 0.1.8", runtime: Mix.env() == :dev},
+      {:tailwind_formatter, "~> 0.3.3", only: :dev, runtime: false},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"}
     ]
