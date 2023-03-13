@@ -5,7 +5,7 @@
     }
 
     .logo {
-      fill: #674773;
+      fill: var(--main,#8C7AE6);
     }
 
     html[data-color-mode="dark"] .text {

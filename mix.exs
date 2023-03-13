@@ -87,7 +87,7 @@ defmodule Jumar.MixProject do
     [
       source_ref: "v#{@version}",
       main: "readme",
-      logo: "docs/assets/logomark.svg",
+      logo: "docs/assets/logos/logomark.svg",
       assets: "docs/assets",
       formatters: ["html", "epub"],
       extras: extras(),

@@ -11,6 +11,19 @@ on:
       - main
 
 jobs:
+  Docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Elixir
+        uses: ./.github/actions/setup-elixir
+
+      - name: Build Docs
+        run: mix docs
+
   Format:
     runs-on: ubuntu-latest
 
