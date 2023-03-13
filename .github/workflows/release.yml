@@ -8,6 +8,39 @@ on:
       - main
 
 jobs:
+  Docs:
+    runs-on: ubuntu-latest
+
+    environment:
+      name: Docs
+      url: https://jumar.btkostner.io
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Elixir
+        uses: ./.github/actions/setup-elixir
+
+      - name: Build Docs
+        run: mix docs
+
+      - name: Set CNAME
+        run: echo "jumar.btkostner.io" > ./doc/CNAME
+
+      - name: Upload Artifacts
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./doc
+
+      - name: Deploy
+        uses: actions/deploy-pages@v1
+
   Please:
     runs-on: ubuntu-latest
 
