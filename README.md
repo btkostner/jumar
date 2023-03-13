@@ -1,4 +1,4 @@
-<h1 display="none">
+<h1 align="center">
   Jumar
 </h1>
 
@@ -8,7 +8,7 @@
 
 Jumar is a heavily opinionated Elixir boilerplate repository. It contains a _ton_ of useful features and documentation explaining the how and why.
 
-One of the goals of this project is to bookmark some good decisions I've learned over the years working in this space. I don't want to say this is "best practices" because truth be told, those change wildly based on the project's context. With that said, this project aims to start on the right foot and document they "why this way" decisions made in the process.
+One of the goals of this project is to bookmark some good decisions I've learned over the years working in this space. I don't want to say this is "best practices" because truth be told, those change wildly based on the project's context. With that said, this project aims to start on the right foot and document the "why this way" decisions made in the process.
 
 ## Features
 
