@@ -20,7 +20,7 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
   <p>Jumar is currently a work in progress. Not all features are complete. If you have an idea or request, please open up a <a href="https://github.com/btkostner/jumar/discussions">GitHub discussion</a>.</p>
 </blockquote>
 
-### Data Layer
+### Database Layer
 
 - 🟨 Cockroach DB usage via `ecto`
 - 🟨 Database multi tenant setup
@@ -50,6 +50,8 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
 - 🟨 Code linting via `dialyzer`
 - 🟨 Code linting via `credo`
 - 🟨 Code linting via `boundary`
+- 🟨 Text linting via [`markdownlint`](https://github.com/DavidAnson/markdownlint)
+- 🟨 Text linting via [`textlint`](https://github.com/textlint/textlint)
 - 🟨 Code testing via `exunit`
 - 🟨 Browser testing via `wallaby`
 - 🟨 Property testing via `stream_data`
