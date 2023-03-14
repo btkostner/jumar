@@ -101,15 +101,19 @@ defmodule Jumar.MixProject do
   defp extras do
     [
       "README.md",
-      "CHANGELOG.md"
+      "CHANGELOG.md",
+      "docs/documentation.md"
     ]
   end
 
   def groups_for_extras do
     [
-      Introduction: [
+      "Introduction": [
         "README.md",
         "CHANGELOG.md"
+      ],
+      "Decisions": [
+        "docs/documentation.md"
       ]
     ]
   end
