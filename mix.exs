@@ -101,7 +101,8 @@ defmodule Jumar.MixProject do
   defp extras do
     [
       "README.md",
-      "CHANGELOG.md"
+      "CHANGELOG.md",
+      "docs/documentation.md"
     ]
   end
 
@@ -110,6 +111,9 @@ defmodule Jumar.MixProject do
       Introduction: [
         "README.md",
         "CHANGELOG.md"
+      ],
+      Decisions: [
+        "docs/documentation.md"
       ]
     ]
   end
