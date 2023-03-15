@@ -22,7 +22,7 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
 
 ### Database Layer
 
-- 🟨 Cockroach DB usage via `ecto`
+- ✅ Cockroach DB usage via `ecto`
 - 🟨 Database multi tenant setup
 
 ### User Layer
