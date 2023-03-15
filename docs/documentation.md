@@ -1,6 +1,6 @@
 # Documentation
 
-[ExDoc][ex_doc] is the defacto documentation generation for Elixir. It can read code comments, type specs, and markdown files and present them all in a nice website or EPUB file. In fact, you're reading an [`ex_doc`][ex_doc] site right now! This summary comes from a [hand written markdown file in the repository][this].
+[ExDoc][ex_doc] is the defacto documentation generation for Elixir. It can read code comments, type specs, and Markdown files and present them all in a nice site or EPUB file.In fact, you're reading an [`ex_doc`][ex_doc] site right now! This summary comes from a [hand written Markdown file in the repository][this].
 
 Like most other projects, the code is only half the story. For a well maintained project, it's important to keep design and architecture decisions documented for reference later on. I generally like to include this as close to the code as possible. While things like Atlassian Confluence, or the notes app on your computer _work_, they don't _excel_ at it. They can quickly get out of date with reality, and it's a pain to learn _yet another_ tool. That's why I prefer using [ExDoc][ex_doc] or GitHub.
 
@@ -8,11 +8,11 @@ To make [ExDoc][ex_doc] usage as easy as possible, I build the documentation as 
 
 ## Configuration
 
-Configuration is done in the `mix.exs` file `docs/0` section. This is pretty standard, though there are some unique differences this project has.
+Configuration is done in the [`mix.exs`][config] file `docs/0` section. This is pretty standard, though there are some unique differences this project has.
 
 - The `assets` option is set to `"docs/assets"`. This folder holds images specifically for documentation.
 - The `canonical` option is set for better SEO.
-- `extras` and `groups_for_extras` is set so we have a more organized sidebar for our custom markdown files.
+- `extras` and `groups_for_extras` is set so we have a more organized sidebar for our custom Markdown files.
 - `logo` is set so we have a nice logo in the upper left corner. Secondly, we use an SVG that uses a CSS color variable.
 - `main` points to the readme so it matches the same thing you see when you view the project on GitHub.
 - `skip_undefined_reference_warnings_on` avoids issues with our dynamically generated `CHANGELOG.md` file.
@@ -20,9 +20,9 @@ Configuration is done in the `mix.exs` file `docs/0` section. This is pretty sta
 
 ## FAQ
 
-### What's with the HTML in markdown?
+### What's with the HTML in Markdown?
 
-There are a couple of places where I use HTML in my markdown files. While this is perfectly acceptable markdown, it is a little weird. Why use markdown at all? Well, there are two main places I use it.
+There are a couple of places where I use HTML in my Markdown files. While this is perfectly acceptable Markdown, it is a little weird. Why use Markdown at all? Well, there are two main places I use it.
 
 The first one is in the [`README.md`][readme] head. I use HTML here to make the GitHub landing page look nicer. The title is centered along with the logotype.
 
@@ -34,7 +34,7 @@ The second place is for notes. This is because there are multiple ways of creati
 > This syntax will render an error block
 ```
 
-This looks great in [ExDoc][ex_doc], but ends up looking pretty ugly in GitHub. If you're up to date on your GitHub news, you also now that you can use this to make a note in GitHub markdown:
+This looks great in [ExDoc][ex_doc], but ends up looking pretty ugly in GitHub. If you're up to date on your GitHub news, you also now that you can use this to make a note in GitHub Markdown:
 
 ```markdown
 > **Note**
