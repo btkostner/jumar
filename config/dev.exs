@@ -2,9 +2,10 @@ import Config
 
 # Configure your database
 config :jumar, Jumar.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "jumar",
+  password: "jumar",
   hostname: "localhost",
+  port: 26257,
   database: "jumar_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
