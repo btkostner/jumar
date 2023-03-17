@@ -102,6 +102,8 @@ defmodule Jumar.MixProject do
     [
       "README.md",
       "CHANGELOG.md",
+      "docs/database.md",
+      "docs/development.md",
       "docs/documentation.md"
     ]
   end
@@ -110,9 +112,11 @@ defmodule Jumar.MixProject do
     [
       Introduction: [
         "README.md",
-        "CHANGELOG.md"
+        "CHANGELOG.md",
+        "docs/development.md"
       ],
       Decisions: [
+        "docs/database.md",
         "docs/documentation.md"
       ]
     ]
