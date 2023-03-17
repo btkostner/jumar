@@ -57,9 +57,10 @@ defmodule Jumar.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:remote_ip, "~> 1.1"},
       {:sobelow, "~> 0.11", only: [:dev, :test], runtime: false},
+      {:stream_data, "~> 0.1", only: [:dev, :test]},
       {:swoosh, "~> 1.3"},
-      {:tailwind, "~> 0.1.8", runtime: Mix.env() == :dev},
       {:tailwind_formatter, "~> 0.3.3", only: :dev, runtime: false},
+      {:tailwind, "~> 0.1.8", runtime: Mix.env() == :dev},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"}
     ]

@@ -24,6 +24,7 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
 
 - ✅ Cockroach DB usage via `ecto`
 - 🟨 Database multi tenant setup
+- ✅ Prefixed primary keys similar to Stripe (`usr_abc123`)
 
 ### User Layer
 
@@ -52,9 +53,9 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
 - 🟨 Code linting via `boundary`
 - 🟨 Text linting via [`markdownlint`](https://github.com/DavidAnson/markdownlint)
 - 🟨 Text linting via [`textlint`](https://github.com/textlint/textlint)
-- 🟨 Code testing via `exunit`
+- ✅ Code testing via `exunit`
 - 🟨 Browser testing via `wallaby`
-- 🟨 Property testing via `stream_data`
+- ✅ Property testing via `stream_data`
 
 ### Continuous Deployment
 
