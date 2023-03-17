@@ -12,6 +12,8 @@ defmodule Jumar.Application do
       JumarWeb.Telemetry,
       # Start the Ecto repository
       Jumar.Repo,
+      # Start the Ecto reconnecting process
+      Jumar.RepoReconnector,
       # Start the PubSub system
       {Phoenix.PubSub, name: Jumar.PubSub},
       # Start Finch

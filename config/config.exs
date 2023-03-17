@@ -11,6 +11,15 @@ config :jumar,
   ecto_repos: [Jumar.Repo],
   generators: [binary_id: true]
 
+# Configure the Database for better Cockroach support
+config :jumar, Jumar.Repo,
+  after_connect: {Postgrex, :query!, ["SET SESSION application_name = \"Jumar\";", []]},
+  migration_lock: false,
+  migration_primary_key: [name: :uuid, type: :binary_id],
+  migration_timestamps: [type: :utc_datetime],
+  start_apps_before_migration: [:ssl],
+  telemetry_prefix: [:repo]
+
 # Configures the endpoint
 config :jumar, JumarWeb.Endpoint,
   url: [host: "localhost"],
