@@ -99,7 +99,7 @@ flyctl sftp shell
 
 Then type this command to copy your local files to the node:
 
-```
+```sftp
 put ./cockroach-certs/client.root.crt /root/.cockroach-certs/client.root.crt
 put ./cockroach-certs/client.root.key /root/.cockroach-certs/client.root.key
 ```
