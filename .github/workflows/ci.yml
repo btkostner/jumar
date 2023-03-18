@@ -87,6 +87,9 @@ jobs:
       - name: Logs
         run: docker-compose logs
 
+      - name: Web server
+        run: curl -v http://localhost:8080/health?ready=1
+
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir
 
