@@ -84,6 +84,9 @@ jobs:
           docker ps -a
           docker-compose ps
 
+      - name: Logs
+        run: docker-compose logs
+
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir
 
