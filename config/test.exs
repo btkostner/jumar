@@ -11,6 +11,8 @@ config :jumar, Jumar.Repo,
   hostname: "localhost",
   port: 26257,
   database: "jumar_test#{System.get_env("MIX_TEST_PARTITION")}",
+  stacktrace: true,
+  show_sensitive_data_on_connection_error: true,
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10
 
