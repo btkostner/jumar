@@ -2,8 +2,7 @@ import Config
 
 # Configure your database
 config :jumar, Jumar.Repo,
-  username: "jumar",
-  password: "jumar",
+  username: "root",
   hostname: "localhost",
   port: 26257,
   database: "jumar_dev",

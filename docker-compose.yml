@@ -7,9 +7,6 @@ services:
     build:
       context: ./priv/cockroachdb
     entrypoint: /cockroach/start-insecure-local.sh
-    environment:
-      COCKROACH_USER: jumar
-      COCKROACH_PASSWORD: jumar
     ports:
       - 26257:26257
       - 8080:8080
