@@ -52,6 +52,5 @@ jobs:
       - name: Release Please
         uses: google-github-actions/release-please-action@v3
         with:
-          release-type: elixir
-          package-name: jumar
-          extra-files: README.md
+          command: manifest
+          release-type: simple

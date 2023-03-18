@@ -14,6 +14,7 @@ defmodule Jumar.MixProject do
       homepage_url: "https://jumar.btkostner.io",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
+      test_coverage: [summary: [threshold: 0]],
       aliases: aliases(),
       deps: deps(),
       docs: docs()
@@ -103,6 +104,7 @@ defmodule Jumar.MixProject do
       "README.md",
       "CHANGELOG.md",
       "docs/database.md",
+      "docs/deployment.md",
       "docs/development.md",
       "docs/documentation.md"
     ]
@@ -113,7 +115,8 @@ defmodule Jumar.MixProject do
       Introduction: [
         "README.md",
         "CHANGELOG.md",
-        "docs/development.md"
+        "docs/development.md",
+        "docs/deployment.md"
       ],
       Decisions: [
         "docs/database.md",

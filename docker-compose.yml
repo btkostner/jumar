@@ -4,8 +4,9 @@ version: "3"
 
 services:
   cockroach:
-    image: docker.io/cockroachdb/cockroach:latest
-    command: start-single-node --accept-sql-without-tls
+    build:
+      context: ./priv/cockroachdb
+    entrypoint: /cockroach/start-insecure-local.sh
     environment:
       COCKROACH_USER: jumar
       COCKROACH_PASSWORD: jumar
