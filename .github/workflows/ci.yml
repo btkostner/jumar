@@ -47,6 +47,26 @@ jobs:
       - name: Lint
         uses: github/super-linter/slim@v4
 
+  Lint_Actions:
+    name: Lint (Actions)
+    runs-on: ubuntu-latest
+
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/action-actionlint@v1
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+          reporter: github-pr-review
+
   Lint_Markdown:
     name: Lint (Markdown)
     runs-on: ubuntu-latest
