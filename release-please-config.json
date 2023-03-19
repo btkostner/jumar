@@ -11,9 +11,11 @@
       "component": "cockroachdb",
       "extra-files": [
         "priv/cockroachdb/fly.toml"
-      ]
+      ],
+      "release-type": "simple"
     }
   },
   "pull-request-header": "Automated release PR",
+  "pull-request-title-pattern": "chore: release ${component} ${version}",
   "separate-pull-requests": true
 }
