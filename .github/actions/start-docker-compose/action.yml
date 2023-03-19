@@ -16,7 +16,7 @@ runs:
       uses: docker/setup-buildx-action@v2
 
     - name: Start Containers
-      run: docker-compose up --detached
+      run: docker-compose up --detach
       shell: bash
       env:
         COMPOSE_DOCKER_CLI_BUILD: "1"
