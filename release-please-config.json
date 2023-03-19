@@ -10,7 +10,7 @@
     "priv/cockroachdb": {
       "component": "cockroachdb",
       "extra-files": [
-        "priv/cockroachdb/fly.toml"
+        "fly.toml"
       ],
       "release-type": "simple"
     }
