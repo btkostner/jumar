@@ -72,6 +72,7 @@ jobs:
         uses: reviewdog/action-markdownlint@v0
         with:
           fail_on_error: true
+          filter-mode: nofilter
           reporter: github-pr-review
 
   Sobelow:

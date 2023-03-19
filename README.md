@@ -50,8 +50,8 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
 - 🟨 Code linting via `dialyzer`
 - 🟨 Code linting via `credo`
 - 🟨 Code linting via `boundary`
-- 🟨 Text linting via [`markdownlint`](https://github.com/DavidAnson/markdownlint)
-- 🟨 Text linting via [`textlint`](https://github.com/textlint/textlint)
+- ✅ Text linting via [`markdownlint`](https://github.com/DavidAnson/markdownlint)
+- ✅ Text linting via [`textlint`](https://github.com/textlint/textlint)
 - ✅ Code testing via `exunit`
 - 🟨 Browser testing via `wallaby`
 - 🟨 Property testing via `stream_data`
