@@ -127,11 +127,8 @@ jobs:
       - name: Lint
         uses: reviewdog/action-languagetool@v1
         with:
-          disabled_categories: ""
           disabled_rules: ""
           fail_on_error: true
-          filter_mode: nofilter
-          reporter: github-pr-review
 
   Lint_Markdown:
     name: Lint (Markdown)
@@ -193,10 +190,10 @@ jobs:
       - name: Lint
         uses: reviewdog/action-yamllint@v1
         with:
-          eslint_flags: -c .github/linters/.yaml-lint.yml .
           fail_on_error: true
           filter_mode: nofilter
           reporter: github-pr-review
+          yamllint_flags: -c .github/linters/.yaml-lint.yml .
 
   Sobelow:
     runs-on: ubuntu-latest
