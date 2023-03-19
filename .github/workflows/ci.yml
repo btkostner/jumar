@@ -1,15 +1,5 @@
 ---
 
-name: CI
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
 jobs:
   Docs:
     runs-on: ubuntu-latest
@@ -24,7 +14,88 @@ jobs:
       - name: Build Docs
         run: mix docs
 
-  Format:
+  Lint_Actions:
+    name: Lint (Actions)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/action-actionlint@v1
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+          reporter: github-pr-review
+
+  Lint_Alex:
+    name: Lint (Alex)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/action-alex@v1
+        with:
+          level: info
+          reporter: github-pr-review
+
+  Lint_CSS:
+    name: Lint (CSS)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/action-stylelint@v1
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+          reporter: github-pr-review
+          stylelint_config: .github/linters/.stylelintrc.json
+
+  Lint_Docker:
+    name: Lint (Docker)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/action-hadolint@v1
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+          reporter: github-pr-review
+
+  Lint_Elixir:
+    name: Lint (Elixir)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-latest
 
     steps:
@@ -35,9 +106,44 @@ jobs:
         uses: ./.github/actions/setup-elixir
 
       - name: Format
-        run: mix format --check-formatted
+        run: mix format
 
-  Lint:
+      - name: Suggest
+        uses: reviewdog/action-suggester@v1
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+          tool_name: mix
+
+  Lint_Javascript:
+    name: Lint (Javascript)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Standard
+        run: npm install eslint-config-standard eslint-plugin-promise eslint-plugin-import eslint-plugin-n
+
+      - name: Lint
+        uses: reviewdog/action-eslint@v1
+        with:
+          eslint_flags: --config .github/linters/.eslintrc.json .
+          fail_on_error: true
+          filter_mode: nofilter
+          reporter: github-pr-review
+
+  Lint_Markdown:
+    name: Lint (Markdown)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-latest
 
     steps:
@@ -45,14 +151,95 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Lint
-        uses: github/super-linter/slim@v4
+        uses: reviewdog/action-markdownlint@v0
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+          markdownlint_flags: -c .github/linters/.markdown-lint.yml .
+          reporter: github-pr-review
 
-  Sobelow:
+  Lint_Misspell:
+    name: Lint (Misspell)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-latest
 
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/action-misspell@v1
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+          locale: US
+          reporter: github-pr-review
+
+  Lint_Shellcheck:
+    name: Lint (Shellcheck)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/action-shellcheck@v1
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+          reporter: github-pr-review
+
+  Lint_Shfmt:
+    name: Lint (shfmt)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/action-shfmt@v1
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+
+  Lint_Yaml:
+    name: Lint (Yaml)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/action-yamllint@v1
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+          reporter: github-pr-review
+          yamllint_flags: -c .github/linters/.yaml-lint.yml .
+
+  Sobelow:
     permissions:
       contents: read
       security-events: write
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
@@ -87,3 +274,13 @@ jobs:
 
       - name: Test
         run: mix test --all-warnings --cover --warnings-as-errors
+
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main

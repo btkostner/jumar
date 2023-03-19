@@ -50,8 +50,23 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
 - 🟨 Code linting via `dialyzer`
 - 🟨 Code linting via `credo`
 - 🟨 Code linting via `boundary`
-- 🟨 Text linting via [`markdownlint`](https://github.com/DavidAnson/markdownlint)
-- 🟨 Text linting via [`textlint`](https://github.com/textlint/textlint)
+
+- <details open><summary>Linting for other file types (almost too much linting 🤯)</summary>
+
+  - ✅ Linting GitHub actions via `actionlint`
+  - ✅ Linting for insensitive and inconsiderate writing via `alex`
+  - ✅ Linting CSS via `stylelint`
+  - ✅ Linting `Dockerfile`s via `hadolint`
+  - ✅ Linting Elixir via `mix format`
+  - ✅ Linting Javascript via `eslint` and `standard`
+  - ✅ Linting Markdown via `markdownlint`
+  - ✅ Spell checking via `misspell`
+  - ✅ Linting shell scripts via `shellcheck`
+  - ✅ Formatting shell scripts via `shfmt`
+  - ✅ Linting YAML via `yamllint`
+
+  </details>
+
 - ✅ Code testing via `exunit`
 - 🟨 Browser testing via `wallaby`
 - 🟨 Property testing via `stream_data`

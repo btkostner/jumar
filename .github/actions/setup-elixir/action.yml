@@ -1,7 +1,5 @@
 ---
 
-name: Setup Elixir
-
 branding:
   color: purple
   icon: code
@@ -44,6 +42,8 @@ inputs:
     required: false
     type: string
 
+name: Setup Elixir
+
 outputs:
   elixir-version:
     description: >-
@@ -55,14 +55,13 @@ outputs:
     value: ${{ steps.beam.outputs.otp-version }}
 
 runs:
-  using: composite
   steps:
     - id: beam
       name: Install Elixir
       uses: erlef/setup-beam@v1
       with:
-        otp-version: ${{ inputs.otp-version }}
         elixir-version: ${{ inputs.elixir-version }}
+        otp-version: ${{ inputs.otp-version }}
         version-file: ${{ (inputs.otp-version || inputs.elixir-version) || inputs.version-file }}
         version-type: strict
 
@@ -72,10 +71,9 @@ runs:
       with:
         key: |
           elixir-setup-deps-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-${{ inputs.cache-name }}-${{ hashFiles('mix.lock') }}
+        path: deps
         restore-keys: |
           elixir-setup-deps-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-${{ inputs.cache-name }}-
-        path: deps
-
 
     - if: steps.cache_dependencies.outputs.cache-hit != 'true'
       name: Install Dependencies
@@ -87,8 +85,10 @@ runs:
       with:
         key: |
           elixir-setup-build-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-${{ inputs.cache-name }}-${{ hashFiles('mix.lock') }}-${{ github.ref }}
+        path: _build
         restore-keys: |
           elixir-setup-build-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-${{ inputs.cache-name }}-${{ hashFiles('mix.lock') }}-
           elixir-setup-build-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-${{ inputs.cache-name }}-
           elixir-setup-build-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-
-        path: _build
+
+  using: composite
