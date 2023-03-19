@@ -1,0 +1,23 @@
+---
+
+name: Start Docker Compose
+
+branding:
+  color: blue
+  icon: anchor
+
+description: >-
+  Starts the docker-compose services.
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Start Containers
+      run: docker-compose up --detached
+      shell: bash
+      env:
+        COMPOSE_DOCKER_CLI_BUILD: "1"
+        DOCKER_BUILDKIT: "1"
