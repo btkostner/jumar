@@ -88,6 +88,29 @@ jobs:
           markdownlint_flags: --config .github/linters/.markdown-lint.yml .
           reporter: github-pr-review
 
+  Lint_Spelling:
+    name: Lint (Spelling)
+    runs-on: ubuntu-latest
+
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/action-misspell@v1
+        with:
+          exclude: |
+            ./.git/*
+          fail_on_error: true
+          filter_mode: nofilter
+          locale: US
+          reporter: github-pr-review
+
   Sobelow:
     runs-on: ubuntu-latest
 
