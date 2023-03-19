@@ -4,7 +4,7 @@ This guide goes over deploying Jumar to Fly.io. This will be pretty specific to 
 
 ## Database
 
-Deploying Cockroach DB to Fly.io _can_ be easy if you chose to run without TLS. This _can_ be fine, but we want to keep with best security practice, so we will generate self signed certificates for all nodes and ensure they are enforced by the Elixir Jumar application.
+Deploying Cockroach DB to Fly.io _can_ be easy if you chose to run without TLS. This _can_ be fine, but we want to keep with best security practice, so we will generate self signed certificates for all nodes and ensure secure connections are enforced.
 
 ### Building
 
@@ -49,13 +49,13 @@ cockroach cert create-ca --ca-key=$HOME/.cockroach-certs/ca.key
 cockroach cert create-node --ca-key=$HOME/.cockroach-certs/ca.key 127.0.0.1 localhost $FLY_APP.internal "*.$FLY_APP.internal" "*.vm.$FLY_APP.internal" "*.nearest.of.$FLY_APP.internal" $FLY_APP.fly.dev
 ```
 
-Next up, you'll want to generate a certificate for your `root` client, and any other clients. Do this via:
+Next up, you'll want to generate a certificate for your `root`, `jumar`, and any other clients you want. Do this via:
 
 ```bash
 cockroach cert create-client --ca-key=$HOME/.cockroach-certs/ca.key <client>
 ```
 
-Once that is done, you can exit the container. **Ensure you save the generated certificates and keys to secure place**.
+Once that is done, you can exit the container. **Ensure you save the generated certificates and keys to a secure place**.
 
 ### Deploying
 
@@ -65,7 +65,7 @@ Then create the Fly.io deployment via:
 flyctl launch
 ```
 
-This will create an empty deployment that we can set secrets on. Then you'll want to add secrets to your deployment via:
+This will create an empty deployment where we will want to add our secrets to via:
 
 ```bash
 base64 ./cockroach-certs/ca.crt | flyctl secrets set DB_CA_CRT=-
@@ -73,13 +73,13 @@ base64 ./cockroach-certs/node.crt | flyctl secrets set DB_NODE_CRT=-
 base64 ./cockroach-certs/node.key | flyctl secrets set DB_NODE_KEY=-
 ```
 
-Next up, start creating some volumes. For this, you could do a single instance (which would not be highly available), multiple instances in different regions (not recommend as you will incur more latency for every query), or multiple instances in the same region (highly available, but not regionally distributed). Once you figure out the regions you want, run this command to generate a volume. Change the size accordingly.
+Next up, start creating some volumes. This will dictate where Fly.io places your servers, so please check the [Cockroach DB multi-region capabilities overview page](https://www.cockroachlabs.com/docs/stable/multiregion-overview.html) to ensure your survivability goals match what you create here. Once you figure out the regions you want, run this command to generate a volume. Repeat for every instance you want and change the volume size to fit your needs.
 
 ```bash
 flyctl volumes create crdb_data --region <region> --size 10
 ```
 
-**Optionally**, you can scale the VM size you will use. Cockroach recommends at least 4gb of RAM. From personal experience, you will run into a lot of issues on 256mb, and _some_ issues on 512mb for demo sites. Keep in mind that this is pretty easy to change after the fact _without downtime_ if you are running multiple instances.
+**Optionally**, you can scale the VM size you will use. Cockroach recommends at least 4gb of RAM. From personal experience, 1gb is the absolute _minimum_ you will want (might still cause problems). Keep in mind that this is pretty easy to change after the fact _without downtime_ if you are running multiple instances.
 
 ```bash
 flyctl scale vm <size> --memory <memory_in_megabytes>
@@ -145,4 +145,4 @@ Then open your browser to <http://localhost:8080>, ignore the certificate warnin
 
 ### Updating
 
-Updating a Cockroach cluster is much easier than most other databases when it's ran in a multi node setup. All you'll need to do is update the image set in the `fly.toml` file and run `fly deploy`. This will create a new release on Fly.io, taking down one node at a time while it's restarted.
+Updating a Cockroach cluster is much easier than most other databases when it's ran in a multi node setup. All you'll need to do is update the image set in the `fly.toml` file and run `fly deploy`. This will create a new release on Fly.io, taking down one node at a time while it's upgrading. The Jumar application will gracefully handle this and reconnect to another node if the current connect node goes down.
