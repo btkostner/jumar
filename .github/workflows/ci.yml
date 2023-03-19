@@ -24,19 +24,6 @@ jobs:
       - name: Build Docs
         run: mix docs
 
-  Format:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Setup Elixir
-        uses: ./.github/actions/setup-elixir
-
-      - name: Format
-        run: mix format --check-formatted
-
   Lint:
     runs-on: ubuntu-latest
 
@@ -106,6 +93,28 @@ jobs:
           filter_mode: nofilter
           reporter: github-pr-review
 
+  Lint_Elixir:
+    name: Lint (Elixir)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Elixir
+        uses: ./.github/actions/setup-elixir
+
+      - name: Format
+        run: mix format
+
+      - name: Suggest
+        uses: reviewdog/action-suggester@v1
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+          reporter: github-pr-review
+          tool_name: mix
+
   Lint_Javascript:
     name: Lint (Javascript)
     runs-on: ubuntu-latest
@@ -148,7 +157,7 @@ jobs:
         with:
           fail_on_error: true
           filter_mode: nofilter
-          markdownlint_flags: --config .github/linters/.markdown-lint.yml .
+          markdownlint_flags: -c .github/linters/.markdown-lint.yml .
           reporter: github-pr-review
 
   Lint_Misspell:
@@ -167,11 +176,39 @@ jobs:
       - name: Lint
         uses: reviewdog/action-misspell@v1
         with:
-          exclude: |
-            ./.git/*
           fail_on_error: true
           filter_mode: nofilter
           locale: US
+          reporter: github-pr-review
+
+  Lint_Shellcheck:
+    name: Lint (Shellcheck)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/action-shellcheck@v1
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+          reporter: github-pr-review
+
+  Lint_Shfmt:
+    name: Lint (shfmt)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/action-shfmt@v1
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
           reporter: github-pr-review
 
   Lint_Yaml:
