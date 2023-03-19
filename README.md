@@ -50,9 +50,7 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
 - 🟨 Code linting via `dialyzer`
 - 🟨 Code linting via `credo`
 - 🟨 Code linting via `boundary`
-
-- <details open><summary>Linting for other file types (almost too much linting 🤯)</summary>
-
+- ✅ Linting for other file types (almost too much linting 🤯)
   - ✅ Linting GitHub actions via `actionlint`
   - ✅ Linting for insensitive and inconsiderate writing via `alex`
   - ✅ Linting CSS via `stylelint`
@@ -64,9 +62,6 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
   - ✅ Linting shell scripts via `shellcheck`
   - ✅ Formatting shell scripts via `shfmt`
   - ✅ Linting YAML via `yamllint`
-
-  </details>
-
 - ✅ Code testing via `exunit`
 - 🟨 Browser testing via `wallaby`
 - 🟨 Property testing via `stream_data`
