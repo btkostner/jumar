@@ -47,6 +47,31 @@ jobs:
       - name: Lint
         uses: github/super-linter/slim@v4
 
+  Lint_Markdown:
+    name: Lint (Markdown)
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: DavidAnson/markdownlint-cli2-action@v9
+        with:
+          globs: '**/*.md'
+
+  Lint_Markdown_2:
+    name: Lint (Markdown 2)
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/action-markdownlint@v0
+        with:
+          fail_on_error: true
+          reporter: github-pr-review
+
   Sobelow:
     runs-on: ubuntu-latest
 
