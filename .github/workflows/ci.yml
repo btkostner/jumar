@@ -49,6 +49,7 @@ jobs:
 
   Lint_Markdown:
     name: Lint (Markdown)
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
@@ -61,6 +62,7 @@ jobs:
 
   Lint_Markdown_2:
     name: Lint (Markdown 2)
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
