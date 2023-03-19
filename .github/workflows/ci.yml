@@ -67,6 +67,26 @@ jobs:
           filter_mode: nofilter
           reporter: github-pr-review
 
+  Lint_Insensitive:
+    name: Lint (Insensitive)
+    runs-on: ubuntu-latest
+
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/action-alex@v1
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+          reporter: github-pr-review
+
   Lint_Markdown:
     name: Lint (Markdown)
     runs-on: ubuntu-latest

@@ -51,6 +51,7 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
 - 🟨 Code linting via `credo`
 - 🟨 Code linting via `boundary`
 - ✅ GitHub action linting via [`actionlint`](https://github.com/reviewdog/action-actionlint)
+- ✅ Text linting via [`alex`](https://github.com/reviewdog/action-alex)
 - ✅ Text linting via [`markdownlint`](https://github.com/reviewdog/action-markdownlint)
 - ✅ Text linting via [`misspell`](https://github.com/reviewdog/action-misspell)
 - ✅ Text linting via [`textlint`](https://github.com/textlint/textlint)
