@@ -1,5 +1,4 @@
 {
-  "changelog-type": "github",
   "packages": {
     ".": {
       "component": "jumar",
