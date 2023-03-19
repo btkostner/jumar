@@ -4,11 +4,11 @@ This guide goes over deploying Jumar to Fly.io. This will be pretty specific to 
 
 ## Database
 
-Deploying Cockroach DB to Fly.io _can_ be easy if you chose to run without TLS. This _can_ be fine, but we want to keep with best security practice, so we will generate self signed certificates for all nodes and ensure secure connections are enforced.
+Deploying Cockroach DB to Fly.io _can_ be done on with using the `--insecure` flag, but we want to keep with best security practice, so we will generate self signed certificates for all nodes and ensure secure connections are enforced.
 
 ### Building
 
-If you are running a Cockroach DB instance yourself, I'd strongly suggest you to publish your own custom Docker image for Cockroach. This makes it easier to version control and prevents build chain attacks. First up, `cd` into the `priv/cockroachdb` directory. Next, build the included `Dockerfile` and push it to your repository of choice. Once done, update the `fly.toml` file to point to the registry you just published to. Once that is done, you can follow the rest of this guide.
+If you are running a Cockroach DB instance yourself, I'd strongly suggest you to publish your own custom Docker image for Cockroach. This makes it easier to version control and prevents build chain attacks. First up, `cd` into the `priv/cockroachdb` directory. Next, build the included `Dockerfile` and push it to your repository of choice. Once done, update the `fly.toml` file to point to the registry you published to. Once that is done, you can follow the rest of this guide.
 
 ### Setup
 
@@ -36,7 +36,7 @@ docker run --rm -it -v $(pwd)/cockroach-certs:/root/.cockroach-certs --entrypoin
   <p>You might encounter permission errors running the above command. If you do, you will need to add <code>--privileged</code>.</p>
 </blockquote>
 
-Then export the Fly.io app name you will use. By default, this is just `cockroach`.
+Then export the Fly.io app name you will use. By default, this is `cockroach`.
 
 ```bash
 export FLY_APP="cockroach"
@@ -79,7 +79,7 @@ Next up, start creating some volumes. This will dictate where Fly.io places your
 flyctl volumes create crdb_data --region <region> --size 10
 ```
 
-**Optionally**, you can scale the VM size you will use. Cockroach recommends at least 4gb of RAM. From personal experience, 1gb is the absolute _minimum_ you will want (might still cause problems). Keep in mind that this is pretty easy to change after the fact _without downtime_ if you are running multiple instances.
+**Optionally**, you can scale the VM size you will use. Cockroach recommends at least 4gb of RAM. From personal experience, 1gb is the absolute _minimum_ you will want (might still cause problems). Keep in mind that this is pretty simple to change after the fact _without downtime_ if you are running multiple instances.
 
 ```bash
 flyctl scale vm <size> --memory <memory_in_megabytes>
@@ -104,7 +104,7 @@ put ./cockroach-certs/client.root.crt /root/.cockroach-certs/client.root.crt
 put ./cockroach-certs/client.root.key /root/.cockroach-certs/client.root.key
 ```
 
-You can then `^C` out of that shell. Next up, ssh into the running container you just copied the file to.
+You can then `^C` out of that shell. Next up, ssh into the running container you copied the file to.
 
 ```bash
 flyctl ssh console

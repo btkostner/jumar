@@ -84,6 +84,25 @@ jobs:
         uses: reviewdog/action-alex@v1
         with:
           fail_on_error: true
+          reporter: github-pr-review
+
+  Lint_Docker:
+    name: Lint (Docker)
+    runs-on: ubuntu-latest
+
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/action-hadolint@v1
+        with:
+          fail_on_error: true
           filter_mode: nofilter
           reporter: github-pr-review
 
