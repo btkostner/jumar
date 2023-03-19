@@ -1,0 +1,44 @@
+app = "cockroach"
+kill_signal = "SIGTERM"
+kill_timeout = 90
+
+primary_region = "den"
+services = []
+
+[build]
+  # x-release-please-start-version
+  image = "ghcr.io/btkostner/cockroach:1.0.5"
+  # x-release-please-end
+
+[checks]
+  [checks.crdb]
+    grace_period = "60s"
+    interval = "15s"
+    method = "get"
+    path = "/health?ready=1"
+    port = 8080
+    protocol = "https"
+    timeout = "10s"
+    tls_skip_verify = true
+    type = "http"
+
+[deploy]
+  strategy = "rolling"
+
+[env]
+  HOME = "/root"
+
+[experimental]
+  allowed_public_ports = []
+  auto_rollback = true
+  private_network = true
+
+[metrics]
+  path = "/_status/vars"
+  port = 8080
+  protocol = "http"
+  tls_skip_verify = true
+
+[[mounts]]
+  destination = "/cockroach/cockroach-data"
+  source = "crdb_data"

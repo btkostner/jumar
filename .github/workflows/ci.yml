@@ -68,3 +68,22 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: results.sarif
+
+  Test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Start Docker Compose
+        uses: ./.github/actions/start-docker-compose
+
+      - name: Setup Elixir
+        uses: ./.github/actions/setup-elixir
+
+      - name: Compile
+        run: mix compile --all-warnings --warnings-as-errors
+
+      - name: Test
+        run: mix test --all-warnings --cover --warnings-as-errors

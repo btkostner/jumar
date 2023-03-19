@@ -6,10 +6,12 @@ import Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :jumar, Jumar.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "root",
   hostname: "localhost",
+  port: 26257,
   database: "jumar_test#{System.get_env("MIX_TEST_PARTITION")}",
+  stacktrace: true,
+  show_sensitive_data_on_connection_error: true,
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10
 
