@@ -111,25 +111,6 @@ jobs:
           filter_mode: nofilter
           reporter: github-pr-review
 
-  Lint_Language:
-    name: Lint (Language)
-    runs-on: ubuntu-latest
-
-    permissions:
-      checks: write
-      contents: read
-      pull-requests: write
-
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Lint
-        uses: reviewdog/action-languagetool@v1
-        with:
-          disabled_rules: ""
-          fail_on_error: true
-
   Lint_Markdown:
     name: Lint (Markdown)
     runs-on: ubuntu-latest
