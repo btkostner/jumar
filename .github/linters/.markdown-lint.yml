@@ -10,7 +10,5 @@
 #   <!-- markdownlint-restore -->
 #
 
-MD013:
-  line_length: false
-
+MD013: false
 MD033: false

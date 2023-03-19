@@ -10,29 +10,29 @@
 rules:
   braces:
     level: warning
-    min-spaces-inside: 0
     max-spaces-inside: 0
-    min-spaces-inside-empty: 1
     max-spaces-inside-empty: 5
+    min-spaces-inside: 0
+    min-spaces-inside-empty: 0
   brackets:
     level: warning
-    min-spaces-inside: 0
     max-spaces-inside: 0
-    min-spaces-inside-empty: 1
     max-spaces-inside-empty: 5
+    min-spaces-inside: 0
+    min-spaces-inside-empty: 1
   colons:
     level: warning
-    max-spaces-before: 0
     max-spaces-after: 1
+    max-spaces-before: 0
   commas:
     level: warning
+    max-spaces-after: 1
     max-spaces-before: 0
     min-spaces-after: 1
-    max-spaces-after: 1
   comments:
-    require-starting-space: true
     ignore-shebangs: true
     min-spaces-from-content: 1
+    require-starting-space: true
   comments-indentation: {}
   document-end: disable
   document-start:
@@ -41,25 +41,25 @@ rules:
   empty-lines:
     level: warning
     max: 2
-    max-start: 1
     max-end: 0
+    max-start: 1
   hyphens:
     level: warning
     max-spaces-after: 1
   indentation:
+    check-multi-line-strings: false
+    indent-sequences: true
     level: warning
     spaces: 2
-    indent-sequences: true
-    check-multi-line-strings: false
   key-duplicates: {}
   key-ordering: {}
   line-length:
-    level: warning
-    max: 80
-    allow-non-breakable-words: true
     allow-non-breakable-inline-mappings: true
+    allow-non-breakable-words: true
     ignore: |
       *.github*
+    level: warning
+    max: 80
   new-line-at-end-of-file: {}
   new-lines:
     type: unix

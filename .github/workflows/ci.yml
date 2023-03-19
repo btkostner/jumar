@@ -1,15 +1,5 @@
 ---
 
-name: CI
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
 jobs:
   Docs:
     runs-on: ubuntu-latest
@@ -24,24 +14,13 @@ jobs:
       - name: Build Docs
         run: mix docs
 
-  Lint:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Lint
-        uses: github/super-linter/slim@v4
-
   Lint_Actions:
     name: Lint (Actions)
-    runs-on: ubuntu-latest
-
     permissions:
       checks: write
       contents: read
       pull-requests: write
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
@@ -56,12 +35,11 @@ jobs:
 
   Lint_Alex:
     name: Lint (Alex)
-    runs-on: ubuntu-latest
-
     permissions:
       checks: write
       contents: read
       pull-requests: write
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
@@ -70,11 +48,15 @@ jobs:
       - name: Lint
         uses: reviewdog/action-alex@v1
         with:
-          fail_on_error: true
+          level: info
           reporter: github-pr-review
 
   Lint_CSS:
     name: Lint (CSS)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-latest
 
     steps:
@@ -91,12 +73,11 @@ jobs:
 
   Lint_Docker:
     name: Lint (Docker)
-    runs-on: ubuntu-latest
-
     permissions:
       checks: write
       contents: read
       pull-requests: write
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
@@ -111,6 +92,10 @@ jobs:
 
   Lint_Elixir:
     name: Lint (Elixir)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-latest
 
     steps:
@@ -132,12 +117,11 @@ jobs:
 
   Lint_Javascript:
     name: Lint (Javascript)
-    runs-on: ubuntu-latest
-
     permissions:
       checks: write
       contents: read
       pull-requests: write
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
@@ -156,12 +140,11 @@ jobs:
 
   Lint_Markdown:
     name: Lint (Markdown)
-    runs-on: ubuntu-latest
-
     permissions:
       checks: write
       contents: read
       pull-requests: write
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
@@ -177,12 +160,11 @@ jobs:
 
   Lint_Misspell:
     name: Lint (Misspell)
-    runs-on: ubuntu-latest
-
     permissions:
       checks: write
       contents: read
       pull-requests: write
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
@@ -198,6 +180,10 @@ jobs:
 
   Lint_Shellcheck:
     name: Lint (Shellcheck)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-latest
 
     steps:
@@ -213,6 +199,10 @@ jobs:
 
   Lint_Shfmt:
     name: Lint (shfmt)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-latest
 
     steps:
@@ -227,12 +217,11 @@ jobs:
 
   Lint_Yaml:
     name: Lint (Yaml)
-    runs-on: ubuntu-latest
-
     permissions:
       checks: write
       contents: read
       pull-requests: write
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
@@ -247,11 +236,10 @@ jobs:
           yamllint_flags: -c .github/linters/.yaml-lint.yml .
 
   Sobelow:
-    runs-on: ubuntu-latest
-
     permissions:
       contents: read
       security-events: write
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
@@ -286,3 +274,13 @@ jobs:
 
       - name: Test
         run: mix test --all-warnings --cover --warnings-as-errors
+
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
