@@ -76,11 +76,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Elixir
-        uses: ./.github/actions/setup-elixir
-
       - name: Start Docker Compose
         uses: ./.github/actions/start-docker-compose
+
+      - name: Setup Elixir
+        uses: ./.github/actions/setup-elixir
 
       - name: Compile
         run: mix compile --all-warnings --warnings-as-errors
