@@ -67,8 +67,8 @@ jobs:
           filter_mode: nofilter
           reporter: github-pr-review
 
-  Lint_Insensitive:
-    name: Lint (Insensitive)
+  Lint_Alex:
+    name: Lint (Alex)
     runs-on: ubuntu-latest
 
     permissions:
@@ -83,6 +83,30 @@ jobs:
       - name: Lint
         uses: reviewdog/action-alex@v1
         with:
+          fail_on_error: true
+          filter_mode: nofilter
+          reporter: github-pr-review
+
+  Lint_Javascript:
+    name: Lint (Javascript)
+    runs-on: ubuntu-latest
+
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Standard
+        run: npm install eslint-config-standard eslint-plugin-promise eslint-plugin-import eslint-plugin-n
+
+      - name: Lint
+        uses: reviewdog/action-eslint@v1
+        with:
+          eslint_flags: --config .github/linters/.eslintrc.json .
           fail_on_error: true
           filter_mode: nofilter
           reporter: github-pr-review
@@ -108,8 +132,8 @@ jobs:
           markdownlint_flags: --config .github/linters/.markdown-lint.yml .
           reporter: github-pr-review
 
-  Lint_Spelling:
-    name: Lint (Spelling)
+  Lint_Misspell:
+    name: Lint (Misspell)
     runs-on: ubuntu-latest
 
     permissions:
