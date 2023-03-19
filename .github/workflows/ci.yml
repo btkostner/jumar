@@ -51,18 +51,10 @@ jobs:
     name: Lint (Markdown)
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Lint
-        uses: DavidAnson/markdownlint-cli2-action@v9
-        with:
-          globs: '**/*.md'
-
-  Lint_Markdown_2:
-    name: Lint (Markdown 2)
-    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
 
     steps:
       - name: Checkout Code
@@ -73,6 +65,7 @@ jobs:
         with:
           fail_on_error: true
           filter_mode: nofilter
+          markdownlint_flags: --config .github/linters/.markdown-lint.yml .
           reporter: github-pr-review
 
   Sobelow:
