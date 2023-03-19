@@ -155,6 +155,27 @@ jobs:
           locale: US
           reporter: github-pr-review
 
+  Lint_Yaml:
+    name: Lint (Yaml)
+    runs-on: ubuntu-latest
+
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/actions-yamllint@v1
+        with:
+          eslint_flags: -c .github/linters/.yaml-lint.yml .
+          fail_on_error: true
+          filter_mode: nofilter
+          reporter: github-pr-review
+
   Sobelow:
     runs-on: ubuntu-latest
 
