@@ -73,6 +73,22 @@ jobs:
           fail_on_error: true
           reporter: github-pr-review
 
+  Lint_CSS:
+    name: Lint (CSS)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/action-stylelint@v1
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+          reporter: github-pr-review
+          stylelint_config: .github/linters/.stylelintrc.json
+
   Lint_Docker:
     name: Lint (Docker)
     runs-on: ubuntu-latest
@@ -112,7 +128,6 @@ jobs:
         with:
           fail_on_error: true
           filter_mode: nofilter
-          reporter: github-pr-review
           tool_name: mix
 
   Lint_Javascript:
@@ -209,7 +224,6 @@ jobs:
         with:
           fail_on_error: true
           filter_mode: nofilter
-          reporter: github-pr-review
 
   Lint_Yaml:
     name: Lint (Yaml)
