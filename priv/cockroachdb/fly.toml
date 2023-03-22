@@ -1,6 +1,7 @@
 app = "cockroach"
+
 kill_signal = "SIGTERM"
-kill_timeout = 90
+kill_timeout = 300
 
 primary_region = "den"
 services = []
@@ -34,7 +35,7 @@ services = []
 [metrics]
   path = "/_status/vars"
   port = 8080
-  protocol = "http"
+  protocol = "https"
   tls_skip_verify = true
 
 [[mounts]]
