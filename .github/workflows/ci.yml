@@ -76,24 +76,6 @@ jobs:
           level: info
           reporter: github-pr-review
 
-  Lint_Credo:
-    name: Lint (Credo)
-    permissions:
-      checks: write
-      contents: read
-      pull-requests: write
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Setup Elixir
-        uses: ./.github/actions/setup-elixir
-
-      - name: Credo
-        run: mix credo
-
   Lint_CSS:
     name: Lint (CSS)
     permissions:
@@ -113,6 +95,24 @@ jobs:
           filter_mode: nofilter
           reporter: github-pr-review
           stylelint_config: .github/linters/.stylelintrc.json
+
+  Lint_Credo:
+    name: Lint (Credo)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Elixir
+        uses: ./.github/actions/setup-elixir
+
+      - name: Credo
+        run: mix credo
 
   Lint_Docker:
     name: Lint (Docker)
