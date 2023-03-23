@@ -27,7 +27,7 @@ defmodule JumarWeb.Endpoint do
   plug Plug.Static,
     at: "/",
     from: :jumar,
-    gzip: false,
+    gzip: Application.compile_env(:jumar, [JumarWeb.Endpoint, :compress], false),
     only: JumarWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the

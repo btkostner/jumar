@@ -22,13 +22,15 @@ config :jumar, Jumar.Repo,
 
 # Configures the endpoint
 config :jumar, JumarWeb.Endpoint,
-  url: [host: "localhost"],
+  adapter: Bandit.PhoenixAdapter,
+  compress: false,
+  live_view: [signing_salt: "jE9V3Gn4"],
+  pubsub_server: Jumar.PubSub,
   render_errors: [
     formats: [html: JumarWeb.ErrorHTML, json: JumarWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: Jumar.PubSub,
-  live_view: [signing_salt: "jE9V3Gn4"]
+  url: [host: "localhost"]
 
 # Configures the mailer
 #
