@@ -1,8 +1,5 @@
 ---
 
-env:
-  MIX_ENV: test
-
 jobs:
   Docs:
     runs-on: ubuntu-latest
@@ -298,6 +295,9 @@ jobs:
           sarif_file: results.sarif
 
   Test:
+    env:
+      MIX_ENV: test
+
     runs-on: ubuntu-latest
 
     steps:
