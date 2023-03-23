@@ -1,5 +1,8 @@
 ---
 
+env:
+  MIX_ENV: test
+
 jobs:
   Docs:
     runs-on: ubuntu-latest
@@ -301,14 +304,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Start Docker Compose
-        uses: ./.github/actions/start-docker-compose
-
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir
 
       - name: Compile
         run: mix compile --all-warnings --warnings-as-errors
+
+      - name: Start Docker Compose
+        uses: ./.github/actions/start-docker-compose
 
       - name: Test
         run: mix test --all-warnings --cover --warnings-as-errors
