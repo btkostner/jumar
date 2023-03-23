@@ -14,6 +14,31 @@ jobs:
       - name: Build Docs
         run: mix docs
 
+  Format_Elixir:
+    name: Format (Elixir)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Elixir
+        uses: ./.github/actions/setup-elixir
+
+      - name: Format
+        run: mix format
+
+      - name: Suggest
+        uses: reviewdog/action-suggester@v1
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+          tool_name: mix
+
   Lint_Actions:
     name: Lint (Actions)
     permissions:
@@ -50,6 +75,24 @@ jobs:
         with:
           level: info
           reporter: github-pr-review
+
+  Lint_Credo:
+    name: Lint (Credo)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Elixir
+        uses: ./.github/actions/setup-elixir
+
+      - name: Credo
+        run: mix credo
 
   Lint_CSS:
     name: Lint (CSS)
@@ -90,8 +133,8 @@ jobs:
           filter_mode: nofilter
           reporter: github-pr-review
 
-  Lint_Elixir:
-    name: Lint (Elixir)
+  Lint_Doctor:
+    name: Lint (Doctor)
     permissions:
       checks: write
       contents: read
@@ -105,15 +148,8 @@ jobs:
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir
 
-      - name: Format
-        run: mix format
-
-      - name: Suggest
-        uses: reviewdog/action-suggester@v1
-        with:
-          fail_on_error: true
-          filter_mode: nofilter
-          tool_name: mix
+      - name: Doctor
+        run: mix doctor
 
   Lint_Javascript:
     name: Lint (Javascript)

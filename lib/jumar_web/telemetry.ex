@@ -1,11 +1,18 @@
 defmodule JumarWeb.Telemetry do
+  @moduledoc """
+  Pulls telemetry metrics from various parts of the application.
+  """
+
   use Supervisor
+
   import Telemetry.Metrics
 
+  @doc false
   def start_link(arg) do
     Supervisor.start_link(__MODULE__, arg, name: __MODULE__)
   end
 
+  @doc false
   @impl true
   def init(_arg) do
     children = [
@@ -19,6 +26,9 @@ defmodule JumarWeb.Telemetry do
     Supervisor.init(children, strategy: :one_for_one)
   end
 
+  @doc """
+  Returns a list of telemetry metrics in the application.
+  """
   def metrics do
     [
       # Phoenix Metrics
