@@ -74,6 +74,7 @@ jobs:
       - name: Lint
         uses: reviewdog/action-alex@v1
         with:
+          filter_mode: ${{ github.event_name == 'pull_request' && 'added' || 'nofilter' }}
           level: info
           reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'local' }}
 
