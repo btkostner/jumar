@@ -1,4 +1,6 @@
 defmodule JumarWeb.ErrorHTML do
+  @moduledoc false
+
   use JumarWeb, :html
 
   # If you want to customize your error pages,
@@ -13,6 +15,7 @@ defmodule JumarWeb.ErrorHTML do
   # The default is to render a plain text page based on
   # the template name. For example, "404.html" becomes
   # "Not Found".
+  @doc false
   def render(template, _assigns) do
     Phoenix.Controller.status_message_from_template(template)
   end

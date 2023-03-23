@@ -62,6 +62,7 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
   - ✅ Linting shell scripts via `shellcheck`
   - ✅ Formatting shell scripts via `shfmt`
   - ✅ Linting YAML via `yamllint`
+-
 - ✅ Code testing via `exunit`
 - 🟨 Browser testing via `wallaby`
 - 🟨 Property testing via `stream_data`

@@ -40,6 +40,9 @@ defmodule Jumar.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
+      {:doctor, "~> 0.21.0", only: [:dev, :test]},
       {:ecto_sql, "~> 3.6"},
       {:esbuild, "~> 0.5", runtime: Mix.env() == :dev},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},
