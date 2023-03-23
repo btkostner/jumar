@@ -30,9 +30,10 @@ jobs:
         uses: ./.github/actions/setup-elixir
 
       - name: Format
-        run: mix format
+        run: mix format ${{ github.event_name == 'pull_request' ?? '--check-formatted' }}
 
-      - name: Suggest
+      - if: ${{ github.event_name == 'pull_request' }}
+        name: Suggest
         uses: reviewdog/action-suggester@v1
         with:
           fail_on_error: true
@@ -320,3 +321,4 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
