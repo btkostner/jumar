@@ -30,7 +30,7 @@ jobs:
         uses: ./.github/actions/setup-elixir
 
       - name: Format
-        run: mix format ${{ github.event_name == 'pull_request' ?? '--check-formatted' }}
+        run: mix format ${{ github.event_name == 'pull_request' && '--check-formatted' || '' }}
 
       - if: ${{ github.event_name == 'pull_request' }}
         name: Suggest
