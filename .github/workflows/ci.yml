@@ -30,9 +30,10 @@ jobs:
         uses: ./.github/actions/setup-elixir
 
       - name: Format
-        run: mix format
+        run: mix format ${{ github.event_name == 'pull_request' && '' || '--check-formatted' }}
 
-      - name: Suggest
+      - if: ${{ github.event_name == 'pull_request' }}
+        name: Suggest
         uses: reviewdog/action-suggester@v1
         with:
           fail_on_error: true
@@ -56,7 +57,7 @@ jobs:
         with:
           fail_on_error: true
           filter_mode: nofilter
-          reporter: github-pr-review
+          reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'github-check' }}
 
   Lint_Alex:
     name: Lint (Alex)
@@ -74,7 +75,7 @@ jobs:
         uses: reviewdog/action-alex@v1
         with:
           level: info
-          reporter: github-pr-review
+          reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'github-check' }}
 
   Lint_CSS:
     name: Lint (CSS)
@@ -93,7 +94,7 @@ jobs:
         with:
           fail_on_error: true
           filter_mode: nofilter
-          reporter: github-pr-review
+          reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'github-check' }}
           stylelint_config: .github/linters/.stylelintrc.json
 
   Lint_Credo:
@@ -131,7 +132,7 @@ jobs:
         with:
           fail_on_error: true
           filter_mode: nofilter
-          reporter: github-pr-review
+          reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'github-check' }}
 
   Lint_Doctor:
     name: Lint (Doctor)
@@ -172,7 +173,7 @@ jobs:
           eslint_flags: --config .github/linters/.eslintrc.json .
           fail_on_error: true
           filter_mode: nofilter
-          reporter: github-pr-review
+          reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'github-check' }}
 
   Lint_Markdown:
     name: Lint (Markdown)
@@ -192,7 +193,7 @@ jobs:
           fail_on_error: true
           filter_mode: nofilter
           markdownlint_flags: -c .github/linters/.markdown-lint.yml .
-          reporter: github-pr-review
+          reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'github-check' }}
 
   Lint_Misspell:
     name: Lint (Misspell)
@@ -212,7 +213,7 @@ jobs:
           fail_on_error: true
           filter_mode: nofilter
           locale: US
-          reporter: github-pr-review
+          reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'github-check' }}
 
   Lint_Shellcheck:
     name: Lint (Shellcheck)
@@ -231,7 +232,7 @@ jobs:
         with:
           fail_on_error: true
           filter_mode: nofilter
-          reporter: github-pr-review
+          reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'github-check' }}
 
   Lint_Shfmt:
     name: Lint (shfmt)
@@ -268,7 +269,7 @@ jobs:
         with:
           fail_on_error: true
           filter_mode: nofilter
-          reporter: github-pr-review
+          reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'github-check' }}
           yamllint_flags: -c .github/linters/.yaml-lint.yml .
 
   Sobelow:
@@ -320,3 +321,4 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
