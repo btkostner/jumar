@@ -290,6 +290,11 @@ jobs:
         run: mix compile
 
       - name: Sobelow
+        run: mix sobelow
+
+      # We run once to allow any compile warnings or things that
+      # would interfere with the JSON output
+      - name: Sobelow Sarif
         run: mix sobelow --format sarif > results.sarif
 
       - name: Upload Report
