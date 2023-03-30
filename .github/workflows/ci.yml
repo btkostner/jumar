@@ -286,6 +286,9 @@ jobs:
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir
 
+      - name: Compile
+        run: mix compile
+
       - name: Sobelow
         run: mix sobelow --format sarif > results.sarif
 
