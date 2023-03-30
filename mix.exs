@@ -63,12 +63,11 @@ defmodule Jumar.MixProject do
       {:remote_ip, "~> 1.1"},
       {:sobelow, "~> 0.11", only: [:dev, :test], runtime: false},
       {:swoosh, "~> 1.3"},
-      {:tailwind, "~> 0.1.8", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
       {:tailwind_formatter, "~> 0.3.3", only: :dev, runtime: false},
       {:telemetry, "~> 1.2.1"},
       {:telemetry_metrics, "~> 0.6"},
-      {:telemetry_poller, "~> 1.0"},
-      {:websock, "~> 0.5", override: true}
+      {:telemetry_poller, "~> 1.0"}
     ]
   end
 

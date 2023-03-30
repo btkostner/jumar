@@ -286,8 +286,16 @@ jobs:
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir
 
+      - name: Compile
+        run: mix compile
+
       - name: Sobelow
-        uses: sobelow/action@v1
+        run: mix sobelow
+
+      # We run once to allow any compile warnings or things that
+      # would interfere with the JSON output
+      - name: Sobelow Sarif
+        run: mix sobelow --format sarif > results.sarif
 
       - name: Upload Report
         uses: github/codeql-action/upload-sarif@v2
