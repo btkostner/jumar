@@ -1,0 +1,21 @@
+{
+  "packages": {
+    ".": {
+      "component": "jumar",
+      "extra-files": [
+        "README.md"
+      ],
+      "release-type": "elixir"
+    },
+    "priv/cockroachdb": {
+      "component": "cockroachdb",
+      "extra-files": [
+        "fly.toml"
+      ],
+      "release-type": "simple"
+    }
+  },
+  "pull-request-header": "Automated release PR",
+  "pull-request-title-pattern": "chore: release ${component} ${version}",
+  "separate-pull-requests": true
+}

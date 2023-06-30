@@ -1,4 +1,6 @@
 defmodule JumarWeb.Router do
+  @moduledoc false
+
   use JumarWeb, :router
 
   pipeline :browser do

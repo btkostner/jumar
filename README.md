@@ -26,6 +26,10 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
 - 🟨 Database multi tenant setup
 - ✅ Prefixed primary keys similar to Stripe (`usr_abc123`)
 
+### Web Server Layer
+
+- ✅ HTTP server with [`bandit`](https://github.com/mtrudel/bandit)
+
 ### User Layer
 
 - 🟨 User authentication via `mix phx.gen.auth`
@@ -51,8 +55,18 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
 - 🟨 Code linting via `dialyzer`
 - 🟨 Code linting via `credo`
 - 🟨 Code linting via `boundary`
-- 🟨 Text linting via [`markdownlint`](https://github.com/DavidAnson/markdownlint)
-- 🟨 Text linting via [`textlint`](https://github.com/textlint/textlint)
+- ✅ Linting for other file types (almost too much linting 🤯)
+  - ✅ Linting GitHub actions via `actionlint`
+  - ✅ Linting for insensitive and inconsiderate writing via `alex`
+  - ✅ Linting CSS via `stylelint`
+  - ✅ Linting `Dockerfile`s via `hadolint`
+  - ✅ Linting Javascript via `eslint` and `standard`
+  - ✅ Linting Markdown via `markdownlint`
+  - ✅ Spell checking via `misspell`
+  - ✅ Linting shell scripts via `shellcheck`
+  - ✅ Linting shell scripts via `shfmt`
+  - ✅ Linting YAML via `yamllint`
+- ✅ Formatting Elixir via `mix format`
 - ✅ Code testing via `exunit`
 - 🟨 Browser testing via `wallaby`
 - ✅ Property testing via `stream_data`

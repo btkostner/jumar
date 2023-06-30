@@ -1,24 +1,15 @@
 ---
 
-name: Release
-
-on:
-  push:
-    branches:
-      - main
-
 jobs:
   Docs:
-    runs-on: ubuntu-latest
-
     environment:
       name: Docs
       url: https://jumar.btkostner.io
-
     permissions:
       contents: read
-      pages: write
       id-token: write
+      pages: write
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
@@ -42,16 +33,21 @@ jobs:
         uses: actions/deploy-pages@v1
 
   Please:
-    runs-on: ubuntu-latest
-
     permissions:
       contents: write
       pull-requests: write
+    runs-on: ubuntu-latest
 
     steps:
       - name: Release Please
         uses: google-github-actions/release-please-action@v3
         with:
-          release-type: elixir
-          package-name: jumar
-          extra-files: README.md
+          command: manifest
+          release-type: simple
+
+name: Release
+
+on:
+  push:
+    branches:
+      - main

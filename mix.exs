@@ -14,6 +14,7 @@ defmodule Jumar.MixProject do
       homepage_url: "https://jumar.btkostner.io",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
+      test_coverage: [summary: [threshold: 0]],
       aliases: aliases(),
       deps: deps(),
       docs: docs()
@@ -39,6 +40,10 @@ defmodule Jumar.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:bandit, ">= 0.7.3"},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
+      {:doctor, "~> 0.21.0", only: [:dev, :test]},
       {:ecto_sql, "~> 3.6"},
       {:esbuild, "~> 0.5", runtime: Mix.env() == :dev},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},
@@ -57,10 +62,11 @@ defmodule Jumar.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:remote_ip, "~> 1.1"},
       {:sobelow, "~> 0.11", only: [:dev, :test], runtime: false},
-      {:stream_data, "~> 0.1", only: [:dev, :test]},
+      {:stream_data, github: "whatyouhide/stream_data", only: [:dev, :test]},
       {:swoosh, "~> 1.3"},
+      {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
       {:tailwind_formatter, "~> 0.3.3", only: :dev, runtime: false},
-      {:tailwind, "~> 0.1.8", runtime: Mix.env() == :dev},
+      {:telemetry, "~> 1.2.1"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"}
     ]
@@ -104,6 +110,7 @@ defmodule Jumar.MixProject do
       "README.md",
       "CHANGELOG.md",
       "docs/database.md",
+      "docs/deployment.md",
       "docs/development.md",
       "docs/documentation.md"
     ]
@@ -114,7 +121,8 @@ defmodule Jumar.MixProject do
       Introduction: [
         "README.md",
         "CHANGELOG.md",
-        "docs/development.md"
+        "docs/development.md",
+        "docs/deployment.md"
       ],
       Decisions: [
         "docs/database.md",

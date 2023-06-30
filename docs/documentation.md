@@ -4,7 +4,7 @@
 
 Like most other projects, the code is only half the story. For a well maintained project, it's important to keep design and architecture decisions documented for reference later on. I generally like to include this as close to the code as possible. While things like Atlassian Confluence, or the notes app on your computer _work_, they don't _excel_ at it. They can quickly get out of date with reality, and it's a pain to learn _yet another_ tool. That's why I prefer using [ExDoc][ex_doc] or GitHub.
 
-To make [ExDoc][ex_doc] usage as easy as possible, I build the documentation as part of the CI pipeline (to ensure it builds correctly), as well as publish it to GitHub pages on merge. This makes it easily accessible to read and link to, without having to setup another hosted project. If you work at a large company with GitHub enterprise, you can even use private GitHub pages and avoid dealing with authentication.
+To make [ExDoc][ex_doc] usage as simple as possible, I build the documentation as part of the CI pipeline (to ensure it builds correctly), as well as publish it to GitHub pages on merge. This makes it easily accessible to read and link to, without having to setup another hosted project. If you work at a large company with GitHub enterprise, you can even use private GitHub pages and avoid dealing with authentication.
 
 ## Configuration
 

@@ -1,19 +1,17 @@
 ---
 
-version: "3"
-
 services:
   cockroach:
-    image: docker.io/cockroachdb/cockroach:latest
-    command: start-single-node --accept-sql-without-tls
-    environment:
-      COCKROACH_USER: jumar
-      COCKROACH_PASSWORD: jumar
+    build:
+      context: ./priv/cockroachdb
+    entrypoint: /cockroach/start-insecure-local.sh
     ports:
       - 26257:26257
       - 8080:8080
     volumes:
       - cockroach:/cockroach/cockroach-data
+
+version: "3"
 
 volumes:
   cockroach:

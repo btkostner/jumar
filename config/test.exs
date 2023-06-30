@@ -1,16 +1,19 @@
 import Config
 
+ci? = System.get_env("CI", "") != ""
+
 # Configure your database
 #
 # The MIX_TEST_PARTITION environment variable can be used
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :jumar, Jumar.Repo,
-  username: "jumar",
-  password: "jumar",
+  username: "root",
   hostname: "localhost",
   port: 26257,
   database: "jumar_test#{System.get_env("MIX_TEST_PARTITION")}",
+  stacktrace: true,
+  show_sensitive_data_on_connection_error: true,
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10
 
@@ -34,4 +37,4 @@ config :logger, level: :warning
 config :phoenix, :plug_init_mode, :runtime
 
 config :stream_data,
-  max_runs: if(System.get_env("CI"), do: 1_000, else: 50)
+  max_runs: if(ci?, do: 100_000, else: 1_000)

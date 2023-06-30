@@ -17,8 +17,15 @@ defmodule JumarWeb do
   those modules here.
   """
 
+  @doc """
+  Returns a list of folders and files in the `priv/static` directory
+  that should be served publicly.
+  """
   def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
 
+  @doc """
+  Returns a list of router helpers.
+  """
   def router do
     quote do
       use Phoenix.Router, helpers: false
@@ -30,12 +37,18 @@ defmodule JumarWeb do
     end
   end
 
+  @doc """
+  Returns `Phoenix.Channel` helpers.
+  """
   def channel do
     quote do
       use Phoenix.Channel
     end
   end
 
+  @doc """
+  Returns controller helpers.
+  """
   def controller do
     quote do
       use Phoenix.Controller,
@@ -49,6 +62,9 @@ defmodule JumarWeb do
     end
   end
 
+  @doc """
+  Returns `Phoenix.LiveView` helpers.
+  """
   def live_view do
     quote do
       use Phoenix.LiveView,
@@ -58,6 +74,9 @@ defmodule JumarWeb do
     end
   end
 
+  @doc """
+  Returns `Phoenix.LiveComponent` helpers.
+  """
   def live_component do
     quote do
       use Phoenix.LiveComponent
@@ -66,6 +85,9 @@ defmodule JumarWeb do
     end
   end
 
+  @doc """
+  Returns a list of useful helpers when creating HTML templates.
+  """
   def html do
     quote do
       use Phoenix.Component
@@ -95,6 +117,9 @@ defmodule JumarWeb do
     end
   end
 
+  @doc """
+  Adds verified route compile logic to the module.
+  """
   def verified_routes do
     quote do
       use Phoenix.VerifiedRoutes,

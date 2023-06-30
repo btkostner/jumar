@@ -1,15 +1,5 @@
 ---
 
-name: CI
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
 jobs:
   Docs:
     runs-on: ubuntu-latest
@@ -24,7 +14,12 @@ jobs:
       - name: Build Docs
         run: mix docs
 
-  Format:
+  Format_Elixir:
+    name: Format (Elixir)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-latest
 
     steps:
@@ -35,9 +30,22 @@ jobs:
         uses: ./.github/actions/setup-elixir
 
       - name: Format
-        run: mix format --check-formatted
+        run: mix format ${{ github.event_name == 'pull_request' && '' || '--check-formatted' }}
 
-  Lint:
+      - if: ${{ github.event_name == 'pull_request' }}
+        name: Suggest
+        uses: reviewdog/action-suggester@v1
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+          tool_name: mix
+
+  Lint_Actions:
+    name: Lint (Actions)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-latest
 
     steps:
@@ -45,14 +53,231 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Lint
-        uses: github/super-linter/slim@v4
+        uses: reviewdog/action-actionlint@v1
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+          reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'local' }}
 
-  Sobelow:
+  Lint_Alex:
+    name: Lint (Alex)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-latest
 
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/action-alex@v1
+        with:
+          filter_mode: ${{ github.event_name == 'pull_request' && 'added' || 'nofilter' }}
+          level: info
+          reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'local' }}
+
+  Lint_CSS:
+    name: Lint (CSS)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/action-stylelint@v1
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+          reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'local' }}
+          stylelint_config: .github/linters/.stylelintrc.json
+
+  Lint_Credo:
+    name: Lint (Credo)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Elixir
+        uses: ./.github/actions/setup-elixir
+
+      - name: Credo
+        run: mix credo
+
+  Lint_Docker:
+    name: Lint (Docker)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/action-hadolint@v1
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+          reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'local' }}
+
+  Lint_Doctor:
+    name: Lint (Doctor)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Elixir
+        uses: ./.github/actions/setup-elixir
+
+      - name: Doctor
+        run: mix doctor
+
+  Lint_Javascript:
+    name: Lint (Javascript)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Standard
+        run: npm install eslint-config-standard eslint-plugin-promise eslint-plugin-import eslint-plugin-n
+
+      - name: Lint
+        uses: reviewdog/action-eslint@v1
+        with:
+          eslint_flags: --config .github/linters/.eslintrc.json .
+          fail_on_error: true
+          filter_mode: nofilter
+          reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'local' }}
+
+  Lint_Markdown:
+    name: Lint (Markdown)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/action-markdownlint@v0
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+          markdownlint_flags: -c .github/linters/.markdown-lint.yml .
+          reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'local' }}
+
+  Lint_Misspell:
+    name: Lint (Misspell)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/action-misspell@v1
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+          locale: US
+          reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'local' }}
+
+  Lint_Shellcheck:
+    name: Lint (Shellcheck)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/action-shellcheck@v1
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+          reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'local' }}
+
+  Lint_Shfmt:
+    name: Lint (shfmt)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/action-shfmt@v1
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+
+  Lint_Yaml:
+    name: Lint (Yaml)
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint
+        uses: reviewdog/action-yamllint@v1
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+          reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'local' }}
+          yamllint_flags: -c .github/linters/.yaml-lint.yml .
+
+  Sobelow:
     permissions:
       contents: read
       security-events: write
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
@@ -61,10 +286,51 @@ jobs:
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir
 
+      - name: Compile
+        run: mix compile
+
       - name: Sobelow
-        uses: sobelow/action@v1
+        run: mix sobelow
+
+      # We run once to allow any compile warnings or things that
+      # would interfere with the JSON output
+      - name: Sobelow Sarif
+        run: mix sobelow --format sarif > results.sarif
 
       - name: Upload Report
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: results.sarif
+
+  Test:
+    env:
+      MIX_ENV: test
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Elixir
+        uses: ./.github/actions/setup-elixir
+
+      - name: Compile
+        run: mix compile --all-warnings --warnings-as-errors
+
+      - name: Start Docker Compose
+        uses: ./.github/actions/start-docker-compose
+
+      - name: Test
+        run: mix test --all-warnings --cover --warnings-as-errors
+
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
