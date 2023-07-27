@@ -10,7 +10,7 @@ defmodule Jumar.Types.TypeIdTest do
     do: StreamData.string(?a..?z, min_length: 1, max_length: 62)
 
   defp uuid_generator(),
-    do: StreamData.repeatedly(&Ecto.UUID.generate/0)
+    do: StreamData.repeatedly(&Jumar.Types.UUIDv7.generate/0)
 
   defp valid_prefix?(""), do: false
 
@@ -18,13 +18,6 @@ defmodule Jumar.Types.TypeIdTest do
     binary
     |> :binary.bin_to_list()
     |> Enum.all?(&(&1 in 97..122))
-  end
-
-  def prefixed_uuid_generator do
-    ExUnitProperties.gen all prefix <- prefix_generator(),
-                             uuid <- uuid_generator() do
-      prefix <> "_" <> uuid
-    end
   end
 
   describe "type/1" do
@@ -52,10 +45,20 @@ defmodule Jumar.Types.TypeIdTest do
     end
   end
 
-  describe "encode32/1 and decode32/1" do
+  describe "crockford_encode32/1" do
+    property "can encode UUIDs" do
+      check all uuid <- uuid_generator() do
+        {:ok, dumped_uuid} = Jumar.Types.UUIDv7.dump(uuid)
+        assert is_binary(TypeId.crockford_encode32(dumped_uuid))
+      end
+    end
+  end
+
+  describe "crockford_encode32/1 and crockford_decode32/1" do
     property "functions are inverse" do
       check all uuid <- uuid_generator() do
-        assert ^uuid = TypeId.decode32(TypeId.encode32(uuid))
+        {:ok, dumped_uuid} = Jumar.Types.UUIDv7.dump(uuid)
+        assert ^dumped_uuid = TypeId.crockford_decode32(TypeId.crockford_encode32(dumped_uuid))
       end
     end
   end

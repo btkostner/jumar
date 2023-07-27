@@ -1,5 +1,7 @@
 defmodule Jumar.Repo do
-  @moduledoc false
+  @moduledoc """
+  The main Cockroach DB `Ecto.Repo` instance for the application.
+  """
 
   use Ecto.Repo,
     otp_app: :jumar,

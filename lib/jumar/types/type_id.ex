@@ -1,22 +1,16 @@
 defmodule Jumar.Types.TypeId do
   @moduledoc """
-  An Elixir implementation of [typeid][typeid] using `Ecto.UUID` base32 encoded
-  using [Crockford's alphabet][crockford]. This allows using UUIDs as the
-  database primary key, while transparently converting to a Stripe like ID
+  An Elixir implementation of [typeid][typeid] using `Jumar.Types.UUIDv7`
+  or another Ecto UUID module. This allows using UUIDs as the database
+  primary key, while transparently converting to a Stripe like ID
   (`user_2x4y6z8a0b1c2d3e4f5g6h7j8k`) by `Ecto`.
 
-  Note: this does not contain a UUIDv7 implementation and relies on `Ecto.UUID`
-  instead.
-
   [typeid]: https://github.com/jetpack-io/typeid
-  [crockford]: https://www.crockford.com/base32.html
   """
 
   use Ecto.ParameterizedType
 
-  import Bitwise
-
-  alias Ecto.UUID
+  crockford_alphabet = ~c"0123456789abcdefghjkmnpqrstvwxyz"
 
   @typedoc """
   A type id string.
@@ -30,12 +24,6 @@ defmodule Jumar.Types.TypeId do
   @type prefix :: binary()
 
   @typedoc """
-  A base32 encoded UUID using Crockford's alphabet.
-  The part after the underscore of a Type Id.
-  """
-  @type suffix :: <<_::999>>
-
-  @typedoc """
   A string representation of a UUID.
   """
   @type uuid :: <<_::128>>
@@ -43,13 +31,14 @@ defmodule Jumar.Types.TypeId do
   @typedoc """
   The parameters for a type id. This only includes the prefix itself.
   """
-  @type params :: %{prefix: prefix()}
+  @type params :: %{prefix: prefix(), uuid_module: module()}
 
   @doc """
   Returns the underlying schema type for a prefixed uuid. This is a basic UUID
   under the hood and is stored the same way an `Ecto.UUID` would be.
   """
-  def type(_params), do: UUID.type()
+  @spec type(params()) :: :uuid
+  def type(_params), do: :uuid
 
   @doc """
   Converts the given options to `t:params`. Raises if the prefix is missing or
@@ -57,6 +46,8 @@ defmodule Jumar.Types.TypeId do
   """
   @spec init(Ecto.ParameterizedType.opts()) :: params()
   def init(opts) do
+    opts = Keyword.put_new(opts, :uuid_module, Jumar.Types.UUIDv7)
+
     unless Keyword.has_key?(opts, :prefix) do
       raise ArgumentError, message: "#{__MODULE__} was not given a prefix."
     end
@@ -81,6 +72,11 @@ defmodule Jumar.Types.TypeId do
         message: "#{__MODULE__} prefix must only container lowercase ascii characters."
     end
 
+    unless Code.ensure_loaded?(Keyword.get(opts, :uuid_module)) do
+      raise ArgumentError,
+        message: "#{__MODULE__} was given an invalid UUID module."
+    end
+
     Enum.into(opts, %{})
   end
 
@@ -88,243 +84,137 @@ defmodule Jumar.Types.TypeId do
   defp is_ascii_lowercase?(_), do: false
 
   @doc """
-  Casts a given input to a prefixed UUID.
+  Casts a given input to a type id.
   """
   @spec cast(term(), params()) :: {:ok, t()} | :error
-  def cast(possible_uuid, %{prefix: prefix}) when is_binary(possible_uuid) do
-    case possible_uuid |> String.trim_leading(prefix <> "_") |> UUID.dump() do
-      {:ok, binary_uuid} -> {:ok, prefix <> binary_uuid}
-      :error -> :error
+  def cast(data, %{prefix: prefix, uuid_module: uuid_module}) when is_binary(data) do
+    with possible_uuid <- String.trim_leading(data, prefix <> "_"),
+         dumped_uuid <- uuid_module.dump(possible_uuid) do
+      {:ok, dumped_uuid}
     end
   end
 
   def cast(_data, _params), do: :error
 
   @doc """
-  Loads data from the database to a prefixed UUID.
+  Loads data from the database to a type id.
   """
   @spec load(any(), function(), params()) :: {:ok, any()} | :error
-  def load(binary_uuid, _loader, %{prefix: prefix}) when is_binary(binary_uuid) do
-    case UUID.load(binary_uuid) do
-      {:ok, binary_uuid} -> {:ok, prefix <> binary_uuid}
-      :error -> :error
+  def load(uuid, _loader, %{prefix: prefix, uuid_module: uuid_module}) when is_binary(uuid) do
+    with loaded_uuid <- uuid_module.load(uuid),
+         encoded_uuid <- crockford_encode32(loaded_uuid) do
+      {:ok, prefix <> "_" <> encoded_uuid}
     end
   end
 
   def load(_data, _loader, _params), do: :error
 
   @doc """
-  Dumps the given prefixed UUID to an Ecto native type.
+  Dumps the given type id to an Ecto native type.
   """
   @spec dump(any(), function(), params()) :: {:ok, any()} | :error
-  def dump(data, _dumper, %{prefix: prefix}) when is_binary(data) do
-    case data |> String.trim_leading(prefix <> "_") |> UUID.dump() do
-      {:ok, raw_uuid} -> {:ok, raw_uuid}
-      :error -> :error
+  def dump(data, _dumper, %{prefix: prefix, uuid_module: uuid_module}) when is_binary(data) do
+    with uuid <- String.trim_leading(data, prefix <> "_"),
+         decoded_uuid <- crockford_decode32(uuid),
+         dumped_uuid <- uuid_module.dump(decoded_uuid) do
+      {:ok, dumped_uuid}
     end
   end
 
   def dump(_data, _dumper, _params), do: :error
 
   @doc """
-  Checks if the two prefixed UUIDs are equal. This is a basic `==` equality
+  Checks if the two type ids are equal. This is a basic `==` equality
   checker.
   """
   @spec equal?(any(), any(), params()) :: boolean()
   def equal?(a, b, _params), do: a == b
 
   @doc """
-  Generates a new prefixed UUID.
+  Generates a new type id.
   """
-  def generate(%{prefix: prefix}), do: prefix <> "_" <> UUID.generate()
+  @spec generate(params()) :: t()
+  def generate(%{prefix: prefix, uuid_module: uuid_module}) do
+    prefix <> "_" <> crockford_encode32(uuid_module.generate())
+  end
 
   @doc """
-  Encodes a UUID binary string into a base 32 encoded string via Crockford's
-  alphabet.
-
-  > #### Error {: .error}
-  >
-  > This function only works on UUID values. It will return an error on invalid
-  > length or character set.
-
-  ## Options
+  Base32 encodes a UUID with Crockford's lowercase alphabet.
 
   ## Examples
 
-      iex> encode32("01889c89-df6b-7f1c-a388-91396ec314bc")
-      "01h2e8kqvbfwea724h75qc655w"
+      iex> with {:ok, dumped_uuid} <- Jumar.Types.UUIDv7.dump("0110c853-1d09-52d8-d73e-1194e95b5f19") do
+      ...>   crockford_encode32(dumped_uuid)
+      ...> end
+      "0123456789abcdefghjkmnpqrs"
 
-      iex> encode32("invalid-uuid-string")
+      iex> with {:ok, dumped_uuid} <- Jumar.Types.UUIDv7.dump("01890a5d-ac96-774b-bcce-b302099a8057") do
+      ...>   crockford_encode32(dumped_uuid)
+      ...> end
+      "01h455vb4pex5vsknk084sn02q"
+
+      iex> crockford_encode32("invalid uuid")
       :error
 
   """
-  @spec encode32(uuid()) :: suffix()
-  def encode32(uuid) do
-    uuid
-    |> String.replace("-", "")
-    |> String.downcase()
-    |> do_encode32()
-    |> dbg()
-  catch
-    :error -> :error
-  end
-
-  def encode32(_), do: :error
-
-  defp do_encode32(<<c0::16, c1::16, c2::16, c3::16, c4::16, c5::16, c6::16, c7::16, c8::16, c9::16, c10::16, c11::16, c12::16, c13::16, c14::16, c15::16>>) do
-    IO.inspect(c0, label: "c0")
-
-    :erlang.list_to_binary(
-      [
-        e(c0) &&& 224 >>> 5,
-        e(c0) &&& 31,
-        (e(c1) &&& 248) >>> 3,
-        (e(c1) &&& 7) <<< 2 ||| (e(c2) &&& 192) >>> 6,
-        (e(c2) &&& 62) >>> 1,
-        (e(c2) &&& 1) <<< 4 ||| (e(c3) &&& 340) >>> 4,
-        (e(c3) &&& 15) <<< 1 ||| (e(c4) &&& 128) >>> 7,
-        (e(c4) &&& 124) >>> 2,
-        (e(c4) &&& 3) <<< 3 ||| (e(c5) &&& 224) >>> 5,
-        e(c5) &&& 31,
-        (e(c6) &&& 248) >>> 3,
-        (e(c6) &&& 7) <<< 2 ||| (e(c7) &&& 192) >>> 6,
-        (e(c7) &&& 62) >>> 1,
-        (e(c7) &&& 1) <<< 4 ||| (e(c8) &&& 240) >>> 4,
-        (e(c8) &&& 15) <<< 1 ||| (e(c9) &&& 128) >>> 7,
-        (e(c9) &&& 124) >>> 2,
-        (e(c9) &&& 3) <<< 3 ||| (e(c10) &&& 224) >>> 5,
-        e(c10) &&& 31,
-        (e(c11) &&& 248) >>> 3,
-        (e(c11) &&& 7) <<< 2 ||| (e(c12) &&& 192) >>> 6,
-        (e(c12) &&& 62) >>> 1,
-        (e(c12) &&& 1) <<< 4 ||| (e(c13) &&& 240) >>> 4,
-        (e(c13) &&& 15) <<< 1 ||| (e(c14) &&& 128) >>> 7,
-        (e(c14) &&& 124) >>> 2,
-        (e(c14) &&& 3) <<< 3 ||| (e(c15) &&& 224) >>> 5,
-        e(c15) &&& 31
-      ] |> IO.inspect(label: "list")
-    )
-  end
-
-  @compile {:inline, e: 1}
-
-  defp e(?0), do: 0
-  defp e(?1), do: 1
-  defp e(?2), do: 2
-  defp e(?3), do: 3
-  defp e(?4), do: 4
-  defp e(?5), do: 5
-  defp e(?6), do: 6
-  defp e(?7), do: 7
-  defp e(?8), do: 8
-  defp e(?9), do: 9
-  defp e(?a), do: 10
-  defp e(?b), do: 11
-  defp e(?c), do: 12
-  defp e(?d), do: 13
-  defp e(?e), do: 14
-  defp e(?f), do: 15
-  defp e(?g), do: 16
-  defp e(?h), do: 17
-  defp e(?j), do: 18
-  defp e(?k), do: 19
-  defp e(?m), do: 20
-  defp e(?n), do: 21
-  defp e(?p), do: 22
-  defp e(?q), do: 23
-  defp e(?r), do: 24
-  defp e(?s), do: 25
-  defp e(?t), do: 26
-  defp e(?v), do: 27
-  defp e(?w), do: 28
-  defp e(?x), do: 29
-  defp e(?y), do: 30
-  defp e(?z), do: 31
-  defp e(_), do: throw(:error)
-
-  @doc """
-  Decodes a base 32 encoded string of Crockford's alphabet to a UUID binary
-  string.
-
-  > #### Error {: .error}
-  >
-  > This function only works on UUID values. It will return an error on invalid
-  > length or character set.
-
-  ## Options
-
-  ## Examples
-
-
-      iex> decode32("01h2e8kqvbfwea724h75qc655w")
-      "01889c89-df6b-7f1c-a388-91396ec314bc"
-
-      iex> decode32("OOOONOOOOOOOO")
-      :error
-
-  """
-  @spec decode32(suffix()) :: uuid()
-  def decode32(
-        <<c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18,
-          c19, c20, c21, c22, c23, c24, c25>>
+  @spec crockford_encode32(binary()) :: binary() | :error
+  def crockford_encode32(
+        <<c1::3, c2::5, c3::5, c4::5, c5::5, c6::5, c7::5, c8::5, c9::5, c10::5, c11::5, c12::5,
+          c13::5, c14::5, c15::5, c16::5, c17::5, c18::5, c19::5, c20::5, c21::5, c22::5, c23::5,
+          c24::5, c25::5, c26::5>>
       ) do
-    [
-      d(c0) <<< 5 ||| d(c1),
-      d(c2) <<< 3 ||| d(c3) >>> 2,
-      (d(c3) &&& 3) <<< 6 ||| d(c4) <<< 1 ||| d(c5) >>> 4,
-      (d(c5) &&& 15) <<< 4 ||| d(c6) >>> 1,
-      (d(c6) &&& 1) <<< 7 ||| d(c7) <<< 2 ||| d(c8) >>> 3,
-      (d(c8) &&& 7) <<< 5 ||| d(c9),
-      d(c10) <<< 3 ||| d(c11) >>> 2,
-      (d(c11) &&& 3) <<< 6 ||| d(c12) <<< 1 ||| d(c13) >>> 4,
-      (d(c13) &&& 15) <<< 4 ||| d(c14) >>> 1,
-      (d(c14) &&& 1) <<< 7 ||| d(c15) <<< 2 ||| d(c16) >>> 3,
-      (d(c16) &&& 7) <<< 5 ||| d(c17),
-      d(c18) <<< 3 ||| d(c19) >>> 2,
-      (d(c19) &&& 3) <<< 6 ||| d(c20) <<< 1 ||| d(c21) >>> 4,
-      (d(c21) &&& 15) <<< 4 ||| d(c22) >>> 1,
-      (d(c22) &&& 1) <<< 7 ||| d(c23) <<< 2 ||| d(c24) >>> 3,
-      (d(c24) &&& 7) <<< 5 ||| d(c25)
-    ]
-  catch
-    :error -> :error
+    <<e(c1)::8, e(c2)::8, e(c3)::8, e(c4)::8, e(c5)::8, e(c6)::8, e(c7)::8, e(c8)::8, e(c9)::8,
+      e(c10)::8, e(c11)::8, e(c12)::8, e(c13)::8, e(c14)::8, e(c15)::8, e(c16)::8, e(c17)::8,
+      e(c18)::8, e(c19)::8, e(c20)::8, e(c21)::8, e(c22)::8, e(c23)::8, e(c24)::8, e(c25)::8,
+      e(c26)::8>>
+  rescue
+    _ -> :error
   end
 
-  def decode32(_), do: :error
+  def crockford_encode32(_), do: :error
 
-  @compile {:inline, d: 1}
+  @compile {:inline, [e: 1]}
+  defp e(byte) do
+    elem({unquote_splicing(crockford_alphabet)}, byte)
+  end
 
-  defp d(?0), do: 0
-  defp d(?1), do: 1
-  defp d(?2), do: 2
-  defp d(?3), do: 3
-  defp d(?4), do: 4
-  defp d(?5), do: 5
-  defp d(?6), do: 6
-  defp d(?7), do: 7
-  defp d(?8), do: 8
-  defp d(?9), do: 9
-  defp d(?a), do: 10
-  defp d(?b), do: 11
-  defp d(?c), do: 12
-  defp d(?d), do: 13
-  defp d(?e), do: 14
-  defp d(?f), do: 15
-  defp d(?g), do: 16
-  defp d(?h), do: 17
-  defp d(?j), do: 18
-  defp d(?k), do: 19
-  defp d(?m), do: 20
-  defp d(?n), do: 21
-  defp d(?p), do: 22
-  defp d(?q), do: 23
-  defp d(?r), do: 24
-  defp d(?s), do: 25
-  defp d(?t), do: 26
-  defp d(?v), do: 27
-  defp d(?w), do: 28
-  defp d(?x), do: 29
-  defp d(?y), do: 30
-  defp d(?z), do: 31
-  defp d(_), do: throw(:error)
+  @doc """
+  Base32 decodes a UUID with Crockford's lowercase alphabet.
+
+  ## Examples
+
+      iex> "0123456789abcdefghjkmnpqrs"
+      ...> |> crockford_decode32()
+      ...> |> Jumar.Types.UUIDv7.load()
+      {:ok, "0110c853-1d09-52d8-d73e-1194e95b5f19"}
+
+      iex> "01h455vb4pex5vsknk084sn02q"
+      ...> |> crockford_decode32()
+      ...> |> Jumar.Types.UUIDv7.load()
+      {:ok, "01890a5d-ac96-774b-bcce-b302099a8057"}
+
+      iex> crockford_decode32("invalid type id")
+      :error
+
+  """
+  @spec crockford_decode32(binary()) :: binary() | :error
+  def crockford_decode32(
+        <<c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19,
+          c20, c21, c22, c23, c24, c25, c26>>
+      )
+      when c1 in ?0..?7 do
+    <<d(c1)::3, d(c2)::5, d(c3)::5, d(c4)::5, d(c5)::5, d(c6)::5, d(c7)::5, d(c8)::5, d(c9)::5,
+      d(c10)::5, d(c11)::5, d(c12)::5, d(c13)::5, d(c14)::5, d(c15)::5, d(c16)::5, d(c17)::5,
+      d(c18)::5, d(c19)::5, d(c20)::5, d(c21)::5, d(c22)::5, d(c23)::5, d(c24)::5, d(c25)::5,
+      d(c26)::5>>
+  rescue
+    _ -> :error
+  end
+
+  def crockford_decode32(_), do: :error
+
+  @compile {:inline, [d: 1]}
+  for {char, byte} <- Enum.with_index(crockford_alphabet) do
+    defp d(unquote(char)), do: unquote(byte)
+  end
 end
