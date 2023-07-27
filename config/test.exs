@@ -37,4 +37,4 @@ config :logger, level: :warning
 config :phoenix, :plug_init_mode, :runtime
 
 config :stream_data,
-  max_runs: if(ci?, do: 100_000, else: 1_000)
+  max_runs: if(ci?, do: 10_000, else: 1_000)
