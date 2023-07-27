@@ -2,9 +2,9 @@ defmodule Jumar.Types.UUIDv7 do
   @moduledoc """
   An Ecto type for UUIDv7 strings. This matches the similar `Ecto.UUID` module
   with additional awesome work done by sloanelybutsurely on the
-  [typeid-elixir][te] package.
+  [typeid-elixir][typeid-elixir] package.
 
-  [ts]: https://github.com/sloanelybutsurely/typeid-elixir/
+  [typeid-elixir]: https://github.com/sloanelybutsurely/typeid-elixir/
   """
 
   use Ecto.Type

@@ -5,7 +5,11 @@ defmodule Jumar.Types.TypeId do
   primary key, while transparently converting to a Stripe like ID
   (`user_2x4y6z8a0b1c2d3e4f5g6h7j8k`) by `Ecto`.
 
+  A lot of the code here was taken from the amazing work done by
+  sloanelybutsurely on the [typeid-elixir][typeid-elixir] package.
+
   [typeid]: https://github.com/jetpack-io/typeid
+  [typeid-elixir]: https://github.com/sloanelybutsurely/typeid-elixir/
   """
 
   use Ecto.ParameterizedType
