@@ -24,6 +24,7 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
 
 - ✅ Cockroach DB usage via `ecto`
 - 🟨 Database multi tenant setup
+- ✅ Prefixed primary keys similar to Stripe (`usr_abc123`)
 
 ### Web Server Layer
 
@@ -68,7 +69,7 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
 - ✅ Formatting Elixir via `mix format`
 - ✅ Code testing via `exunit`
 - 🟨 Browser testing via `wallaby`
-- 🟨 Property testing via `stream_data`
+- ✅ Property testing via `stream_data`
 
 ### Continuous Deployment
 

@@ -62,6 +62,7 @@ defmodule Jumar.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:remote_ip, "~> 1.1"},
       {:sobelow, "~> 0.11", only: [:dev, :test], runtime: false},
+      {:stream_data, github: "whatyouhide/stream_data", only: [:dev, :test]},
       {:swoosh, "~> 1.3"},
       {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
       {:tailwind_formatter, "~> 0.3.3", only: :dev, runtime: false},

@@ -1,5 +1,7 @@
 import Config
 
+ci? = System.get_env("CI", "") != ""
+
 # Configure your database
 #
 # The MIX_TEST_PARTITION environment variable can be used
@@ -33,3 +35,6 @@ config :logger, level: :warning
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :stream_data,
+  max_runs: if(ci?, do: 10_000, else: 1_000)
