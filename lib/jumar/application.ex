@@ -8,6 +8,8 @@ defmodule Jumar.Application do
   @impl true
   def start(_type, _args) do
     children = [
+      # Start our concurrent testing application first
+      ConcurrentTesting.Application,
       # Start the Telemetry supervisor
       JumarWeb.Telemetry,
       # Start the Ecto repository

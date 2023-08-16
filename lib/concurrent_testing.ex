@@ -1,6 +1,6 @@
 defmodule ConcurrentTesting do
   @moduledoc """
-  Concurrent Testing is a seperate library that allows faster
+  Concurrent Testing is a separate library that allows faster
   and more isolated tests in a large distributed environment.
 
   ## Why
@@ -53,4 +53,123 @@ defmodule ConcurrentTesting do
   closes. This prevents cascading transaction create calls in a distributed
   system.
   """
+
+  @reference_key "elixir-test"
+  @process_key :elixir_test_reference
+
+  @typedoc """
+  A test reference. This is any valid given binary value that is
+  stored in our reference table.
+  """
+  @type t :: binary()
+
+  @typedoc """
+  A map of all the stored metadata for a reference. This usually contains
+  the current test pid, a database pool pid, Kafka consumer pid, etc.
+  """
+  @type metadata :: map()
+
+
+  @doc """
+  Retrieves the current reference for the process. This can be `nil` if
+  not ran in a test.
+  """
+  @spec current_reference() :: t() | nil
+  def current_reference() do
+    Process.get(@process_key)
+  end
+
+  @doc """
+  Looks at our internal reference metadata table and attempts to find
+  the metadata for a given reference.
+  """
+  @spec get_metadata(t()) :: metadata() | nil
+  def get_metadata(reference) do
+    ConcurrentTesting.Table.get(reference)
+  end
+
+  @doc """
+  Similar to the above function, but if the metadata table does not include
+  the given reference, it's created.
+  """
+  @spec get_or_create_metadata(t(), map()) :: metadata()
+  def get_or_create_metadata(reference, metadata \\ %{}) do
+    case get_metadata(reference) do
+      nil ->
+        ConcurrentTesting.Table.insert(reference, metadata)
+        metadata
+
+      metadata ->
+        metadata
+    end
+  end
+
+  @doc """
+  Extracts the current test reference from an enumerable. This is usually
+  ran by consumers like Kafka consumers or HTTP servers.
+
+  ## Examples
+
+      iex> extract_reference([{"elixir-test", "test-reference}])
+      "test-reference"
+
+      iex> extract_reference(%{"elixir-test" => "another-test"})
+      "another-test"
+
+      iex> extract_reference([])
+      nil
+
+  """
+  @spec extract_reference(Enum.t()) :: binary() | nil
+  def extract_reference(enumerable) do
+    Enum.find_value(enumerable, fn {key, value} ->
+      if String.downcase(key) == @reference_key do
+        value
+      end
+    end)
+  end
+
+  @doc """
+  Inserts a given test reference into an enumerable. This is usually ran
+  by producers like HTTP clients and Kafka producers to add the test
+  reference to headers. For ease of use, if `nil` is passed in as a reference
+  this function is a no-op.
+
+  ## Examples
+
+      iex> insert_reference([], "test-reference")
+      [{"elixir-test", "test-reference}]
+
+      iex> insert_reference(%{}, "another-test")
+      %{"elixir-test" => "another-test"}
+
+      iex> insert_reference(%{}, nil)
+      %{}
+
+  """
+  @spec insert_reference(enumerable, t() | nil) :: enumerable
+        when enumerable: list({binary(), binary()}) | %{required(binary()) => binary()}
+  def insert_reference(enumerable, nil), do: enumerable
+
+  def insert_reference(enumerable, reference) when is_map(enumerable),
+    do: enumerable |> Enum.to_list() |> insert_reference(reference) |> Map.new()
+
+  def insert_reference(enumerable, reference) do
+    removed_existing_references =
+      Enum.reject(enumerable, fn {key, _value} ->
+        String.downcase(key) == @reference_key
+      end)
+
+    [{@reference_key, reference} | removed_existing_references]
+  end
+
+  @doc """
+  Inserts the current test reference into an enumerable. If this function is
+  ran when no current test reference exists, it's a no-op.
+  """
+  @spec insert_reference(enumerable) :: enumerable
+        when enumerable: list({binary(), binary()}) | %{required(binary()) => binary()}
+  def insert_reference(enumerable) do
+    insert_reference(enumerable, current_reference())
+  end
 end
