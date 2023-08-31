@@ -29,6 +29,8 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
 ### Web Server Layer
 
 - ✅ HTTP server with [`bandit`](https://github.com/mtrudel/bandit)
+- 🟨 Jumar web broken into jumar admin, jumar docs, jumar ui, and jumar web.
+- 🟨 API documentation
 
 ### User Layer
 
