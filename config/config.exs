@@ -7,9 +7,12 @@
 # General application configuration
 import Config
 
-config :jumar,
-  ecto_repos: [Jumar.Repo],
-  generators: [binary_id: true]
+config :jumar, ecto_repos: [Jumar.Repo]
+
+config :jumar, :generators,
+  binary_id: true,
+  migration_timestamps: [type: :utc_datetime],
+  sample_binary_id: "00000000-0000-0000-0000-000000000000"
 
 # Configure the Database for better Cockroach support
 config :jumar, Jumar.Repo,
