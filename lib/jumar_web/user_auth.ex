@@ -1,4 +1,8 @@
 defmodule JumarWeb.UserAuth do
+  @moduledoc """
+  Authentication helpers for Jumar.
+  """
+
   use JumarWeb, :verified_routes
 
   import Plug.Conn

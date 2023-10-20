@@ -1,4 +1,8 @@
 defmodule Jumar.Accounts.UserNotifier do
+  @moduledoc """
+  Functions for delivering email notifications to users.
+  """
+
   import Swoosh.Email
 
   alias Jumar.Mailer

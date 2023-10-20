@@ -7,6 +7,16 @@ defmodule Jumar.Accounts.User do
 
   import Ecto.Changeset
 
+  @type t :: %__MODULE__{
+          id: Jumar.Types.TypeId.t(),
+          email: String.t(),
+          password: String.t(),
+          hashed_password: String.t(),
+          confirmed_at: DateTime.t(),
+          inserted_at: DateTime.t(),
+          updated_at: DateTime.t()
+        }
+
   @primary_key {:id, Jumar.Types.TypeId, autogenerate: true, prefix: "user"}
   @foreign_key_type Jumar.Types.TypeId
   @timestamps_opts [type: :utc_datetime]
@@ -15,7 +25,7 @@ defmodule Jumar.Accounts.User do
     field :email, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
-    field :confirmed_at, :naive_datetime
+    field :confirmed_at, :utc_datetime
 
     timestamps()
   end
@@ -43,6 +53,11 @@ defmodule Jumar.Accounts.User do
       submitting the form), this option can be set to `false`.
       Defaults to `true`.
   """
+  @spec registration_changeset(
+          t(),
+          map(),
+          Keyword.t()
+        ) :: Ecto.Changeset.t()
   def registration_changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, [:email, :password])
@@ -50,6 +65,10 @@ defmodule Jumar.Accounts.User do
     |> validate_password(opts)
   end
 
+  @spec validate_email(
+          Ecto.Changeset.t(),
+          Keyword.t()
+        ) :: Ecto.Changeset.t()
   defp validate_email(changeset, opts) do
     changeset
     |> validate_required([:email])
@@ -58,6 +77,10 @@ defmodule Jumar.Accounts.User do
     |> maybe_validate_unique_email(opts)
   end
 
+  @spec validate_password(
+          Ecto.Changeset.t(),
+          Keyword.t()
+        ) :: Ecto.Changeset.t()
   defp validate_password(changeset, opts) do
     changeset
     |> validate_required([:password])
@@ -69,6 +92,10 @@ defmodule Jumar.Accounts.User do
     |> maybe_hash_password(opts)
   end
 
+  @spec maybe_hash_password(
+          Ecto.Changeset.t(),
+          Keyword.t()
+        ) :: Ecto.Changeset.t()
   defp maybe_hash_password(changeset, opts) do
     hash_password? = Keyword.get(opts, :hash_password, true)
     password = get_change(changeset, :password)
@@ -84,6 +111,10 @@ defmodule Jumar.Accounts.User do
     end
   end
 
+  @spec maybe_validate_unique_email(
+          Ecto.Changeset.t(),
+          Keyword.t()
+        ) :: Ecto.Changeset.t()
   defp maybe_validate_unique_email(changeset, opts) do
     if Keyword.get(opts, :validate_email, true) do
       changeset
@@ -99,6 +130,11 @@ defmodule Jumar.Accounts.User do
 
   It requires the email to change otherwise an error is added.
   """
+  @spec email_changeset(
+          t(),
+          map(),
+          Keyword.t()
+        ) :: Ecto.Changeset.t()
   def email_changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, [:email])
@@ -121,6 +157,11 @@ defmodule Jumar.Accounts.User do
       validations on a LiveView form), this option can be set to `false`.
       Defaults to `true`.
   """
+  @spec password_changeset(
+          t(),
+          map(),
+          Keyword.t()
+        ) :: Ecto.Changeset.t()
   def password_changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, [:password])
@@ -131,8 +172,9 @@ defmodule Jumar.Accounts.User do
   @doc """
   Confirms the account by setting `confirmed_at`.
   """
+  @spec confirm_changeset(t()) :: Ecto.Changeset.t()
   def confirm_changeset(user) do
-    now = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
+    now = DateTime.utc_now() |> DateTime.truncate(:second)
     change(user, confirmed_at: now)
   end
 
@@ -142,6 +184,7 @@ defmodule Jumar.Accounts.User do
   If there is no user or the user doesn't have a password, we call
   `Argon2.no_user_verify/0` to avoid timing attacks.
   """
+  @spec valid_password?(t(), String.t()) :: boolean()
   def valid_password?(%Jumar.Accounts.User{hashed_password: hashed_password}, password)
       when is_binary(hashed_password) and byte_size(password) > 0 do
     Argon2.verify_pass(password, hashed_password)
@@ -155,6 +198,7 @@ defmodule Jumar.Accounts.User do
   @doc """
   Validates the current password otherwise adds an error to the changeset.
   """
+  @spec validate_current_password(Ecto.Changeset.t(), String.t()) :: Ecto.Changeset.t()
   def validate_current_password(changeset, password) do
     if valid_password?(changeset.data, password) do
       changeset
