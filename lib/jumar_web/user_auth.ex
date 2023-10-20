@@ -18,7 +18,7 @@ defmodule JumarWeb.UserAuth do
 
   It renews the session ID and clears the whole session
   to avoid fixation attacks. See the renew_session
-  function to customize this behaviour.
+  function to customize this behavior.
 
   It also sets a `:live_socket_id` key in the session,
   so LiveView sessions are identified and automatically
