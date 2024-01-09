@@ -41,6 +41,7 @@ defmodule Jumar.Types.TypeId do
   Returns the underlying schema type for a prefixed uuid. This is a basic UUID
   under the hood and is stored the same way an `Ecto.UUID` would be.
   """
+  @impl Ecto.ParameterizedType
   @spec type(params()) :: :uuid
   def type(_params), do: :uuid
 
@@ -48,6 +49,7 @@ defmodule Jumar.Types.TypeId do
   Converts the given options to `t:params`. Raises if the prefix is missing or
   not binary.
   """
+  @impl Ecto.ParameterizedType
   @spec init(Ecto.ParameterizedType.opts()) :: params()
   def init(opts) do
     opts = Keyword.put_new(opts, :uuid_module, Jumar.Types.UUIDv7)
@@ -76,7 +78,7 @@ defmodule Jumar.Types.TypeId do
         message: "#{__MODULE__} prefix must only container lowercase ascii characters."
     end
 
-    unless Code.ensure_loaded?(Keyword.get(opts, :uuid_module)) do
+    unless Code.ensure_compiled(Keyword.get(opts, :uuid_module)) do
       raise ArgumentError,
         message: "#{__MODULE__} was given an invalid UUID module."
     end
@@ -90,11 +92,15 @@ defmodule Jumar.Types.TypeId do
   @doc """
   Casts a given input to a type id.
   """
+  @impl Ecto.ParameterizedType
   @spec cast(term(), params()) :: {:ok, t()} | :error
-  def cast(data, %{prefix: prefix, uuid_module: uuid_module}) when is_binary(data) do
-    with possible_uuid <- String.trim_leading(data, prefix <> "_"),
-         dumped_uuid <- uuid_module.dump(possible_uuid) do
-      {:ok, dumped_uuid}
+  def cast(nil, _params), do: {:ok, nil}
+
+  def cast(data, %{prefix: prefix}) when is_binary(data) do
+    if String.starts_with?(data, prefix <> "_") do
+      {:ok, data}
+    else
+      :error
     end
   end
 
@@ -103,11 +109,14 @@ defmodule Jumar.Types.TypeId do
   @doc """
   Loads data from the database to a type id.
   """
+  @impl Ecto.ParameterizedType
   @spec load(any(), function(), params()) :: {:ok, any()} | :error
-  def load(uuid, _loader, %{prefix: prefix, uuid_module: uuid_module}) when is_binary(uuid) do
-    with loaded_uuid <- uuid_module.load(uuid),
-         encoded_uuid <- crockford_encode32(loaded_uuid) do
-      {:ok, prefix <> "_" <> encoded_uuid}
+  def load(nil, _loader, _params), do: {:ok, nil}
+
+  def load(uuid, _loader, %{prefix: prefix}) when is_binary(uuid) do
+    case crockford_encode32(uuid) do
+      :error -> :error
+      encoded_uuid -> {:ok, prefix <> "_" <> encoded_uuid}
     end
   end
 
@@ -116,12 +125,16 @@ defmodule Jumar.Types.TypeId do
   @doc """
   Dumps the given type id to an Ecto native type.
   """
+  @impl Ecto.ParameterizedType
   @spec dump(any(), function(), params()) :: {:ok, any()} | :error
-  def dump(data, _dumper, %{prefix: prefix, uuid_module: uuid_module}) when is_binary(data) do
-    with uuid <- String.trim_leading(data, prefix <> "_"),
-         decoded_uuid <- crockford_decode32(uuid),
-         dumped_uuid <- uuid_module.dump(decoded_uuid) do
-      {:ok, dumped_uuid}
+  def dump(nil, _dumper, _params), do: {:ok, nil}
+
+  def dump(data, _dumper, %{prefix: prefix}) when is_binary(data) do
+    uuid = String.trim_leading(data, prefix <> "_")
+
+    case crockford_decode32(uuid) do
+      :error -> :error
+      decoded_uuid -> {:ok, decoded_uuid}
     end
   end
 
@@ -131,6 +144,7 @@ defmodule Jumar.Types.TypeId do
   Checks if the two type ids are equal. This is a basic `==` equality
   checker.
   """
+  @impl Ecto.ParameterizedType
   @spec equal?(any(), any(), params()) :: boolean()
   def equal?(a, b, _params), do: a == b
 
@@ -139,8 +153,14 @@ defmodule Jumar.Types.TypeId do
   """
   @spec generate(params()) :: t()
   def generate(%{prefix: prefix, uuid_module: uuid_module}) do
-    prefix <> "_" <> crockford_encode32(uuid_module.generate())
+    {:ok, dumped_uuid} = uuid_module.dump(uuid_module.generate())
+    prefix <> "_" <> crockford_encode32(dumped_uuid)
   end
+
+  @doc false
+  @impl Ecto.ParameterizedType
+  @spec autogenerate(params()) :: t()
+  def autogenerate(params), do: generate(params)
 
   @doc """
   Base32 encodes a UUID with Crockford's lowercase alphabet.
