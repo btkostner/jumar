@@ -96,7 +96,6 @@ defmodule Jumar.Types.TypeId do
   @spec cast(term(), params()) :: {:ok, t()} | :error
   def cast(nil, _params), do: {:ok, nil}
 
-  # TODO: Verify encoded UUID is valid
   def cast(data, %{prefix: prefix}) when is_binary(data) do
     if String.starts_with?(data, prefix <> "_") do
       {:ok, data}

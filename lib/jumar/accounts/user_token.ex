@@ -11,6 +11,15 @@ defmodule Jumar.Accounts.UserToken do
 
   alias Jumar.Accounts.UserToken
 
+  @type t :: %__MODULE__{
+          id: Jumar.Types.TypeId.t(),
+          token: binary(),
+          context: String.t(),
+          sent_to: String.t(),
+          user: Jumar.Accounts.User.t(),
+          inserted_at: DateTime.t()
+        }
+
   @hash_algorithm :sha256
   @rand_size 32
 

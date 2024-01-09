@@ -1,9 +1,12 @@
 defmodule JumarWeb.UserSessionController do
+  @moduledoc false
+
   use JumarWeb, :controller
 
   alias Jumar.Accounts
   alias JumarWeb.UserAuth
 
+  @doc false
   def create(conn, %{"_action" => "registered"} = params) do
     create(conn, params, "Account created successfully!")
   end
@@ -34,6 +37,7 @@ defmodule JumarWeb.UserSessionController do
     end
   end
 
+  @doc false
   def delete(conn, _params) do
     conn
     |> put_flash(:info, "Logged out successfully.")
