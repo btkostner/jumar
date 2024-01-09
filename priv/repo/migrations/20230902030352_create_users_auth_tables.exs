@@ -17,7 +17,7 @@ defmodule Jumar.Repo.Migrations.CreateUsersAuthTables do
       add :user_id, references(:users, type: :binary_id, on_delete: :delete_all), null: false
       add :token, :binary, null: false
       add :context, :string, null: false
-      add :sent_to, :string
+      add :sent_to, :"STRING COLLATE en_u_ks_level2"
       timestamps(type: :utc_datetime, updated_at: false)
     end
 

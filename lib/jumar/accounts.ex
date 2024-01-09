@@ -4,6 +4,7 @@ defmodule Jumar.Accounts do
   """
 
   import Ecto.Query, warn: false
+  import Jumar.Query, only: [citext: 1]
 
   alias Jumar.Repo
 
@@ -24,7 +25,8 @@ defmodule Jumar.Accounts do
 
   """
   def get_user_by_email(email) when is_binary(email) do
-    Repo.get_by(User, email: email)
+    query = from u in User, where: citext(u.email) == ^email
+    Repo.one(query)
   end
 
   @doc """
@@ -41,7 +43,8 @@ defmodule Jumar.Accounts do
   """
   def get_user_by_email_and_password(email, password)
       when is_binary(email) and is_binary(password) do
-    user = Repo.get_by(User, email: email)
+    query = from u in User, where: citext(u.email) == ^email
+    user = Repo.one(query)
     if User.valid_password?(user, password), do: user
   end
 
