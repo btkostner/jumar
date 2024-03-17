@@ -1,5 +1,4 @@
 ---
-
 jobs:
   Docs:
     runs-on: ubuntu-latest
@@ -89,6 +88,9 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+
+      - name: Install Stylelint
+        run: npm install stylelint stylelint-config-standard
 
       - name: Lint
         uses: reviewdog/action-stylelint@v1
