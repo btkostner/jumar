@@ -1,4 +1,4 @@
-defmodule Jumar.Mailer do
+defmodule JumarNotification.Mailer do
   @moduledoc false
 
   use Swoosh.Mailer, otp_app: :jumar

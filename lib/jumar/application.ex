@@ -14,6 +14,8 @@ defmodule Jumar.Application do
       Jumar.Repo,
       # Start the Ecto reconnecting process
       Jumar.RepoReconnector,
+      # Start the Notification system
+      JumarNotification.Supervisor,
       # Start the PubSub system
       {Phoenix.PubSub, name: Jumar.PubSub},
       # Start Finch
