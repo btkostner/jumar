@@ -32,7 +32,7 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
 
 ### User Layer
 
-- 🟨 User authentication via `mix phx.gen.auth`
+- ✅ User authentication via `mix phx.gen.auth`
 - 🟨 User organizations
 - 🟨 User and organization permissions
 - 🟨 User notification preferences
@@ -52,8 +52,8 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
 
 - ✅ Code formatting via `mix format`
 - ✅ Tailwind class ordering via [`tailwind_formatter`](https://github.com/100phlecs/tailwind_formatter)
-- 🟨 Code linting via `dialyzer`
-- 🟨 Code linting via `credo`
+- ✅ Code linting via `dialyzer`
+- ✅ Code linting via `credo`
 - 🟨 Code linting via `boundary`
 - ✅ Linting for other file types (almost too much linting 🤯)
   - ✅ Linting GitHub actions via `actionlint`
