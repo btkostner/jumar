@@ -1,10 +1,13 @@
-defmodule Jumar.Release do
+defmodule Jumar.Cli do
   @moduledoc """
-  Used for executing DB release tasks when run in production without Mix
-  installed.
+  Commands for Jumar that are ran via the built Docker release.
   """
+
   @app :jumar
 
+  @doc """
+  Migrates the database the the latest version.
+  """
   def migrate do
     load_app()
 
@@ -13,8 +16,12 @@ defmodule Jumar.Release do
     end
   end
 
+  @doc """
+  Rolls back the database to a previous version.
+  """
   def rollback(repo, version) do
     load_app()
+
     {:ok, _, _} = Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :down, to: version))
   end
 

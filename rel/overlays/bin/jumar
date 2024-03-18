@@ -105,7 +105,7 @@ case $1 in
     ;;
 
   migrate)
-    app_eval "Jumar.Release.migrate"
+    app_eval "Jumar.Cli.migrate"
     ;;
 
   iex)
