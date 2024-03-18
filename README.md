@@ -22,7 +22,7 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
 
 ### Database Layer
 
-- ✅ Cockroach DB usage via `ecto`
+- ✅ [Cockroach DB](https://www.cockroachlabs.com/) usage via [`ecto`](https://hexdocs.pm/ecto/Ecto.html)
 - 🟨 Database multi tenant setup
 - ✅ Prefixed primary keys similar to Stripe (`usr_abc123`)
 
@@ -32,49 +32,48 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
 
 ### User Layer
 
-- ✅ User authentication via `mix phx.gen.auth`
-- 🟨 User organizations
+- ✅ User authentication via [`mix phx.gen.auth`](https://hexdocs.pm/phoenix/mix_phx_gen_auth.html)
+- 🟨 User organizationse
 - 🟨 User and organization permissions
 - 🟨 User notification preferences
 
 ### Event Layer
 
-- 🟨 Rabbitmq message publishing
-- 🟨 Rabbitmq message consuming with Broadway
+- 🟨 [Rabbitmq](https://www.rabbitmq.com/) message publishing
+- 🟨 [Rabbitmq](https://www.rabbitmq.com/) message consuming with [Broadway](https://elixir-broadway.org/)
 - 🟨 Unique CLI arg to start message consuming separately from web server
 
 ### Documentation Generation
 
-- ✅ Code documentation via `ex_doc`
-- ✅ Published documentation to GitHub pages
+- ✅ Code documentation via [`ex_doc`](https://hexdocs.pm/ex_doc/readme.html)
+- ✅ [Published documentation](https://jumar.btkostner.io) to [GitHub pages](https://pages.github.com/)
 
 ### Continuous Integration
 
-- ✅ Code formatting via `mix format`
-- ✅ Tailwind class ordering via [`tailwind_formatter`](https://github.com/100phlecs/tailwind_formatter)
-- ✅ Code linting via `dialyzer`
-- ✅ Code linting via `credo`
+- ✅ Code formatting via [`mix format`](https://hexdocs.pm/mix/main/Mix.Tasks.Format.html)
+- ✅ [Tailwind](https://tailwindcss.com/) class ordering via [`tailwind_formatter`](https://github.com/100phlecs/tailwind_formatter)
+- ✅ Code linting via [`dialyzer`](https://hexdocs.pm/dialyxir/readme.html)
+- ✅ Code linting via [`credo`](https://hexdocs.pm/credo/overview.html)
 - 🟨 Code linting via `boundary`
 - ✅ Linting for other file types (almost too much linting 🤯)
-  - ✅ Linting GitHub actions via `actionlint`
-  - ✅ Linting for insensitive and inconsiderate writing via `alex`
-  - ✅ Linting CSS via `stylelint`
-  - ✅ Linting `Dockerfile`s via `hadolint`
-  - ✅ Linting Javascript via `eslint` and `standard`
-  - ✅ Linting Markdown via `markdownlint`
-  - ✅ Spell checking via `misspell`
-  - ✅ Linting shell scripts via `shellcheck`
-  - ✅ Linting shell scripts via `shfmt`
-  - ✅ Linting YAML via `yamllint`
-- ✅ Formatting Elixir via `mix format`
-- ✅ Code testing via `exunit`
-- 🟨 Browser testing via `wallaby`
-- ✅ Property testing via `stream_data`
+  - ✅ Linting GitHub actions via [`actionlint`](https://github.com/rhysd/actionlint)
+  - ✅ Linting for insensitive and inconsiderate writing via [`alex`](https://github.com/get-alex/alex)
+  - ✅ Linting CSS via [`stylelint`](https://stylelint.io/)
+  - ✅ Linting `Dockerfile`s via [`hadolint`](https://github.com/hadolint/hadolint)
+  - ✅ Linting Javascript via [`eslint`](https://eslint.org/) and [`standard`](https://standardjs.com/)
+  - ✅ Linting Markdown via [`markdownlint`](https://github.com/DavidAnson/markdownlint)
+  - ✅ Spell checking via [`misspell`](https://github.com/client9/misspell)
+  - ✅ Linting shell scripts via [`shellcheck`](https://www.shellcheck.net/)
+  - ✅ Linting shell scripts via [`shfmt`](https://github.com/mvdan/sh)
+  - ✅ Linting YAML via [`yamllint`](https://github.com/adrienverge/yamllint)
+- ✅ Code testing via [`exunit`](https://hexdocs.pm/ex_unit/ExUnit.html)
+- 🟨 Browser testing via [`wallaby`](https://github.com/elixir-wallaby/wallaby)
+- ✅ Property testing via [`stream_data`](https://github.com/whatyouhide/stream_data)
 
 ### Continuous Deployment
 
 - 🟨 Continuous integration with GitHub actions
-- ✅ Releasing via `release-please`
+- ✅ Releasing via [`release-please`](https://github.com/googleapis/release-please)
 - 🟨 Container building on PRs and releases
 - 🟨 Continuous deployment with GitHub actions to [Fly.io](https://fly.io)
 
