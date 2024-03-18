@@ -2,6 +2,16 @@
 
 This guide goes over deploying Jumar to Fly.io. This will be pretty specific to Fly.io, but can be converted to other deployment platforms as well.
 
+## Jumar
+
+The application is setup with a `Dockerfile` that will build a fully functional, production ready application. This can then be used to deploy to Fly.io, Kubernetes, or any other platform that supports Docker containers.
+
+When running the container, by default it will run the web server. However, there are a few other commands you can run to operate the app.
+
+- `server` - Runs the web server. This is the default command.
+- `migrate` - Ensures the database is created and migrated to the latest version.
+- `version` - Prints out the current application version.
+
 ## Database
 
 Deploying Cockroach DB to Fly.io _can_ be done on with using the `--insecure` flag, but we want to keep with best security practice, so we will generate self signed certificates for all nodes and ensure secure connections are enforced.
