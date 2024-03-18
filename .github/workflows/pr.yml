@@ -1,5 +1,4 @@
 ---
-
 jobs:
   Lint:
     runs-on: ubuntu-latest
