@@ -42,16 +42,16 @@ rand() {
 
 release_distribution() {
   case $RELEASE_DISTRIBUTION in
-  none) ;;
+    none) ;;
 
-  name | sname)
-    echo "--$RELEASE_DISTRIBUTION $1"
-    ;;
+    name | sname)
+      echo "--$RELEASE_DISTRIBUTION $1"
+      ;;
 
-  *)
-    echo "ERROR: Expected sname, name, or none in RELEASE_DISTRIBUTION, got: $RELEASE_DISTRIBUTION" >&2
-    exit 1
-    ;;
+    *)
+      echo "ERROR: Expected sname, name, or none in RELEASE_DISTRIBUTION, got: $RELEASE_DISTRIBUTION" >&2
+      exit 1
+      ;;
   esac
 }
 
@@ -100,33 +100,33 @@ app_eval() {
 }
 
 case $1 in
-server)
-  PHX_SERVER=true app_start "elixir" --no-halt
-  ;;
+  server)
+    PHX_SERVER=true app_start "elixir" --no-halt
+    ;;
 
-migrate)
-  app_eval "Jumar.Release.migrate"
-  ;;
+  migrate)
+    app_eval "Jumar.Release.migrate"
+    ;;
 
-iex)
-  app_start "iex" --werl
-  ;;
+  iex)
+    app_start "iex" --werl
+    ;;
 
-eval)
-  if [ -z "$2" ]; then
-    echo "ERROR: EVAL expects an expression as argument" >&2
-    exit 1
-  fi
-  shift 1
-  app_eval "$@"
-  ;;
+  eval)
+    if [ -z "$2" ]; then
+      echo "ERROR: EVAL expects an expression as argument" >&2
+      exit 1
+    fi
+    shift 1
+    app_eval "$@"
+    ;;
 
-version)
-  echo "$RELEASE_NAME $RELEASE_VSN"
-  ;;
+  version)
+    echo "$RELEASE_NAME $RELEASE_VSN"
+    ;;
 
-*)
-  echo "Usage: $(basename "$0") COMMAND [ARGS]
+  *)
+    echo "Usage: $(basename "$0") COMMAND [ARGS]
 
 The known commands are:
 
@@ -137,9 +137,9 @@ The known commands are:
     version          Prints the release name and version
 " >&2
 
-  if [ -n "$1" ]; then
-    echo "ERROR: Unknown command $1" >&2
-    exit 1
-  fi
-  ;;
+    if [ -n "$1" ]; then
+      echo "ERROR: Unknown command $1" >&2
+      exit 1
+    fi
+    ;;
 esac

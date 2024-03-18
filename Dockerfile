@@ -11,9 +11,9 @@
 #   - https://pkgs.org/ - resource for finding needed packages
 #   - Ex: hexpm/elixir:1.16.2-erlang-26.2.2-debian-bullseye-20240130-slim
 #
-
 # We explicitly set the image versions but do it in an odd way that hadolint does not like.
-# hadolint global ignore=DL3006
+# We also do not explicitly set package versions because nobody got time for that.
+# hadolint global ignore=DL3006,DL3008
 
 ARG ELIXIR_VERSION=1.16.2
 ARG OTP_VERSION=26.2.2
