@@ -23,8 +23,8 @@ defmodule Jumar.Accounts.User do
 
   schema "users" do
     field :email, :string
-    field :password, :string, virtual: true, redact: true
-    field :hashed_password, :string, redact: true
+    field :password, :string, virtual: true
+    field :hashed_password, :string
     field :confirmed_at, :utc_datetime
 
     timestamps()
@@ -206,4 +206,15 @@ defmodule Jumar.Accounts.User do
       add_error(changeset, :current_password, "is not valid")
     end
   end
+end
+
+defimpl Inspect, for: Jumar.Accounts.User do
+  use Boundary, classify_to: Jumar
+
+  @impl true
+  def inspect(%{id: user_id}, _opts) when is_binary(user_id) do
+    "#Jumar.Accounts.User<" <> user_id <> ">"
+  end
+
+  def inspect(_user, _opts), do: "#Jumar.Accounts.User<>"
 end

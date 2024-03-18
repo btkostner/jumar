@@ -17,6 +17,10 @@ defmodule JumarWeb do
   those modules here.
   """
 
+  use Boundary,
+    deps: [Jumar],
+    exports: [Endpoint, Supervisor]
+
   @doc """
   Returns a list of folders and files in the `priv/static` directory
   that should be served publicly.
