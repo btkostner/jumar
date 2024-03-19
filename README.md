@@ -54,7 +54,7 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
 - ✅ [Tailwind](https://tailwindcss.com/) class ordering via [`tailwind_formatter`](https://github.com/100phlecs/tailwind_formatter)
 - ✅ Code linting via [`dialyzer`](https://hexdocs.pm/dialyxir/readme.html)
 - ✅ Code linting via [`credo`](https://hexdocs.pm/credo/overview.html)
-- 🟨 Code linting via `boundary`
+- ✅ Code linting via `boundary`
 - ✅ Linting for other file types (almost too much linting 🤯)
   - ✅ Linting GitHub actions via [`actionlint`](https://github.com/rhysd/actionlint)
   - ✅ Linting for insensitive and inconsiderate writing via [`alex`](https://github.com/get-alex/alex)
