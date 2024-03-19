@@ -1,4 +1,4 @@
 {
   ".": "0.0.0",
-  "priv/cockroachdb": "1.0.5"
+  "priv/cockroachdb": "0.0.0"
 }
