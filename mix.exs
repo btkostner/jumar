@@ -1,17 +1,19 @@
 defmodule Jumar.MixProject do
   use Mix.Project
 
+  @app :jumar
   @version "0.1.0"
 
   def project do
     [
-      app: :jumar,
+      app: @app,
       name: "Jumar",
       description: "Jumar is a heavily opinionated Elixir boilerplate repository",
       version: @version,
-      elixir: "~> 1.14",
+      elixir: "~> 1.16",
       source_url: "https://github.com/btkostner/jumar",
       homepage_url: "https://jumar.btkostner.io",
+      compilers: [:boundary] ++ Mix.compilers(),
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       test_coverage: [summary: [threshold: 0]],
@@ -41,15 +43,16 @@ defmodule Jumar.MixProject do
   defp deps do
     [
       {:argon2_elixir, "~> 4.0"},
-      {:bandit, ">= 0.7.3"},
+      {:bandit, "~> 1.3"},
+      {:boundary, "~> 0.10"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
-      {:doctor, "~> 0.21.0", only: [:dev, :test]},
+      {:doctor, "~> 0.21", only: [:dev, :test]},
       {:ecto_sql, "~> 3.6"},
       {:esbuild, "~> 0.5", runtime: Mix.env() == :dev},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},
       {:finch, "~> 0.13"},
-      {:floki, ">= 0.30.0", only: :test},
+      {:floki, "~> 0.30", only: :test},
       {:gettext, "~> 0.20"},
       {:heroicons, "~> 0.5"},
       {:jason, "~> 1.2"},
@@ -58,7 +61,7 @@ defmodule Jumar.MixProject do
       {:phoenix_live_dashboard, "~> 0.8"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_view, "~> 0.20"},
-      {:phoenix, "~> 1.7.0"},
+      {:phoenix, "~> 1.7"},
       {:plug_cowboy, "~> 2.5"},
       {:postgrex, ">= 0.0.0"},
       {:remote_ip, "~> 1.1"},
@@ -66,8 +69,8 @@ defmodule Jumar.MixProject do
       {:stream_data, "~> 0.6", only: [:dev, :test]},
       {:swoosh, "~> 1.3"},
       {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
-      {:tailwind_formatter, "~> 0.3.3", only: :dev, runtime: false},
-      {:telemetry, "~> 1.2.1"},
+      {:tailwind_formatter, "~> 0.3", only: :dev, runtime: false},
+      {:telemetry, "~> 1.2"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"}
     ]
@@ -81,6 +84,7 @@ defmodule Jumar.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
+      docs: ["boundary.ex_doc_groups", "docs"],
       setup: ["deps.get", "ecto.setup", "assets.setup", "assets.build"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
@@ -99,6 +103,7 @@ defmodule Jumar.MixProject do
       extras: extras(),
       formatters: ["html", "epub"],
       groups_for_extras: groups_for_extras(),
+      groups_for_modules: groups_for_modules(),
       logo: "docs/assets/logos/logomark.svg",
       main: "readme",
       skip_undefined_reference_warnings_on: ["CHANGELOG.md"],
@@ -117,7 +122,7 @@ defmodule Jumar.MixProject do
     ]
   end
 
-  def groups_for_extras do
+  defp groups_for_extras do
     [
       Introduction: [
         "README.md",
@@ -130,5 +135,16 @@ defmodule Jumar.MixProject do
         "docs/documentation.md"
       ]
     ]
+  end
+
+  defp groups_for_modules do
+    # We still want to compile the mix.exs file even if
+    # the boundary.exs file is missing.
+    if File.exists?("boundary.exs") do
+      {list, _} = Code.eval_file("boundary.exs")
+      list
+    else
+      []
+    end
   end
 end

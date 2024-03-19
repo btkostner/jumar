@@ -1,33 +1,28 @@
 defmodule Jumar.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
-  @moduledoc false
+  @moduledoc """
+  The Jumar application module. This starts all Jumar
+  processes including the primary database connection,
+  the PubSub system, and the Jumar web server. If you
+  are just using Jumar as a library, you can instead
+  include the `Jumar.Supervisor` module in your own
+  supervisor tree.
+  """
 
   use Application
+  use Boundary, top_level?: true, deps: [Jumar, JumarWeb]
 
   @impl true
   def start(_type, _args) do
     children = [
-      # Start the Telemetry supervisor
-      JumarWeb.Telemetry,
-      # Start the Ecto repository
-      Jumar.Repo,
-      # Start the Ecto reconnecting process
-      Jumar.RepoReconnector,
-      # Start the PubSub system
-      {Phoenix.PubSub, name: Jumar.PubSub},
-      # Start Finch
-      {Finch, name: Jumar.Finch},
-      # Start the Endpoint (http/https)
-      JumarWeb.Endpoint
-      # Start a worker by calling: Jumar.Worker.start_link(arg)
-      # {Jumar.Worker, arg}
+      Jumar.Supervisor,
+      JumarWeb.Supervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Jumar.Supervisor]
-    Supervisor.start_link(children, opts)
+    Supervisor.start_link(children, strategy: :one_for_one)
   end
 
   # Tell Phoenix to update the endpoint configuration
