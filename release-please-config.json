@@ -2,16 +2,12 @@
   "packages": {
     ".": {
       "component": "jumar",
-      "extra-files": [
-        "README.md"
-      ],
+      "extra-files": ["README.md"],
       "release-type": "elixir"
     },
     "priv/cockroachdb": {
       "component": "cockroachdb",
-      "extra-files": [
-        "fly.toml"
-      ],
+      "extra-files": ["fly.toml"],
       "release-type": "simple"
     }
   },

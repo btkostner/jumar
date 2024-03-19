@@ -1,7 +1,14 @@
 defmodule Jumar.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
-  @moduledoc false
+  @moduledoc """
+  The Jumar application module. This starts all Jumar
+  processes including the primary database connection,
+  the PubSub system, and the Jumar web server. If you
+  are just using Jumar as a library, you can instead
+  include the `Jumar.Supervisor` module in your own
+  supervisor tree.
+  """
 
   use Application
   use Boundary, top_level?: true, deps: [Jumar, JumarWeb]

@@ -1,11 +1,12 @@
 defmodule Jumar.MixProject do
   use Mix.Project
 
+  @app :jumar
   @version "0.1.0"
 
   def project do
     [
-      app: :jumar,
+      app: @app,
       name: "Jumar",
       description: "Jumar is a heavily opinionated Elixir boilerplate repository",
       version: @version,
@@ -83,6 +84,7 @@ defmodule Jumar.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
+      docs: ["boundary.ex_doc_groups", "docs"],
       setup: ["deps.get", "ecto.setup", "assets.setup", "assets.build"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
@@ -101,6 +103,7 @@ defmodule Jumar.MixProject do
       extras: extras(),
       formatters: ["html", "epub"],
       groups_for_extras: groups_for_extras(),
+      groups_for_modules: groups_for_modules(),
       logo: "docs/assets/logos/logomark.svg",
       main: "readme",
       skip_undefined_reference_warnings_on: ["CHANGELOG.md"],
@@ -119,7 +122,7 @@ defmodule Jumar.MixProject do
     ]
   end
 
-  def groups_for_extras do
+  defp groups_for_extras do
     [
       Introduction: [
         "README.md",
@@ -132,5 +135,16 @@ defmodule Jumar.MixProject do
         "docs/documentation.md"
       ]
     ]
+  end
+
+  defp groups_for_modules do
+    # We still want to compile the mix.exs file even if
+    # the boundary.exs file is missing.
+    if File.exists?("boundary.exs") do
+      {list, _} = Code.eval_file("boundary.exs")
+      list
+    else
+      []
+    end
   end
 end

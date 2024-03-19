@@ -1,5 +1,11 @@
 defmodule Jumar.Supervisor do
-  @moduledoc false
+  @moduledoc """
+  The Jumar application supervisor that starts all required
+  dependencies of the main Jumar application. This is seperate
+  from the `Jumar.Application` module to allow for easier use
+  in third party projects, without also including web server
+  processes.
+  """
 
   use Supervisor
 
