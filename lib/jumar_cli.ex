@@ -19,7 +19,7 @@ defmodule JumarCli do
       "migrate" -> JumarCli.Migrate.start(type, args)
       "rollback" -> JumarCli.Migrate.start(type, args)
       "server" -> JumarCli.Migrate.start(type, args)
-      _ -> {:ok, self()}
+      _ -> JumarCli.Application.start(type, args)
     end
   end
 
