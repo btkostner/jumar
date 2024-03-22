@@ -14,6 +14,7 @@ defmodule Jumar.MixProject do
       source_url: "https://github.com/btkostner/jumar",
       homepage_url: "https://jumar.btkostner.io",
       compilers: [:boundary] ++ Mix.compilers(),
+      releases: [{@app, release()}],
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       test_coverage: [summary: [threshold: 0]],
@@ -28,8 +29,16 @@ defmodule Jumar.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Jumar.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools],
+      mod: {JumarCli, []}
+    ]
+  end
+
+  defp release do
+    [
+      overwrite: true,
+      quiet: true,
+      strip_beams: Mix.env() == :prod
     ]
   end
 
@@ -84,14 +93,14 @@ defmodule Jumar.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
+      "assets.build": ["tailwind default", "esbuild default"],
+      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"],
+      "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
+      "ecto.reset": ["ecto.drop", "ecto.setup"],
+      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       docs: ["boundary.ex_doc_groups", "docs"],
       setup: ["deps.get", "ecto.setup", "assets.setup", "assets.build"],
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
-      "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind default", "esbuild default"],
-      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"]
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
     ]
   end
 
