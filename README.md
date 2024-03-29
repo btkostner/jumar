@@ -20,6 +20,11 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
   <p>Jumar is currently a work in progress. Not all features are complete. If you have an idea or request, please open up a <a href="https://github.com/btkostner/jumar/discussions">GitHub discussion</a>.</p>
 </blockquote>
 
+### Command Line Interface
+
+- ✅ CLI scripts written in Elixir
+- 🟨 Unique CLI command to start message consuming separately from web server
+
 ### Database Layer
 
 - ✅ [Cockroach DB](https://www.cockroachlabs.com/) usage via [`ecto`](https://hexdocs.pm/ecto/Ecto.html)
@@ -41,7 +46,6 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
 
 - 🟨 [Rabbitmq](https://www.rabbitmq.com/) message publishing
 - 🟨 [Rabbitmq](https://www.rabbitmq.com/) message consuming with [Broadway](https://elixir-broadway.org/)
-- 🟨 Unique CLI arg to start message consuming separately from web server
 
 ### Documentation Generation
 

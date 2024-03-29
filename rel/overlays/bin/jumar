@@ -55,6 +55,30 @@ release_distribution() {
   esac
 }
 
+rpc() {
+  exec "$REL_VSN_DIR/elixir" \
+    --hidden --cookie "$RELEASE_COOKIE" \
+    $(release_distribution "rpc-$(rand)-$RELEASE_NODE") \
+    --boot "$REL_VSN_DIR/$RELEASE_BOOT_SCRIPT_CLEAN" \
+    --boot-var RELEASE_LIB "$RELEASE_ROOT/lib" \
+    --vm-args "$RELEASE_REMOTE_VM_ARGS" \
+    --rpc-eval "$RELEASE_NODE" "$1"
+}
+
+start() {
+  export_release_sys_config
+  REL_EXEC="$1"
+  shift
+  exec "$REL_VSN_DIR/$REL_EXEC" \
+    --cookie "$RELEASE_COOKIE" \
+    $(release_distribution "$RELEASE_NODE") \
+    --erl "-mode $RELEASE_MODE" \
+    --erl-config "$RELEASE_SYS_CONFIG" \
+    --boot "$REL_VSN_DIR/$RELEASE_BOOT_SCRIPT" \
+    --boot-var RELEASE_LIB "$RELEASE_ROOT/lib" \
+    --vm-args "$RELEASE_VM_ARGS" "$@"
+}
+
 export_release_sys_config() {
   DEFAULT_SYS_CONFIG="${RELEASE_SYS_CONFIG:-"$REL_VSN_DIR/sys"}"
 
@@ -72,44 +96,13 @@ export_release_sys_config() {
   export RELEASE_SYS_CONFIG
 }
 
-app_start() {
-  export_release_sys_config
-  REL_EXEC="$1"
-  shift
-  exec "$REL_VSN_DIR/$REL_EXEC" \
-    --cookie "$RELEASE_COOKIE" \
-    $(release_distribution "$RELEASE_NODE") \
-    --erl "-mode $RELEASE_MODE" \
-    --erl-config "$RELEASE_SYS_CONFIG" \
-    --boot "$REL_VSN_DIR/$RELEASE_BOOT_SCRIPT" \
-    --boot-var RELEASE_LIB "$RELEASE_ROOT/lib" \
-    --vm-args "$RELEASE_VM_ARGS" "$@"
-}
-
-app_eval() {
-  export_release_sys_config
-  script="$1"
-  shift
-  exec "$REL_VSN_DIR/elixir" \
-    --cookie "$RELEASE_COOKIE" \
-    --erl-config "$RELEASE_SYS_CONFIG" \
-    --boot "$REL_VSN_DIR/$RELEASE_BOOT_SCRIPT_CLEAN" \
-    --boot-var RELEASE_LIB "$RELEASE_ROOT/lib" \
-    --vm-args "$RELEASE_VM_ARGS" \
-    --eval "$script" -- "$@"
-}
-
 case $1 in
-  server)
-    PHX_SERVER=true app_start "elixir" --no-halt
-    ;;
-
-  migrate)
-    app_eval "Jumar.Cli.migrate"
+  migrate | rollback | server)
+    JUMAR_CMD="$1" start "elixir" --no-halt
     ;;
 
   iex)
-    app_start "iex" --werl
+    start "iex" --werl
     ;;
 
   eval)
@@ -117,8 +110,41 @@ case $1 in
       echo "ERROR: EVAL expects an expression as argument" >&2
       exit 1
     fi
-    shift 1
-    app_eval "$@"
+    script="$2"
+    shift 2
+    export_release_sys_config
+    exec "$REL_VSN_DIR/elixir" \
+      --cookie "$RELEASE_COOKIE" \
+      --erl-config "$RELEASE_SYS_CONFIG" \
+      --boot "$REL_VSN_DIR/$RELEASE_BOOT_SCRIPT_CLEAN" \
+      --boot-var RELEASE_LIB "$RELEASE_ROOT/lib" \
+      --vm-args "$RELEASE_VM_ARGS" --eval "$script" -- "$@"
+    ;;
+
+  remote)
+    exec "$REL_VSN_DIR/iex" \
+      --werl --hidden --cookie "$RELEASE_COOKIE" \
+      $(release_distribution "rem-$(rand)-$RELEASE_NODE") \
+      --boot "$REL_VSN_DIR/$RELEASE_BOOT_SCRIPT_CLEAN" \
+      --boot-var RELEASE_LIB "$RELEASE_ROOT/lib" \
+      --vm-args "$RELEASE_REMOTE_VM_ARGS" \
+      --remsh "$RELEASE_NODE"
+    ;;
+
+  rpc)
+    if [ -z "$2" ]; then
+      echo "ERROR: RPC expects an expression as argument" >&2
+      exit 1
+    fi
+    rpc "$2"
+    ;;
+
+  restart | stop)
+    rpc "System.$1()"
+    ;;
+
+  pid)
+    rpc "IO.puts System.pid()"
     ;;
 
   version)
@@ -128,13 +154,22 @@ case $1 in
   *)
     echo "Usage: $(basename "$0") COMMAND [ARGS]
 
-The known commands are:
+Common commands include:
 
-    server           Starts the web server
-    migrate          Runs database migrations
-    iex              Starts an interactive Elixir shell
-    eval \"EXPR\"      Executes the given expression in a new Elixir shell
-    version          Prints the release name and version
+    iex            Starts the system with IEx attached
+    migrate        Runs the database migrations
+    rollback       Rolls back the database to a specified migration
+    server         Starts the web server
+    version        Prints the release name and version to be booted
+
+More advanced commands include:
+
+    eval \"EXPR\"    Executes the given expression on a new, non-booted system
+    pid            Prints the operating system PID of the running system via a remote command
+    remote         Connects to the running system via a remote shell
+    restart        Restarts the running system via a remote command
+    rpc \"EXPR\"     Executes the given expression remotely on the running system
+    stop           Stops the running system via a remote command
 " >&2
 
     if [ -n "$1" ]; then
