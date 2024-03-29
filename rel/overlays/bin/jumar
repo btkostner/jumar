@@ -42,16 +42,16 @@ rand() {
 
 release_distribution() {
   case $RELEASE_DISTRIBUTION in
-  none) ;;
+    none) ;;
 
-  name | sname)
-    echo "--$RELEASE_DISTRIBUTION $1"
-    ;;
+    name | sname)
+      echo "--$RELEASE_DISTRIBUTION $1"
+      ;;
 
-  *)
-    echo "ERROR: Expected sname, name, or none in RELEASE_DISTRIBUTION, got: $RELEASE_DISTRIBUTION" >&2
-    exit 1
-    ;;
+    *)
+      echo "ERROR: Expected sname, name, or none in RELEASE_DISTRIBUTION, got: $RELEASE_DISTRIBUTION" >&2
+      exit 1
+      ;;
   esac
 }
 
@@ -97,62 +97,62 @@ export_release_sys_config() {
 }
 
 case $1 in
-migrate | rollback | server)
-  JUMAR_CMD="$1" start "elixir" --no-halt
-  ;;
+  migrate | rollback | server)
+    JUMAR_CMD="$1" start "elixir" --no-halt
+    ;;
 
-iex)
-  start "iex" --werl
-  ;;
+  iex)
+    start "iex" --werl
+    ;;
 
-eval)
-  if [ -z "$2" ]; then
-    echo "ERROR: EVAL expects an expression as argument" >&2
-    exit 1
-  fi
-  script="$2"
-  shift 2
-  export_release_sys_config
-  exec "$REL_VSN_DIR/elixir" \
-    --cookie "$RELEASE_COOKIE" \
-    --erl-config "$RELEASE_SYS_CONFIG" \
-    --boot "$REL_VSN_DIR/$RELEASE_BOOT_SCRIPT_CLEAN" \
-    --boot-var RELEASE_LIB "$RELEASE_ROOT/lib" \
-    --vm-args "$RELEASE_VM_ARGS" --eval "$script" -- "$@"
-  ;;
+  eval)
+    if [ -z "$2" ]; then
+      echo "ERROR: EVAL expects an expression as argument" >&2
+      exit 1
+    fi
+    script="$2"
+    shift 2
+    export_release_sys_config
+    exec "$REL_VSN_DIR/elixir" \
+      --cookie "$RELEASE_COOKIE" \
+      --erl-config "$RELEASE_SYS_CONFIG" \
+      --boot "$REL_VSN_DIR/$RELEASE_BOOT_SCRIPT_CLEAN" \
+      --boot-var RELEASE_LIB "$RELEASE_ROOT/lib" \
+      --vm-args "$RELEASE_VM_ARGS" --eval "$script" -- "$@"
+    ;;
 
-remote)
-  exec "$REL_VSN_DIR/iex" \
-    --werl --hidden --cookie "$RELEASE_COOKIE" \
-    $(release_distribution "rem-$(rand)-$RELEASE_NODE") \
-    --boot "$REL_VSN_DIR/$RELEASE_BOOT_SCRIPT_CLEAN" \
-    --boot-var RELEASE_LIB "$RELEASE_ROOT/lib" \
-    --vm-args "$RELEASE_REMOTE_VM_ARGS" \
-    --remsh "$RELEASE_NODE"
-  ;;
+  remote)
+    exec "$REL_VSN_DIR/iex" \
+      --werl --hidden --cookie "$RELEASE_COOKIE" \
+      $(release_distribution "rem-$(rand)-$RELEASE_NODE") \
+      --boot "$REL_VSN_DIR/$RELEASE_BOOT_SCRIPT_CLEAN" \
+      --boot-var RELEASE_LIB "$RELEASE_ROOT/lib" \
+      --vm-args "$RELEASE_REMOTE_VM_ARGS" \
+      --remsh "$RELEASE_NODE"
+    ;;
 
-rpc)
-  if [ -z "$2" ]; then
-    echo "ERROR: RPC expects an expression as argument" >&2
-    exit 1
-  fi
-  rpc "$2"
-  ;;
+  rpc)
+    if [ -z "$2" ]; then
+      echo "ERROR: RPC expects an expression as argument" >&2
+      exit 1
+    fi
+    rpc "$2"
+    ;;
 
-restart | stop)
-  rpc "System.$1()"
-  ;;
+  restart | stop)
+    rpc "System.$1()"
+    ;;
 
-pid)
-  rpc "IO.puts System.pid()"
-  ;;
+  pid)
+    rpc "IO.puts System.pid()"
+    ;;
 
-version)
-  echo "$RELEASE_NAME $RELEASE_VSN"
-  ;;
+  version)
+    echo "$RELEASE_NAME $RELEASE_VSN"
+    ;;
 
-*)
-  echo "Usage: $(basename "$0") COMMAND [ARGS]
+  *)
+    echo "Usage: $(basename "$0") COMMAND [ARGS]
 
 Common commands include:
 
@@ -172,9 +172,9 @@ More advanced commands include:
     stop           Stops the running system via a remote command
 " >&2
 
-  if [ -n "$1" ]; then
-    echo "ERROR: Unknown command $1" >&2
-    exit 1
-  fi
-  ;;
+    if [ -n "$1" ]; then
+      echo "ERROR: Unknown command $1" >&2
+      exit 1
+    fi
+    ;;
 esac
