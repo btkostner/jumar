@@ -1,6 +1,12 @@
 defmodule JumarCli.Server do
   @moduledoc """
-  Starts the Phoenix web server.
+  The default Jumar application module. This starts
+  all of the sub processes like the web server,
+  database connections, event processing, etc.
+  Everything.
+
+  It's written to be the default entry point for Jumar,
+  and start up during testing.
   """
 
   use Application
