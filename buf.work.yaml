@@ -1,0 +1,5 @@
+---
+directories:
+  - priv/protobuf
+
+version: v1

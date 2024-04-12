@@ -1,0 +1,14 @@
+---
+managed:
+  enabled: true
+
+plugins:
+  - name: elixir
+    opt:
+      - gen_descriptors=true
+      - include_docs=true
+      - one_file_per_module=true
+      - package_prefix=jumar_proto
+    out: lib
+
+version: v1
