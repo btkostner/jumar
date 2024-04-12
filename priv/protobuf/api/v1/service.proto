@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package api.v1;
+
+import "google/api/annotations.proto";
+
+// A very basic hello world service.
+service HelloWorldService {
+  // Returns a hello world for the given user's name'.
+  rpc HelloWorld(HelloWorldRequest) returns (HelloWorldResponse) {
+    option (google.api.http) = {get: "/v1/hello-world/{name}"};
+  }
+}
+
+// Requests a hello world message.
+message HelloWorldRequest {
+  // The name of the user.
+  string name = 1;
+}
+
+// Responds with a hello world message.
+message HelloWorldResponse {
+  // The hello world text.
+  string message = 1;
+}

@@ -1,0 +1,16 @@
+---
+breaking:
+  ignore_unstable_packages: true
+  use:
+    - PACKAGE
+
+deps:
+  - buf.build/googleapis/googleapis
+
+lint:
+  use:
+    - DEFAULT
+    - COMMENTS
+    - PACKAGE_NO_IMPORT_CYCLE
+
+version: v1

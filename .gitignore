@@ -37,3 +37,6 @@ npm-debug.log
 
 # Boundary generated documentation about our project.
 /boundary.exs
+
+# Ignore generated protobuf files
+/lib/jumar_proto/
