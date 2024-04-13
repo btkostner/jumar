@@ -1,0 +1,25 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "additionalReviewers": ["btkostner"],
+  "branchPrefix": "renovate/",
+  "dependencyDashboard": true,
+  "extends": ["config:recommended", ":semanticCommits"],
+  "gitAuthor": "Blake Kostner <git@btkostner.io>",
+  "labels": ["dependencies"],
+  "lockFileMaintenance": {
+    "enabled": true
+  },
+  "packageRules": [
+    {
+      "extends": ["helpers:pinGitHubActionDigests"],
+      "groupName": "CI",
+      "matchCategories": ["ci"],
+      "minimumReleaseAge": "7 days"
+    }
+  ],
+  "patch": {
+    "enabled": false
+  },
+  "prHourlyLimit": 0,
+  "timezone": "America/Denver"
+}

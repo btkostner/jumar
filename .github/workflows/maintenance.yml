@@ -1,0 +1,36 @@
+---
+jobs:
+  Dependencies:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - id: appToken
+        name: Get App Token
+        uses: jnwng/github-app-installation-token-action@c54add4c02866dc41e106745ac6dcf5cdd6339e5 # v2
+        with:
+          appId: 875953
+          installationId: 49559840
+          privateKey: ${{ secrets.GH_APP_PRIVATE_KEY }}
+
+      - env:
+          LOG_LEVEL: ${{ runner.debug && 'debug' || 'info' }}
+        name: Renovate
+        uses: renovatebot/github-action@78bdcb3bffa5e95e646183ca0a2ac2895abd6a20 # v40.1.3
+        with:
+          configurationFile: .github/renovate-bot.json
+          token: ${{ steps.appToken.outputs.token }}
+
+name: Maintenance
+
+on:
+  push:
+    paths:
+      - .github/renovate-bot.json
+      - .github/renovate.json
+  schedule:
+    - cron: "23 5 * * *"
+  workflow_call:
+  workflow_dispatch:
