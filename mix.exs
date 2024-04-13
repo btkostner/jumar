@@ -70,7 +70,7 @@ defmodule Jumar.MixProject do
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:ex_doc, "~> 0.32", only: :dev, runtime: false},
       {:finch, "~> 0.18"},
-      {:floki, "~> 0.30", only: :test},
+      {:floki, "~> 0.36", only: :test},
       {:gettext, "~> 0.20"},
       {:heroicons, "~> 0.5"},
       {:jason, "~> 1.2"},
