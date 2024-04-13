@@ -5,13 +5,13 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
 
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir
 
       - name: Cache Results
-        uses: actions/cache@v3
+        uses: actions/cache@e12d46a63a90f2fae62d114769bbf2a179198b5c # v3
         with:
           key: benchmarks
           path: benchmark_results
@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
 
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir
@@ -45,7 +45,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
 
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir
@@ -55,7 +55,7 @@ jobs:
 
       - if: ${{ github.event_name == 'pull_request' }}
         name: Suggest
-        uses: reviewdog/action-suggester@v1
+        uses: reviewdog/action-suggester@3d7fde6859623ad6174df5fd662677a0eb63310a # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -71,10 +71,10 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
 
       - name: Lint
-        uses: reviewdog/action-actionlint@v1
+        uses: reviewdog/action-actionlint@c6ee1eb0a5d47b2af53a203652b5dac0b6c4016e # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -90,10 +90,10 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
 
       - name: Lint
-        uses: reviewdog/action-alex@v1
+        uses: reviewdog/action-alex@83d6502258513773127065a4d8d53c2c84697579 # v1
         with:
           filter_mode: ${{ github.event_name == 'pull_request' && 'added' || 'nofilter' }}
           level: info
@@ -109,13 +109,13 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
 
       - name: Install Stylelint
         run: npm install stylelint stylelint-config-standard
 
       - name: Lint
-        uses: reviewdog/action-stylelint@v1
+        uses: reviewdog/action-stylelint@eadef3f639793f2b361a4719ee8720bf5055a0ff # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -132,7 +132,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
 
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir
@@ -150,10 +150,10 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
 
       - name: Lint
-        uses: reviewdog/action-hadolint@v1
+        uses: reviewdog/action-hadolint@dd45293d0f93d4a24ab8ed74d460650a241616d2 # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -169,7 +169,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
 
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir
@@ -187,13 +187,13 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
 
       - name: Install Standard
         run: npm install eslint-config-standard eslint-plugin-promise eslint-plugin-import eslint-plugin-n
 
       - name: Lint
-        uses: reviewdog/action-eslint@v1
+        uses: reviewdog/action-eslint@b3c5aa2589ed06195b52faffd3afb108c02faaf5 # v1
         with:
           eslint_flags: --config .github/linters/.eslintrc.json .
           fail_on_error: true
@@ -210,10 +210,10 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
 
       - name: Lint
-        uses: reviewdog/action-markdownlint@v0
+        uses: reviewdog/action-markdownlint@7c945172feb13e44779783ebae77cdd185607a7f # v0
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -230,10 +230,10 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
 
       - name: Lint
-        uses: reviewdog/action-misspell@v1
+        uses: reviewdog/action-misspell@5bd7be2fc7ae56a517184f5c4bbcf2fd7afe3927 # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -250,10 +250,10 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
 
       - name: Lint
-        uses: reviewdog/action-shellcheck@v1
+        uses: reviewdog/action-shellcheck@72365a51bf6476fe952a117c3ff703eb7775e40a # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -269,10 +269,10 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
 
       - name: Lint
-        uses: reviewdog/action-shfmt@v1
+        uses: reviewdog/action-shfmt@f59386f08bd9a24ac1a746e69f026ddc2ed06710 # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -287,10 +287,10 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
 
       - name: Lint
-        uses: reviewdog/action-yamllint@v1
+        uses: reviewdog/action-yamllint@81750f17598452d2e2656b7281a55788abafc205 # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -305,7 +305,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
 
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir
@@ -322,7 +322,7 @@ jobs:
         run: mix sobelow --format sarif > results.sarif
 
       - name: Upload Report
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@ffd3158cb9024ebd018dbf20756f28befbd168c7 # v2
         with:
           sarif_file: results.sarif
 
@@ -334,7 +334,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
 
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir

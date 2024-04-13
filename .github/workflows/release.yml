@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
 
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir
@@ -24,12 +24,12 @@ jobs:
         run: echo "jumar.btkostner.io" > ./doc/CNAME
 
       - name: Upload Artifacts
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@84bb4cd4b733d5c320c9c9cfbc354937524f4d64 # v1
         with:
           path: ./doc
 
       - name: Deploy
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@f27bcc15848fdcdcc02f01754eb838e44bcf389b # v1
 
   Please:
     permissions:
@@ -39,7 +39,7 @@ jobs:
 
     steps:
       - name: Release Please
-        uses: google-github-actions/release-please-action@v4
+        uses: google-github-actions/release-please-action@a37ac6e4f6449ce8b3f7607e4d97d0146028dc0b # v4
         with:
           config-file: .github/release-please-config.json
           manifest-file: .github/release-please-manifest.json
