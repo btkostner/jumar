@@ -1,5 +1,27 @@
 ---
 jobs:
+  Benchmark:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Elixir
+        uses: ./.github/actions/setup-elixir
+
+      - name: Cache Results
+        uses: actions/cache@v3
+        with:
+          key: benchmarks
+          path: benchmark_results
+
+      - name: Start Docker Compose
+        uses: ./.github/actions/start-docker-compose
+
+      - name: Benchmark
+        run: mix benchmark
+
   Docs:
     runs-on: ubuntu-latest
 

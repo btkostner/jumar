@@ -18,6 +18,7 @@ defmodule Jumar.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       test_coverage: [summary: [threshold: 0]],
+      preferred_cli_env: elixir_envs(),
       aliases: aliases(),
       deps: deps(),
       docs: docs()
@@ -43,8 +44,15 @@ defmodule Jumar.MixProject do
   end
 
   # Specifies which paths to compile per environment.
-  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(:test), do: ["lib", "benchmark/support", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
+
+  # Specific default environments for non standard commands.
+  defp elixir_envs() do
+    [
+      benchmark: :test
+    ]
+  end
 
   # Specifies your project dependencies.
   #
@@ -53,6 +61,7 @@ defmodule Jumar.MixProject do
     [
       {:argon2_elixir, "~> 4.0"},
       {:bandit, "~> 1.3"},
+      {:benchee, "~> 1.3", only: [:dev, :test]},
       {:boundary, "~> 0.10"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
@@ -98,6 +107,11 @@ defmodule Jumar.MixProject do
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      benchmark: [
+        "ecto.create --quiet",
+        "ecto.migrate --quiet",
+        "run benchmark/benchmark_helper.exs"
+      ],
       docs: ["boundary.ex_doc_groups", "docs"],
       setup: ["deps.get", "ecto.setup", "assets.setup", "assets.build"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
