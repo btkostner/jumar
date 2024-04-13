@@ -3,16 +3,18 @@ jobs:
   Docs:
     environment:
       name: Docs
-      url: https://jumar.btkostner.io
+      url: ${{ steps.deployment.outputs.page_url }}
+
     permissions:
       contents: read
       id-token: write
       pages: write
+
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir
@@ -24,22 +26,24 @@ jobs:
         run: echo "jumar.btkostner.io" > ./doc/CNAME
 
       - name: Upload Artifacts
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
         with:
           path: ./doc
 
-      - name: Deploy
-        uses: actions/deploy-pages@v1
+      - id: deployment
+        name: Deploy
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
 
   Please:
     permissions:
       contents: write
       pull-requests: write
+
     runs-on: ubuntu-latest
 
     steps:
       - name: Release Please
-        uses: google-github-actions/release-please-action@v4
+        uses: google-github-actions/release-please-action@a37ac6e4f6449ce8b3f7607e4d97d0146028dc0b # v4
         with:
           config-file: .github/release-please-config.json
           manifest-file: .github/release-please-manifest.json
