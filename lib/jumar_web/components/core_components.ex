@@ -150,11 +150,7 @@ defmodule JumarWeb.CoreComponents do
       phx-mounted={@autoshow && show("##{@id}")}
       phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> hide("##{@id}")}
       role="alert"
-      class={[
-        "fixed hidden top-2 right-2 w-80 sm:w-96 z-50 rounded-lg p-3 shadow-md shadow-zinc-900/5 ring-1",
-        @kind == :info && "bg-emerald-50 text-emerald-800 ring-emerald-500 fill-cyan-900",
-        @kind == :error && "bg-rose-50 p-3 text-rose-900 shadow-md ring-rose-500 fill-rose-900"
-      ]}
+      class={["shadow-zinc-900/5 fixed top-2 right-2 z-50 hidden w-80 rounded-lg p-3 shadow-md ring-1 sm:w-96", @kind == :info && "bg-emerald-50 fill-cyan-900 text-emerald-800 ring-emerald-500", @kind == :error && "bg-rose-50 fill-rose-900 p-3 text-rose-900 shadow-md ring-rose-500"]}
       {@rest}
     >
       <p :if={@title} class="text-[0.8125rem] flex items-center gap-1.5 font-semibold leading-6">
@@ -256,11 +252,7 @@ defmodule JumarWeb.CoreComponents do
     ~H"""
     <button
       type={@type}
-      class={[
-        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 hover:bg-zinc-700 py-2 px-3",
-        "text-sm font-semibold leading-6 text-white active:text-white/80",
-        @class
-      ]}
+      class={["rounded-lg bg-zinc-900 px-3 py-2 hover:bg-zinc-700 phx-submit-loading:opacity-75", "text-sm font-semibold leading-6 text-white active:text-white/80", @class]}
       {@rest}
     >
       <%= render_slot(@inner_block) %>
@@ -361,13 +353,7 @@ defmodule JumarWeb.CoreComponents do
       <textarea
         id={@id || @name}
         name={@name}
-        class={[
-          "mt-2 block min-h-[6rem] w-full rounded-lg border-zinc-300 py-[7px] px-[11px]",
-          "text-zinc-900 focus:border-zinc-400 focus:outline-none focus:ring-4 focus:ring-zinc-800/5 sm:text-sm sm:leading-6",
-          "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400 phx-no-feedback:focus:ring-zinc-800/5",
-          "border-zinc-300 focus:border-zinc-400 focus:ring-zinc-800/5",
-          @errors != [] && "border-rose-400 focus:border-rose-400 focus:ring-rose-400/10"
-        ]}
+        class={["min-h-[6rem] py-[7px] px-[11px] mt-2 block w-full rounded-lg border-zinc-300", "text-zinc-900 focus:ring-zinc-800/5 focus:border-zinc-400 focus:outline-none focus:ring-4 sm:text-sm sm:leading-6", "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:ring-zinc-800/5 phx-no-feedback:focus:border-zinc-400", "border-zinc-300 focus:ring-zinc-800/5 focus:border-zinc-400", @errors != [] && "border-rose-400 focus:ring-rose-400/10 focus:border-rose-400"]}
         {@rest}
       ><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
       <.error :for={msg <- @errors}><%= msg %></.error>
@@ -384,13 +370,7 @@ defmodule JumarWeb.CoreComponents do
         name={@name}
         id={@id || @name}
         value={Phoenix.HTML.Form.normalize_value(@type, @value)}
-        class={[
-          "mt-2 block w-full rounded-lg border-zinc-300 py-[7px] px-[11px]",
-          "text-zinc-900 focus:outline-none focus:ring-4 sm:text-sm sm:leading-6",
-          "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400 phx-no-feedback:focus:ring-zinc-800/5",
-          "border-zinc-300 focus:border-zinc-400 focus:ring-zinc-800/5",
-          @errors != [] && "border-rose-400 focus:border-rose-400 focus:ring-rose-400/10"
-        ]}
+        class={["py-[7px] px-[11px] mt-2 block w-full rounded-lg border-zinc-300", "text-zinc-900 focus:outline-none focus:ring-4 sm:text-sm sm:leading-6", "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:ring-zinc-800/5 phx-no-feedback:focus:border-zinc-400", "border-zinc-300 focus:ring-zinc-800/5 focus:border-zinc-400", @errors != [] && "border-rose-400 focus:ring-rose-400/10 focus:border-rose-400"]}
         {@rest}
       />
       <.error :for={msg <- @errors}><%= msg %></.error>
