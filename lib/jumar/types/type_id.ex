@@ -73,7 +73,7 @@ defmodule Jumar.Types.TypeId do
     unless opts
            |> Keyword.get(:prefix)
            |> :binary.bin_to_list()
-           |> Enum.all?(&is_ascii_lowercase?/1) do
+           |> Enum.all?(&ascii_lowercase?/1) do
       raise ArgumentError,
         message: "#{__MODULE__} prefix must only container lowercase ascii characters."
     end
@@ -86,8 +86,8 @@ defmodule Jumar.Types.TypeId do
     Enum.into(opts, %{})
   end
 
-  defp is_ascii_lowercase?(char) when char in 97..122, do: true
-  defp is_ascii_lowercase?(_), do: false
+  defp ascii_lowercase?(char) when char in 97..122, do: true
+  defp ascii_lowercase?(_), do: false
 
   @doc """
   Casts a given input to a type id.
