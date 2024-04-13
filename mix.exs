@@ -83,7 +83,7 @@ defmodule Jumar.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:postgrex, ">= 0.0.0"},
       {:remote_ip, "~> 1.1"},
-      {:sobelow, "~> 0.11", only: [:dev, :test], runtime: false},
+      {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false},
       {:stream_data, "~> 0.6", only: [:dev, :test]},
       {:swoosh, "~> 1.3"},
       {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
