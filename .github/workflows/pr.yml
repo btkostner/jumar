@@ -4,12 +4,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Lint
-        uses: deepakputhraya/action-pr-title@3864bebc79c5f829d25dd42d3c6579d040b0ef16 # v1.0.2
+      - name: Check
+        uses: actions/github-script@v7
         with:
-          allowed_prefixes: "fix,feat,chore,docs,perf,test"
-          min_length: 5
-          prefix_case_sensitive: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const title = context.payload?.pull_request?.title;
+
+            if (typeof title !== 'string') {
+              core.info("Pull request data not in payload. Skipping PR title check.");
+              return;
+            }
+
+            const REGEX = /^(feat!|fix!|fix|feat|chore|(fix|feat|chore)\(\w.*\)):\s(\[\w{1,8}-\d{1,8}\]|.*).*/;
+
+            if (!REGEX.test(title)) {
+              core.setFailed("Pull request title does not follow conventional commits");
+              console.log(`
+            Pull Request title "${title}" does not follow our [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) naming scheme.
+
+            Please try renaming the PR to match one of these examples:
+
+                chore: a small insignificant change
+                fix: fix an existing feature
+                feat: a new feature to release
+                feat!: a breaking change
+
+            Note: Adding ! (i.e. \`feat!:\`) represents a breaking change and will result in a SemVer major release.
+                `.trim());
+            }
 
 name: PR
 
