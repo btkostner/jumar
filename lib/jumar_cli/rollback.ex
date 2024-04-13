@@ -7,19 +7,56 @@ defmodule JumarCli.Rollback do
 
   @impl true
   def start(_type, args) do
-    {_, [version], _} = OptionParser.parse(args, switches: [version: :string])
+    {options, rest, _} =
+      OptionParser.parse(args,
+        aliases: [
+          h: :help
+        ],
+        switches: [
+          help: :boolean
+        ]
+      )
+
+    if Keyword.get(options, :help, false) do
+      IO.puts(help_text())
+      System.halt(0)
+    end
+
+    if rest == [] do
+      IO.puts("rollback requires a version")
+      IO.puts("")
+      IO.puts(help_text())
+      System.halt(1)
+    end
 
     children = [
       Jumar.Repo
     ]
 
+    [version] = rest
+
     with {:ok, _pid} <- Supervisor.start_link(children, strategy: :one_for_one) do
       for repo <- repos() do
         {:ok, _, _} = Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :down, to: version))
       end
-    end
 
-    {:stop, :normal}
+      System.halt(0)
+    end
+  end
+
+  @doc """
+  Returns the help text for rollbacks.
+  """
+  def help_text() do
+    """
+    Usage: jumar rollback <version> [args]
+
+    Args:
+        version        The version to rollback migrations to
+
+    Options:
+        -h, --help     Prints this help text
+    """
   end
 
   @spec repos() :: [module()]
