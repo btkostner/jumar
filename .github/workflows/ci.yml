@@ -16,6 +16,9 @@ jobs:
           key: benchmarks
           path: benchmark_results
 
+      - name: Start Docker Compose
+        uses: ./.github/actions/start-docker-compose
+
       - name: Benchmark
         run: mix benchmark
 
