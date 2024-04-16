@@ -74,7 +74,7 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: Lint
-        uses: reviewdog/action-actionlint@c6ee1eb0a5d47b2af53a203652b5dac0b6c4016e # v1
+        uses: reviewdog/action-actionlint@9d8b58041eed1373f173e91b9a3db5a844197236 # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -153,7 +153,7 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: Lint
-        uses: reviewdog/action-hadolint@dd45293d0f93d4a24ab8ed74d460650a241616d2 # v1
+        uses: reviewdog/action-hadolint@1df236257be15d55dc80d2c08689f4f2a884d5d8 # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -290,7 +290,7 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: Lint
-        uses: reviewdog/action-yamllint@81750f17598452d2e2656b7281a55788abafc205 # v1
+        uses: reviewdog/action-yamllint@04e023c110e088170fb3dea6ab7bea64f04d0db0 # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -322,7 +322,7 @@ jobs:
         run: mix sobelow --format sarif > results.sarif
 
       - name: Upload Report
-        uses: github/codeql-action/upload-sarif@4355270be187e1b672a7a1c7c7bae5afdc1ab94a # v3
+        uses: github/codeql-action/upload-sarif@df5a14dc28094dc936e103b37d749c6628682b60 # v3
         with:
           sarif_file: results.sarif
 
