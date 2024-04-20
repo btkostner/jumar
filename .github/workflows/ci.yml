@@ -93,7 +93,7 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: Lint
-        uses: reviewdog/action-alex@83d6502258513773127065a4d8d53c2c84697579 # v1
+        uses: reviewdog/action-alex@0f066ba775156b3c630e560b0304ed0d7a12b796 # v1
         with:
           filter_mode: ${{ github.event_name == 'pull_request' && 'added' || 'nofilter' }}
           level: info
