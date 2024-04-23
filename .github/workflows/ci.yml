@@ -5,7 +5,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4
 
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir
@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4
 
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir
@@ -45,7 +45,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4
 
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir
@@ -71,7 +71,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4
 
       - name: Lint
         uses: reviewdog/action-actionlint@9d8b58041eed1373f173e91b9a3db5a844197236 # v1
@@ -90,7 +90,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4
 
       - name: Lint
         uses: reviewdog/action-alex@0f066ba775156b3c630e560b0304ed0d7a12b796 # v1
@@ -109,13 +109,13 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4
 
       - name: Install Stylelint
         run: npm install stylelint stylelint-config-standard
 
       - name: Lint
-        uses: reviewdog/action-stylelint@eadef3f639793f2b361a4719ee8720bf5055a0ff # v1
+        uses: reviewdog/action-stylelint@24fcb957ec2ca41649b8e060a6630feb0d8e4201 # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -132,7 +132,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4
 
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir
@@ -150,10 +150,10 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4
 
       - name: Lint
-        uses: reviewdog/action-hadolint@1df236257be15d55dc80d2c08689f4f2a884d5d8 # v1
+        uses: reviewdog/action-hadolint@0e389972426f8cf0659dd764d1263984098e6d11 # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -169,7 +169,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4
 
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir
@@ -187,13 +187,13 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4
 
       - name: Install Standard
         run: npm install eslint-config-standard eslint-plugin-promise eslint-plugin-import eslint-plugin-n
 
       - name: Lint
-        uses: reviewdog/action-eslint@b3c5aa2589ed06195b52faffd3afb108c02faaf5 # v1
+        uses: reviewdog/action-eslint@423672b7acbb75ee34d3e37aff30949ddc8350e3 # v1
         with:
           eslint_flags: --config .github/linters/.eslintrc.json .
           fail_on_error: true
@@ -210,7 +210,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4
 
       - name: Lint
         uses: reviewdog/action-markdownlint@7c945172feb13e44779783ebae77cdd185607a7f # v0
@@ -230,7 +230,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4
 
       - name: Lint
         uses: reviewdog/action-misspell@5bd7be2fc7ae56a517184f5c4bbcf2fd7afe3927 # v1
@@ -250,7 +250,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4
 
       - name: Lint
         uses: reviewdog/action-shellcheck@72365a51bf6476fe952a117c3ff703eb7775e40a # v1
@@ -269,7 +269,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4
 
       - name: Lint
         uses: reviewdog/action-shfmt@f59386f08bd9a24ac1a746e69f026ddc2ed06710 # v1
@@ -287,7 +287,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4
 
       - name: Lint
         uses: reviewdog/action-yamllint@04e023c110e088170fb3dea6ab7bea64f04d0db0 # v1
@@ -305,7 +305,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4
 
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir
@@ -322,7 +322,7 @@ jobs:
         run: mix sobelow --format sarif > results.sarif
 
       - name: Upload Report
-        uses: github/codeql-action/upload-sarif@c7f9125735019aa87cfc361530512d50ea439c71 # v3
+        uses: github/codeql-action/upload-sarif@8f596b4ae3cb3c588a5c46780b86dd53fef16c52 # v3
         with:
           sarif_file: results.sarif
 
@@ -334,7 +334,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4
 
       - name: Setup Elixir
         uses: ./.github/actions/setup-elixir
