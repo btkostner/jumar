@@ -74,7 +74,7 @@ jobs:
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
 
       - name: Lint
-        uses: reviewdog/action-actionlint@4797143fa54b2306fe78646b48cfa10395506635 # v1
+        uses: reviewdog/action-actionlint@fd627997c9688c2f39e13917aed23873c031b834 # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -115,7 +115,7 @@ jobs:
         run: npm install stylelint stylelint-config-standard
 
       - name: Lint
-        uses: reviewdog/action-stylelint@24fcb957ec2ca41649b8e060a6630feb0d8e4201 # v1
+        uses: reviewdog/action-stylelint@0bea45384d07c94df70f326b75c38e4c9ddbacb8 # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -153,7 +153,7 @@ jobs:
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
 
       - name: Lint
-        uses: reviewdog/action-hadolint@13c293e6679cd4c90fa41dd5155fb067a28c0a5f # v1
+        uses: reviewdog/action-hadolint@0cb2ac2bb3969115db5f40c88bbb1f4ce7f59c2f # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -193,7 +193,7 @@ jobs:
         run: npm install eslint-config-standard eslint-plugin-promise eslint-plugin-import eslint-plugin-n
 
       - name: Lint
-        uses: reviewdog/action-eslint@423672b7acbb75ee34d3e37aff30949ddc8350e3 # v1
+        uses: reviewdog/action-eslint@790a3d311c34b6f73294740617f9c2e9be493ae3 # v1
         with:
           eslint_flags: --config .github/linters/.eslintrc.json .
           fail_on_error: true
@@ -233,7 +233,7 @@ jobs:
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
 
       - name: Lint
-        uses: reviewdog/action-misspell@5bd7be2fc7ae56a517184f5c4bbcf2fd7afe3927 # v1
+        uses: reviewdog/action-misspell@a8d48353ad85f5e20d5a5d86549245a30c21f74f # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -322,7 +322,7 @@ jobs:
         run: mix sobelow --format sarif > results.sarif
 
       - name: Upload Report
-        uses: github/codeql-action/upload-sarif@f079b8493333aace61c81488f8bd40919487bd9f # v3
+        uses: github/codeql-action/upload-sarif@2e230e8fe0ad3a14a340ad0815ddb96d599d2aff # v3
         with:
           sarif_file: results.sarif
 
