@@ -33,7 +33,7 @@ if config_env() == :prod do
   config :jumar, Jumar.Repo,
     # ssl: true,
     url: database_url,
-    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
+    pool_size: "POOL_SIZE" |> System.get_env("10") |> String.to_integer(),
     socket_options: maybe_ipv6
 
   # The secret key base is used to sign/encrypt cookies and other secrets.
@@ -48,8 +48,8 @@ if config_env() == :prod do
       You can generate one by calling: mix phx.gen.secret
       """
 
-  host = System.get_env("PHX_HOST") || "example.com"
-  port = String.to_integer(System.get_env("PORT") || "4000")
+  host = System.get_env("PHX_HOST", "example.com")
+  port = "PORT" |> System.get_env("4000") |> String.to_integer()
 
   config :jumar, JumarWeb.Endpoint,
     http: [port: port],
