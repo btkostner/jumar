@@ -55,7 +55,7 @@ jobs:
 
       - if: ${{ github.event_name == 'pull_request' }}
         name: Suggest
-        uses: reviewdog/action-suggester@9e1cd88b79ba3c0023c94e44accd72344f032093 # v1
+        uses: reviewdog/action-suggester@42b08604516990e201b3c21902cc13c6a0ee5fe8 # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -74,7 +74,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Lint
-        uses: reviewdog/action-actionlint@52819f5f70db72e17c2fadecd44a791ae4459276 # v1
+        uses: reviewdog/action-actionlint@2927e858b45218240af952feb1d702cf6365f39a # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -93,7 +93,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Lint
-        uses: reviewdog/action-alex@4cb219482ff39ba1d25c5164231189e2bd53e32e # v1
+        uses: reviewdog/action-alex@ac7b702763c2e35a8eadf1fe81cc6c82a5c1b455 # v1
         with:
           filter_mode: ${{ github.event_name == 'pull_request' && 'added' || 'nofilter' }}
           level: info
@@ -115,7 +115,7 @@ jobs:
         run: npm install stylelint stylelint-config-standard
 
       - name: Lint
-        uses: reviewdog/action-stylelint@0bea45384d07c94df70f326b75c38e4c9ddbacb8 # v1
+        uses: reviewdog/action-stylelint@f70205190f6cbffe5d2556cc7d4270c6084e9924 # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -193,7 +193,7 @@ jobs:
         run: npm install eslint-config-standard eslint-plugin-promise eslint-plugin-import eslint-plugin-n
 
       - name: Lint
-        uses: reviewdog/action-eslint@790a3d311c34b6f73294740617f9c2e9be493ae3 # v1
+        uses: reviewdog/action-eslint@da05f8bd5c8492adb664e57f7bb62ebe50d689e4 # v1
         with:
           eslint_flags: --config .github/linters/.eslintrc.json .
           fail_on_error: true
@@ -213,7 +213,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Lint
-        uses: reviewdog/action-markdownlint@8a1ef8f946e74c4d7119ec2489069a870b2a4e8f # v0
+        uses: reviewdog/action-markdownlint@2e07361ccbd82ffffcee50db2d35d1253fa2b6f8 # v0
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -233,7 +233,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Lint
-        uses: reviewdog/action-misspell@8cd4a880dd86b1b175092c18c23cdec31283d654 # v1
+        uses: reviewdog/action-misspell@e4602ab781cd1c61e23a0c91316ab9e9a561da94 # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -253,7 +253,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Lint
-        uses: reviewdog/action-shellcheck@6e3a862f231c6895fbd335b70adef8f9243d5762 # v1
+        uses: reviewdog/action-shellcheck@3546242c869924d13293e38e6289e00a26468e02 # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
