@@ -57,7 +57,7 @@ runs:
   steps:
     - id: beam
       name: Install Elixir
-      uses: erlef/setup-beam@0a541161e47ec43ccbd9510053c5f336ca76c2a2 # v1
+      uses: erlef/setup-beam@a6e26b22319003294c58386b6f25edbc7336819a # v1
       with:
         elixir-version: ${{ inputs.elixir-version }}
         otp-version: ${{ inputs.otp-version }}
