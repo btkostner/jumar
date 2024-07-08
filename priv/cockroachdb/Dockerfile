@@ -1,4 +1,4 @@
-FROM cockroachdb/cockroach:v23.2.4
+FROM cockroachdb/cockroach:v24.1.0
 
 COPY start-insecure-local.sh start-secure.sh /cockroach/
 
