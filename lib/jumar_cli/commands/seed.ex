@@ -3,30 +3,28 @@ defmodule JumarCli.Seed do
   Adds dummy data to the database. This can be used for
   testing other services, or even just setting up a demo
   environment to play with.
-  """
 
-  use Application
+  Options:
+
+      -f, --force    Forces seeding the database by truncating tables first
+  """
+  @shortdoc "Seeds the database with fake data"
+
+  use JumarCli.Command
 
   require Logger
 
-  @impl true
-  def start(_type, args) do
+  @impl JumarCli.Command
+  def run(command_line_args) do
     {options, _, _} =
-      OptionParser.parse(args,
+      OptionParser.parse(command_line_args,
         aliases: [
-          h: :help,
           f: :force
         ],
         switches: [
-          help: :boolean,
           force: :boolean
         ]
       )
-
-    if Keyword.get(options, :help, false) do
-      IO.puts(help_text())
-      System.halt(0)
-    end
 
     children = [
       Jumar.Repo
@@ -75,19 +73,6 @@ defmodule JumarCli.Seed do
 
       System.halt(0)
     end
-  end
-
-  @doc """
-  Returns the help text for migrations.
-  """
-  def help_text() do
-    """
-    Usage: jumar seed [args]
-
-    Options:
-        -h, --help     Prints this help text
-        -f, --force    Forces seeding the database by resetting it first
-    """
   end
 
   @spec tables_in(module) :: [{String.t(), String.t()}]

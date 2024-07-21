@@ -37,6 +37,8 @@ defmodule Jumar.MixProject do
 
   defp release do
     [
+      applications: [runtime_tools: :permanent],
+      include_executables_for: [:unix],
       overwrite: true,
       quiet: true,
       strip_beams: Mix.env() == :prod
