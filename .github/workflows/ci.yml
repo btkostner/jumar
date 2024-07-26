@@ -55,7 +55,7 @@ jobs:
 
       - if: ${{ github.event_name == 'pull_request' }}
         name: Suggest
-        uses: reviewdog/action-suggester@951f8ea45137fd52d269d75bddc3a813b78487aa # v1
+        uses: reviewdog/action-suggester@63b8f8cc21dfa052ac44436e65ed31edcffcb6c1 # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -74,7 +74,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Lint
-        uses: reviewdog/action-actionlint@d99f1ceaf59e7db022a790dc308ccccb68dda71a # v1
+        uses: reviewdog/action-actionlint@4f8f9963ca57a41e5fd5b538dd79dbfbd3e0b38a # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -93,7 +93,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Lint
-        uses: reviewdog/action-alex@95457e9fb31e708d898774ca8e25be56d0766e84 # v1
+        uses: reviewdog/action-alex@f95df9e356d97e67e4626f04ad125c4a99a906a9 # v1
         with:
           filter_mode: ${{ github.event_name == 'pull_request' && 'added' || 'nofilter' }}
           level: info
@@ -115,7 +115,7 @@ jobs:
         run: npm install stylelint stylelint-config-standard
 
       - name: Lint
-        uses: reviewdog/action-stylelint@31c9258e67acde86086d6bf56e1d46e124eaa3c3 # v1
+        uses: reviewdog/action-stylelint@9e1a9917f7d97c360463cd5d922385f84b9cc3a0 # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -153,7 +153,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Lint
-        uses: reviewdog/action-hadolint@15df5a025251f3b06814d53ba1e782f5a42b2874 # v1
+        uses: reviewdog/action-hadolint@2d90b15b2b969e507fc2a31af6e29ca19a0f9516 # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -193,7 +193,7 @@ jobs:
         run: npm install eslint-config-standard eslint-plugin-promise eslint-plugin-import eslint-plugin-n
 
       - name: Lint
-        uses: reviewdog/action-eslint@7b82dea8533d382fa3c6ef95bcb1f1004f6b0a95 # v1
+        uses: reviewdog/action-eslint@beb7a743eeb10db90a8529b5bc4031be52e90868 # v1
         with:
           eslint_flags: --config .github/linters/.eslintrc.json .
           fail_on_error: true
@@ -213,7 +213,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Lint
-        uses: reviewdog/action-markdownlint@af20b94e5c376c5b964555d9c21c2d9df8b89975 # v0
+        uses: reviewdog/action-markdownlint@e9f3ab4fea1433280a4b0eddca17be1340dfea94 # v0
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -233,7 +233,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Lint
-        uses: reviewdog/action-misspell@278e1b3c7dd09d2827fa080919a40db73ccafe24 # v1
+        uses: reviewdog/action-misspell@ef8b22c1cca06c8d306fc6be302c3dab0f6ca12f # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -253,7 +253,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Lint
-        uses: reviewdog/action-shellcheck@628ce8561be20bfbfb6173cf88c7475ddab95f22 # v1
+        uses: reviewdog/action-shellcheck@d99499e855260c9c56f7a1d066933b57326e9e7c # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -290,7 +290,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Lint
-        uses: reviewdog/action-yamllint@c23c5d4cd45b5cc16fa3e6e34073068b228cabeb # v1
+        uses: reviewdog/action-yamllint@4e4ba96d03a0e12a0e71c29e5fef1db309d09201 # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -322,7 +322,7 @@ jobs:
         run: mix sobelow --format sarif > results.sarif
 
       - name: Upload Report
-        uses: github/codeql-action/upload-sarif@b611370bb5703a7efb587f9d136a52ea24c5c38c # v3
+        uses: github/codeql-action/upload-sarif@5cf07d8b700b67e235fbb65cbc84f69c0cf10464 # v3
         with:
           sarif_file: results.sarif
 
