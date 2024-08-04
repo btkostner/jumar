@@ -1,6 +1,8 @@
 defmodule JumarCli.Rollback do
   @moduledoc """
-  Usage: jumar rollback <version>
+  Usage: jumar rollback [version]
+
+  Rolls back the Jumar database schema to the specified version.
 
   Args:
 
@@ -18,7 +20,7 @@ defmodule JumarCli.Rollback do
       Jumar.Repo
     ]
 
-    {:ok, _pid} = Supervisor.start_link(children, strategy: :one_for_one)
+    Supervisor.start_link(children, strategy: :one_for_one)
 
     for repo <- repos() do
       {:ok, _, _} = Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :down, to: version))

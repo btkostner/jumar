@@ -60,6 +60,7 @@ defmodule JumarCli do
   def run(args) when is_binary(args) do
     args
     |> String.split(" ")
+    |> Enum.filter(&(&1 != ""))
     |> run()
   end
 
@@ -68,8 +69,8 @@ defmodule JumarCli do
   # specify this module as the Elixir application in `mix.exs`,
   # and have tests and other Elixir code start the application
   # as expected.
-  def run([""]) do
-    JumarCli.Application.run("")
+  def run([]) do
+    JumarCli.Application.run([])
   end
 
   # If any arguments are passed in, we then use the OptionParser
@@ -80,10 +81,12 @@ defmodule JumarCli do
 
     subcommand = Enum.at(rest, 0, "")
     args = Enum.drop(rest, 1)
+    options = Enum.into(options, %{})
 
-    command_mod = Enum.find(@commands, __MODULE__, fn c ->
-      Command.command_name(c) == subcommand
-    end)
+    command_mod =
+      Enum.find(@commands, __MODULE__, fn c ->
+        Command.command_name(c) == subcommand
+      end)
 
     case run(command_mod, args, options) do
       :ok ->
@@ -146,10 +149,9 @@ defmodule JumarCli do
       |> Enum.map(fn c -> {Command.command_name(c), Command.shortdoc(c)} end)
       |> Enum.concat(@elixir_commands)
       |> Enum.sort_by(&elem(&1, 0))
-      |> Enum.map(fn {name, doc} ->
+      |> Enum.map_join("\n    ", fn {name, doc} ->
         String.pad_trailing(name, 15) <> doc
       end)
-      |> Enum.join("\n    ")
 
     """
     Usage: jumar [options] command [args]

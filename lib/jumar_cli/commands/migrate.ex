@@ -1,5 +1,7 @@
 defmodule JumarCli.Migrate do
   @moduledoc """
+  Usage: jumar migrate
+
   Migrates the Jumar database to the latest version.
   """
   @shortdoc "Migrates the Jumar database"
@@ -14,7 +16,7 @@ defmodule JumarCli.Migrate do
       Jumar.Repo
     ]
 
-    {:ok, _pid} = Supervisor.start_link(children, strategy: :one_for_one)
+    Supervisor.start_link(children, strategy: :one_for_one)
 
     for repo <- repos() do
       # First we ensure the repo is created and accessible.

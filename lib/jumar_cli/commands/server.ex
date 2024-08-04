@@ -1,5 +1,7 @@
 defmodule JumarCli.Server do
   @moduledoc """
+  Usage: jumar server
+
   Starts the Jumar web server.
   """
   @shortdoc "Starts the Jumar web server"

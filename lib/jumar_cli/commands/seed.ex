@@ -1,5 +1,7 @@
 defmodule JumarCli.Seed do
   @moduledoc """
+  Usage: jumar seed [options]
+
   Adds dummy data to the database. This can be used for
   testing other services, or even just setting up a demo
   environment to play with.
@@ -7,6 +9,7 @@ defmodule JumarCli.Seed do
   Options:
 
       -f, --force    Forces seeding the database by truncating tables first
+      -v, --version  Prints the Jumar version
   """
   @shortdoc "Seeds the database with fake data"
 
@@ -26,7 +29,7 @@ defmodule JumarCli.Seed do
         ]
       )
 
-    {:ok, _pid} = Supervisor.start_link(repos(), strategy: :one_for_one)
+    Supervisor.start_link(repos(), strategy: :one_for_one)
 
     for repo <- repos() do
       # We want to check if the database has any data in it yet.

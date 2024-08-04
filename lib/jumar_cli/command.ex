@@ -19,7 +19,7 @@ defmodule JumarCli.Command do
   Commands can return different values depending on
   what the command does. They can return:
 
-  - `{:ok, nil}` which will exit the CLI with a status
+  - `:ok` which will exit the CLI with a status
     code of 0.
 
   - `{:ok, pid()}` which monitor the pid as the main
@@ -54,8 +54,6 @@ defmodule JumarCli.Command do
 
   @doc """
   Gets the moduledoc for the given command `module`.
-
-  Returns the moduledoc or `nil`.
   """
   @spec moduledoc(mod) :: String.t()
   def moduledoc(module) when is_atom(module) do
@@ -72,8 +70,6 @@ defmodule JumarCli.Command do
 
   @doc """
   Gets the shortdoc for the given command `module`.
-
-  Returns the shortdoc or `nil`.
   """
   @spec shortdoc(mod) :: String.t()
   def shortdoc(module) when is_atom(module) do

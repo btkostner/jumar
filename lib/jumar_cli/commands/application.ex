@@ -1,9 +1,11 @@
 defmodule JumarCli.Application do
   @moduledoc """
+  Usage: jumar
+
   Starts the everything in Jumar. This includes the
   database, web server, background processing, and more.
   """
-  @shortdoc "Starts the everything in Jumar"
+  @shortdoc "Starts everything in Jumar"
 
   use JumarCli.Command
 
