@@ -41,75 +41,97 @@ defmodule JumarCli do
     # The easiest way to pass in command line args into an
     # application on the Beam VM is with environment variables.
     # This is set in `rel/overlays/bin/jumar`.
-    args = "JUMAR_CMD" |> System.get_env("") |> String.split(" ")
+    "JUMAR_CMD"
+    |> System.get_env("")
+    |> run()
+  end
 
-    # We use the OptionParser to make a more "native" feeling
-    # CLI that can parse flags and values.
+  @doc """
+  Runs a Jumar CLI command.
+
+  ## Examples
+
+      iex> JumarCli.run("migrate")
+      :ok
+
+  """
+  @spec run(String.t() | Command.args()) :: Command.return_value()
+  def run(args) when is_binary(args) do
+    args
+    |> String.split(" ")
+    |> run()
+  end
+
+  # If nothing is specified, we run the application
+  # command which includes _everything_. This allows us to
+  # specify this module as the Elixir application in `mix.exs`,
+  # and have tests and other Elixir code start the application
+  # as expected.
+  def run([""]) do
+    JumarCli.Application.run("")
+  end
+
+  # If any arguments are passed in, we then use the OptionParser
+  # to make a more "native" feeling CLI that can parse flags and
+  # run subcommands.
+  def run(args) do
     {options, rest, _} = OptionParser.parse(args, @options)
 
-    # We split up the command text for easier pattern matching
-    # and passing in the remainder to sub commands.
-    command = Enum.at(rest, 0, "")
+    subcommand = Enum.at(rest, 0, "")
     args = Enum.drop(rest, 1)
 
-    case {command, Enum.into(options, %{})} do
-      # Root level args to mirror how most CLI applications work.
-      {subcommand, %{help: true}} ->
-        found_command =
-          Enum.find(@commands, fn command ->
-            Command.command_name(command) == subcommand
-          end)
+    command_mod = Enum.find(@commands, __MODULE__, fn c ->
+      Command.command_name(c) == subcommand
+    end)
 
-        if is_nil(found_command) do
-          IO.puts(Command.moduledoc(__MODULE__))
-          System.halt(0)
-        else
-          IO.puts(Command.moduledoc(found_command))
-          System.halt(0)
-        end
+    case run(command_mod, args, options) do
+      :ok ->
+        :ok
 
-      {_, %{version: true}} ->
-        IO.puts("Jumar #{Application.spec(:jumar, :vsn)}")
-        System.halt(0)
+      {:ok, pid} ->
+        {:ok, pid}
 
-      # If nothing is given as a subcommand, we run the application
-      # command which includes _everything_. This allows us to
-      # specify this module as the Elixir application in `mix.exs`,
-      # and have tests and other Elixir code start the application
-      # as expected.
-      {"", _} ->
-        JumarCli.Application.run("")
+      {:error, :help_text} ->
+        help_text = Command.moduledoc(command_mod)
+        IO.puts(help_text)
+        :stop
 
-      # For everything else, we help and exit.
-      {subcommand, _} ->
-        found_command =
-          Enum.find(@commands, fn command ->
-            Command.command_name(command) == subcommand
-          end)
-
-        if is_nil(found_command) do
-          IO.puts("Unknown command: #{subcommand}")
-          IO.puts("")
-          IO.puts(Command.moduledoc(__MODULE__))
-          System.halt(1)
-        end
-
-        case found_command.run(args) do
-          {:ok, nil} ->
-            System.halt(0)
-
-          {:ok, pid} ->
-            {:ok, pid}
-
-          {:error, :help_text} ->
-            IO.puts(Command.moduledoc(command))
-            System.halt(1)
-
-          {:error, message} ->
-            IO.puts("Error: #{message}")
-            System.halt(1)
-        end
+      {:error, message} ->
+        IO.puts("Error: #{message}")
+        :stop
     end
+  end
+
+  @spec run(Command.mod() | nil, Command.args(), map()) :: Command.return_value()
+  defp run(command_mod, args, opts)
+
+  # The most basic run command involves using `--version` or `-v`
+  # which will _always_ print out the current application version.
+  defp run(_command_mod, _args, %{version: true}) do
+    IO.puts("Jumar #{Application.spec(:jumar, :vsn)}")
+  end
+
+  # The second most basic run command is `--help` or `-h` which
+  # will print out the help text for the given command if invoked
+  # with a subcommand like `seed --help`, or the main help text
+  # if ran without a subcommand.
+  defp run(command_mod, _args, %{help: true}) do
+    command_mod
+    |> Command.moduledoc()
+    |> IO.puts()
+  end
+
+  # And finally, the actual command running. If the command is matched
+  # to a known subcommand, run it.  Otherwise we print out an error
+  # and help text.
+  defp run(__MODULE__, _args, _opts) do
+    IO.puts("Unknown command.")
+    IO.puts("")
+    {:error, :help_text}
+  end
+
+  defp run(command_mod, args, _opts) do
+    command_mod.run(args)
   end
 
   @doc """

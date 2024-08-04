@@ -18,13 +18,13 @@ defmodule JumarCli.Rollback do
       Jumar.Repo
     ]
 
-    with {:ok, _pid} <- Supervisor.start_link(children, strategy: :one_for_one) do
-      for repo <- repos() do
-        {:ok, _, _} = Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :down, to: version))
-      end
+    {:ok, _pid} = Supervisor.start_link(children, strategy: :one_for_one)
 
-      System.halt(0)
+    for repo <- repos() do
+      {:ok, _, _} = Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :down, to: version))
     end
+
+    :ok
   end
 
   def run(_) do

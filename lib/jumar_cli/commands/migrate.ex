@@ -14,22 +14,22 @@ defmodule JumarCli.Migrate do
       Jumar.Repo
     ]
 
-    with {:ok, _pid} <- Supervisor.start_link(children, strategy: :one_for_one) do
-      for repo <- repos() do
-        # First we ensure the repo is created and accessable.
-        {:ok, _, _} = Ecto.Migrator.with_repo(repo, &storage_up(&1))
+    {:ok, _pid} = Supervisor.start_link(children, strategy: :one_for_one)
 
-        # Then we have a short wait for the DB to catch up. This
-        # prevents an issue we've seen in production with standup and
-        # migrations happening too quickly.
-        Process.sleep(1_000)
+    for repo <- repos() do
+      # First we ensure the repo is created and accessible.
+      {:ok, _, _} = Ecto.Migrator.with_repo(repo, &storage_up(&1))
 
-        # Finally we run the migrations.
-        {:ok, _, _} = Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :up, all: true))
-      end
+      # Then we have a short wait for the DB to catch up. This
+      # prevents an issue we've seen in production with standup and
+      # migrations happening too quickly.
+      Process.sleep(1_000)
 
-      System.halt(0)
+      # Finally we run the migrations.
+      {:ok, _, _} = Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :up, all: true))
     end
+
+    :ok
   end
 
   defp storage_up(repo) do

@@ -7,10 +7,13 @@ defmodule JumarCli.Command do
   """
 
   @typedoc "The name of the command. This is the name used in the CLI."
-  @type command_name :: String.t()
+  @type name :: String.t()
 
   @typedoc "Any module that implements the `JumarCli.Command` behaviour."
-  @type command_module :: module()
+  @type mod :: module()
+
+  @typedoc "A list of command line arguments passed to the command."
+  @type args :: [String.t()]
 
   @typedoc """
   Commands can return different values depending on
@@ -30,12 +33,12 @@ defmodule JumarCli.Command do
   - `{:error, any()}` which will print the error message
     and exit the CLI with a status code of 1.
   """
-  @type return_value :: {:ok, nil} | {:ok, pid()} | {:error, :help_text} | {:error, any()}
+  @type return_value :: :ok | {:ok, pid()} | {:error, :help_text} | {:error, any()}
 
   @doc """
   This is the command actual ran by the CLI.
   """
-  @callback run(command_line_args :: [binary]) :: return_value
+  @callback run(args) :: return_value
 
   @doc false
   defmacro __using__(_opts) do
@@ -54,7 +57,7 @@ defmodule JumarCli.Command do
 
   Returns the moduledoc or `nil`.
   """
-  @spec moduledoc(command_module) :: String.t()
+  @spec moduledoc(mod) :: String.t()
   def moduledoc(module) when is_atom(module) do
     if function_exported?(module, :moduledoc, 0) do
       module.moduledoc()
@@ -72,7 +75,7 @@ defmodule JumarCli.Command do
 
   Returns the shortdoc or `nil`.
   """
-  @spec shortdoc(command_module) :: String.t()
+  @spec shortdoc(mod) :: String.t()
   def shortdoc(module) when is_atom(module) do
     if function_exported?(module, :shortdoc, 0) do
       module.shortdoc()
@@ -93,7 +96,7 @@ defmodule JumarCli.Command do
       "migrate"
 
   """
-  @spec command_name(command_module) :: command_name
+  @spec command_name(mod) :: name
   def command_name(module) when is_atom(module) do
     module
     |> to_string()
