@@ -1,5 +1,4 @@
 ---
-
 services:
   cockroach:
     build:
@@ -10,8 +9,6 @@ services:
       - 8080:8080
     volumes:
       - cockroach:/cockroach/cockroach-data
-
-version: "3"
 
 volumes:
   cockroach:
