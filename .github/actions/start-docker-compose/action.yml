@@ -4,7 +4,7 @@ branding:
   icon: anchor
 
 description: >-
-  Starts the docker-compose services.
+  Starts the docker compose services.
 
 name: Start Docker Compose
 
@@ -17,7 +17,7 @@ runs:
         COMPOSE_DOCKER_CLI_BUILD: "1"
         DOCKER_BUILDKIT: "1"
       name: Start Containers
-      run: docker-compose up --detach
+      run: docker compose up --detach
       shell: bash
 
   using: composite
