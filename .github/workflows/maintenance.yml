@@ -18,7 +18,7 @@ jobs:
       - env:
           LOG_LEVEL: ${{ runner.debug && 'debug' || 'info' }}
         name: Renovate
-        uses: renovatebot/github-action@78bdcb3bffa5e95e646183ca0a2ac2895abd6a20 # v40.1.3
+        uses: renovatebot/github-action@259200be4d976a76196ec8985b0dddcaf1733b47 # v40.2.0
         with:
           configurationFile: .github/renovate-bot.json
           token: ${{ steps.appToken.outputs.token }}
