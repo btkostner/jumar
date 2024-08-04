@@ -37,11 +37,16 @@ defmodule Jumar.MixProject do
 
   defp release do
     [
+      applications: [runtime_tools: :permanent],
+      include_executables_for: [:unix],
       overwrite: true,
       quiet: true,
-      strip_beams: Mix.env() == :prod
+      strip_beams: strip_beams(Mix.env())
     ]
   end
+
+  defp strip_beams(:prod), do: [keep: ["Docs", "Dbgi"]]
+  defp strip_beams(_), do: false
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "benchmark/support", "test/support"]

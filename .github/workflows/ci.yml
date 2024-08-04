@@ -237,6 +237,7 @@ jobs:
         with:
           fail_on_error: true
           filter_mode: nofilter
+          ignore: behaviour
           locale: US
           reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'local' }}
 
@@ -319,7 +320,7 @@ jobs:
       # We run once to allow any compile warnings or things that
       # would interfere with the JSON output
       - name: Sobelow Sarif
-        run: mix sobelow --format sarif > results.sarif
+        run: mix sobelow --skip --format sarif > results.sarif
 
       - name: Upload Report
         uses: github/codeql-action/upload-sarif@afb54ba388a7dca6ecae48f608c4ff05ff4cc77a # v3

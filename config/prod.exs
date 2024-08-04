@@ -20,6 +20,7 @@ config :jumar, JumarWeb.Endpoint,
     # for details about using IPv6 vs IPv4 and loopback vs public addresses.
     ip: {0, 0, 0, 0, 0, 0, 0, 0}
   ],
+  server: true,
   url: [port: 443, scheme: "https"]
 
 # Configures Swoosh API Client
