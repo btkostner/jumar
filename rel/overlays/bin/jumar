@@ -72,26 +72,39 @@ export_release_sys_config() {
   export RELEASE_SYS_CONFIG
 }
 
-start() {
-  export_release_sys_config
-  REL_EXEC="$1"
-  shift
-  exec "$REL_VSN_DIR/$REL_EXEC" \
-    --cookie "$RELEASE_COOKIE" \
-    $(release_distribution "$RELEASE_NODE") \
-    --erl "-mode $RELEASE_MODE" \
-    --erl-config "$RELEASE_SYS_CONFIG" \
-    --boot "$REL_VSN_DIR/$RELEASE_BOOT_SCRIPT" \
-    --boot-var RELEASE_LIB "$RELEASE_ROOT/lib" \
-    --vm-args "$RELEASE_VM_ARGS" "$@"
-}
-
 case $1 in
   iex)
-    start "iex" --werl
+    export_release_sys_config
+    exec "$REL_VSN_DIR/iex" \
+      --werl --cookie "$RELEASE_COOKIE" \
+      $(release_distribution "$RELEASE_NODE") \
+      --erl "-mode $RELEASE_MODE" \
+      --erl-config "$RELEASE_SYS_CONFIG" \
+      --boot "$REL_VSN_DIR/$RELEASE_BOOT_SCRIPT" \
+      --boot-var RELEASE_LIB "$RELEASE_ROOT/lib" \
+      --vm-args "$RELEASE_VM_ARGS"
+    ;;
+
+  remote)
+    exec "$REL_VSN_DIR/iex" \
+      --werl --hidden --cookie "$RELEASE_COOKIE" \
+      $(release_distribution "rem-$(rand)-$RELEASE_NODE") \
+      --boot "$REL_VSN_DIR/$RELEASE_BOOT_SCRIPT_CLEAN" \
+      --boot-var RELEASE_LIB "$RELEASE_ROOT/lib" \
+      --vm-args "$RELEASE_REMOTE_VM_ARGS" \
+      --remsh "$RELEASE_NODE"
     ;;
 
   *)
-    JUMAR_CMD="$@" start "elixir" --no-halt
+    export_release_sys_config
+    export JUMAR_CMD="$@"
+    exec "$REL_VSN_DIR/elixir" \
+      --werl --no-halt --cookie "$RELEASE_COOKIE" \
+      $(release_distribution "$RELEASE_NODE") \
+      --erl "-mode $RELEASE_MODE" \
+      --erl-config "$RELEASE_SYS_CONFIG" \
+      --boot "$REL_VSN_DIR/$RELEASE_BOOT_SCRIPT" \
+      --boot-var RELEASE_LIB "$RELEASE_ROOT/lib" \
+      --vm-args "$RELEASE_VM_ARGS"
     ;;
 esac

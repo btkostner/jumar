@@ -22,7 +22,8 @@ defmodule JumarCli do
   ]
 
   @elixir_commands [
-    {"iex", "Starts an interactive Elixir shell for Jumar"}
+    {"iex", "Starts an interactive Elixir shell for Jumar"},
+    {"remote", "Attach to an already running local Jumar instance"}
   ]
 
   @options [
