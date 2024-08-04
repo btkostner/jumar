@@ -42,21 +42,40 @@ defmodule JumarCli do
     # The easiest way to pass in command line args into an
     # application on the Beam VM is with environment variables.
     # This is set in `rel/overlays/bin/jumar`.
-    "JUMAR_CMD"
-    |> System.get_env("")
-    |> run()
+    response_code =
+      "JUMAR_CMD"
+      |> System.get_env("")
+      |> run()
+
+    case response_code do
+      {:ok, code} when is_integer(code) ->
+        # If we were given an exit code, we still need to return
+        # a pid for the application to start with. This ensures we
+        # don't get a crash or random error codes during startup.
+        app_fun = fn ->
+          Process.sleep(10)
+          System.halt(code)
+        end
+
+        {:ok, spawn(app_fun)}
+
+      {:ok, pid} when is_pid(pid) ->
+        {:ok, pid}
+    end
   end
 
   @doc """
-  Runs a Jumar CLI command.
+  Runs a Jumar CLI command. Will always return an ok tuple
+  with either a pid for a long running process, or a non
+  negative integer for a cli exit code.
 
   ## Examples
 
       iex> JumarCli.run("migrate")
-      :ok
+      {:ok, 0}
 
   """
-  @spec run(String.t() | Command.args()) :: Command.return_value()
+  @spec run(String.t() | Command.args()) :: {:ok, non_neg_integer()} | {:ok, pid()}
   def run(args) when is_binary(args) do
     args
     |> String.split(" ")
@@ -76,8 +95,9 @@ defmodule JumarCli do
   # If any arguments are passed in, we then use the OptionParser
   # to make a more "native" feeling CLI that can parse flags and
   # run subcommands.
-  def run(args) do
-    {options, rest, _} = OptionParser.parse(args, @options)
+  def run(args) when is_list(args) do
+    {_, rest, _} = OptionParser.parse_head(args, @options)
+    {options, _, _} = OptionParser.parse(args, @options)
 
     subcommand = Enum.at(rest, 0, "")
     args = Enum.drop(rest, 1)
@@ -90,7 +110,7 @@ defmodule JumarCli do
 
     case run(command_mod, args, options) do
       :ok ->
-        :ok
+        {:ok, 0}
 
       {:ok, pid} ->
         {:ok, pid}
@@ -98,15 +118,15 @@ defmodule JumarCli do
       {:error, :help_text} ->
         help_text = Command.moduledoc(command_mod)
         IO.puts(help_text)
-        :stop
+        {:ok, 1}
 
       {:error, message} ->
         IO.puts("Error: #{message}")
-        :stop
+        {:ok, 1}
     end
   end
 
-  @spec run(Command.mod() | nil, Command.args(), map()) :: Command.return_value()
+  @spec run(Command.mod(), Command.args(), map()) :: Command.return_value()
   defp run(command_mod, args, opts)
 
   # The most basic run command involves using `--version` or `-v`

@@ -48,6 +48,7 @@ defmodule JumarCli.Seed do
       # to ensure we are starting from a clean slate.
       if has_data? and Keyword.get(options, :force, false) do
         for {schema, table} <- tables_in(repo) do
+          Logger.info("Truncating table #{schema}.#{table}")
           truncate!(repo, schema, table)
         end
       end
@@ -77,6 +78,8 @@ defmodule JumarCli.Seed do
     if File.regular?(seeds_file) do
       Code.eval_file(seeds_file)
     end
+
+    :ok
   end
 
   @spec tables_in(module) :: [{String.t(), String.t()}]
@@ -91,7 +94,13 @@ defmodule JumarCli.Seed do
   @spec has_data?(module()) :: boolean()
   defp has_data?(repo) do
     Enum.any?(tables_in(repo), fn {schema, table} ->
-      has_data?(repo, schema, table)
+      result? = has_data?(repo, schema, table)
+
+      if result? do
+        Logger.info("Table #{schema}.#{table} has data")
+      end
+
+      result?
     end)
   end
 
