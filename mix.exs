@@ -74,7 +74,7 @@ defmodule Jumar.MixProject do
       {:ecto_sql, "~> 3.6"},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:ex_doc, "~> 0.34", only: :dev, runtime: false},
-      {:finch, "~> 0.18"},
+      {:finch, "~> 0.19"},
       {:floki, "~> 0.36", only: :test},
       {:gettext, "~> 0.24"},
       {:heroicons, "~> 0.5"},
