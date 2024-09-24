@@ -146,7 +146,8 @@ defmodule Jumar.MixProject do
       "docs/database.md",
       "docs/deployment.md",
       "docs/development.md",
-      "docs/documentation.md"
+      "docs/documentation.md",
+      "docs/events.md"
     ]
   end
 
@@ -160,7 +161,8 @@ defmodule Jumar.MixProject do
       ],
       Decisions: [
         "docs/database.md",
-        "docs/documentation.md"
+        "docs/documentation.md",
+        "docs/events.md"
       ]
     ]
   end

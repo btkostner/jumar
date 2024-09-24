@@ -6,7 +6,7 @@
   <img width="575.618" height="273.777" src="./assets/logos/logotype.svg" alt="Jumar">
 </p>
 
-Jumar is a heavily opinionated Elixir boilerplate repository. It contains a _ton_ of useful features and documentation explaining the how and why.
+Jumar is Blake's opinionated Elixir bike shedding "I want to write some code" project. It is a boilerplate repository with a _ton_ of useful features and documentation explaining the how and why. It _probably_ has some cool code you could use in your own project. It most definitely has some choices you don't want to use.
 
 One of the goals of this project is to bookmark some good decisions I've learned over the years working in this space. I don't want to say this is "best practices" because truth be told, those change wildly based on the project's context. With that said, this project aims to start on the right foot and document the "why this way" decisions made in the process.
 
@@ -44,8 +44,11 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
 
 ### Event Layer
 
-- 🟨 [Rabbitmq](https://www.rabbitmq.com/) message publishing
-- 🟨 [Rabbitmq](https://www.rabbitmq.com/) message consuming with [Broadway](https://elixir-broadway.org/)
+- 🟨 Phoenix PubSub setup
+- 🟨 Adapter pattern for in application event bus
+- 🟨 [Rabbitmq](https://www.rabbitmq.com/) for worker queue message producing
+- 🟨 [Broadway](https://elixir-broadway.org/) for worker queue message consuming
+- ✅ Document the difference between the three and when to use each
 
 ### Documentation Generation
 
