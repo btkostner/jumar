@@ -1,10 +1,11 @@
 defmodule JumarWeb.UserAuthTest do
   use JumarWeb.ConnCase, async: true
 
-  alias Phoenix.LiveView
+  import Jumar.AccountsFixtures
+
   alias Jumar.Accounts
   alias JumarWeb.UserAuth
-  import Jumar.AccountsFixtures
+  alias Phoenix.LiveView
 
   @remember_me_cookie "_jumar_web_user_remember_me"
 

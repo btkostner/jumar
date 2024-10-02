@@ -6,7 +6,7 @@ defmodule Jumar.Types.UUIDv7Test do
 
   doctest Jumar.Types.UUIDv7, import: true
 
-  defp uuid_generator(),
+  defp uuid_generator,
     do: StreamData.repeatedly(&UUIDv7.generate/0)
 
   describe "type/0" do

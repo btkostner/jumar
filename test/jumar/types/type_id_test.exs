@@ -6,10 +6,10 @@ defmodule Jumar.Types.TypeIdTest do
 
   doctest Jumar.Types.TypeId, import: true
 
-  defp prefix_generator(),
+  defp prefix_generator,
     do: StreamData.string(?a..?z, min_length: 1, max_length: 62)
 
-  defp uuid_generator(),
+  defp uuid_generator,
     do: StreamData.repeatedly(&Jumar.Types.UUIDv7.generate/0)
 
   defp valid_prefix?(""), do: false

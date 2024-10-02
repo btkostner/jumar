@@ -1,5 +1,5 @@
 defmodule JumarWeb.UserSettingsLiveTest do
-  use JumarWeb.ConnCase
+  use JumarWeb.ConnCase, async: true
 
   alias Jumar.Accounts
   import Phoenix.LiveViewTest

@@ -1,5 +1,5 @@
 defmodule Jumar.AccountsTest do
-  use Jumar.DataCase
+  use Jumar.DataCase, async: true
 
   alias Jumar.Accounts
 

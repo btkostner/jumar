@@ -6,9 +6,11 @@ defmodule Jumar.Accounts do
   import Ecto.Query, warn: false
   import Jumar.Query, only: [citext: 1]
 
+  alias Jumar.Accounts.EventBusProducer
+  alias Jumar.Accounts.User
+  alias Jumar.Accounts.UserNotifier
+  alias Jumar.Accounts.UserToken
   alias Jumar.Repo
-
-  alias Jumar.Accounts.{User, UserToken, UserNotifier}
 
   ## Database getters
 
@@ -82,6 +84,7 @@ defmodule Jumar.Accounts do
     %User{}
     |> User.registration_changeset(attrs)
     |> Repo.insert()
+    |> EventBusProducer.produce_from_result(:user_password_updated)
   end
 
   @doc """
@@ -143,7 +146,8 @@ defmodule Jumar.Accounts do
 
     with {:ok, query} <- UserToken.verify_change_email_token_query(token, context),
          %UserToken{sent_to: email} <- Repo.one(query),
-         {:ok, _} <- Repo.transaction(user_email_multi(user, email, context)) do
+         {:ok, _} <- Repo.transaction(user_email_multi(user, email, context)),
+         :ok <- EventBusProducer.produce(:user_email_updated, user) do
       :ok
     else
       _ -> :error
@@ -213,6 +217,7 @@ defmodule Jumar.Accounts do
     |> Ecto.Multi.update(:user, changeset)
     |> Ecto.Multi.delete_all(:tokens, UserToken.user_and_contexts_query(user, :all))
     |> Repo.transaction()
+    |> EventBusProducer.produce_from_result(:user_password_updated)
     |> case do
       {:ok, %{user: user}} -> {:ok, user}
       {:error, :user, changeset, _} -> {:error, changeset}
@@ -280,7 +285,8 @@ defmodule Jumar.Accounts do
   def confirm_user(token) do
     with {:ok, query} <- UserToken.verify_email_token_query(token, "confirm"),
          %User{} = user <- Repo.one(query),
-         {:ok, %{user: user}} <- Repo.transaction(confirm_user_multi(user)) do
+         {:ok, %{user: user}} <- Repo.transaction(confirm_user_multi(user)),
+         :ok <- EventBusProducer.produce(:user_confirmed, user) do
       {:ok, user}
     else
       _ -> :error
@@ -349,6 +355,7 @@ defmodule Jumar.Accounts do
     |> Ecto.Multi.update(:user, User.password_changeset(user, attrs))
     |> Ecto.Multi.delete_all(:tokens, UserToken.user_and_contexts_query(user, :all))
     |> Repo.transaction()
+    |> EventBusProducer.produce_from_result(:user_password_reset)
     |> case do
       {:ok, %{user: user}} -> {:ok, user}
       {:error, :user, changeset, _} -> {:error, changeset}
