@@ -42,7 +42,7 @@ defmodule Jumar.Bench do
   end
 
   @spec git_tag() :: String.t()
-  defp git_tag() do
+  defp git_tag do
     case __DIR__ |> Path.join("../../.git/HEAD") |> File.read() do
       {:ok, tag} ->
         tag

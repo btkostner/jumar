@@ -4,7 +4,7 @@ import Config
 config :jumar, Jumar.Repo,
   username: "root",
   hostname: "localhost",
-  port: 26257,
+  port: 26_257,
   database: "jumar_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
@@ -19,7 +19,7 @@ config :jumar, Jumar.Repo,
 config :jumar, JumarWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {127, 0, 0, 1}, port: 4000],
+  http: [ip: {127, 0, 0, 1}, port: 4_000],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,

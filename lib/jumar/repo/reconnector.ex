@@ -42,7 +42,7 @@ defmodule Jumar.Repo.Reconnector do
     {:noreply, nil}
   end
 
-  defp schedule_reconnect() do
+  defp schedule_reconnect do
     Process.send_after(self(), :reconnect, @disconnect_interval)
   end
 end

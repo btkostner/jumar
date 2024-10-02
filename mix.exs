@@ -53,7 +53,7 @@ defmodule Jumar.MixProject do
   defp elixirc_paths(_), do: ["lib"]
 
   # Specific default environments for non standard commands.
-  defp elixir_envs() do
+  defp elixir_envs do
     [
       benchmark: :test
     ]

@@ -13,7 +13,7 @@ config :argon2_elixir, t_cost: 1, m_cost: 8
 config :jumar, Jumar.Repo,
   username: "root",
   hostname: "localhost",
-  port: 26257,
+  port: 26_257,
   database: "jumar_test#{System.get_env("MIX_TEST_PARTITION")}",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
@@ -23,7 +23,7 @@ config :jumar, Jumar.Repo,
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :jumar, JumarWeb.Endpoint,
-  http: [ip: {127, 0, 0, 1}, port: 4002],
+  http: [ip: {127, 0, 0, 1}, port: 4_002],
   secret_key_base: "tx51cQwxmBejOFl/mlhhzbqjPn4rd1HA6KZs0IxcV+YJIiQW1Knglg+6YwTaaO1J",
   server: false
 

@@ -8,8 +8,8 @@ defmodule Jumar.Accounts do
 
   alias Jumar.Accounts.EventBusProducer
   alias Jumar.Accounts.User
-  alias Jumar.Accounts.UserToken
   alias Jumar.Accounts.UserNotifier
+  alias Jumar.Accounts.UserToken
   alias Jumar.Repo
 
   ## Database getters

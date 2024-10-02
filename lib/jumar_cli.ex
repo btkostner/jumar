@@ -163,7 +163,7 @@ defmodule JumarCli do
   `--help` or `-h`. Note that this help text includes some
   commands that are setup in the jumar shell script outside of Elixir.
   """
-  def moduledoc() do
+  def moduledoc do
     command_text =
       @commands
       |> Enum.map(fn c -> {Command.command_name(c), Command.shortdoc(c)} end)
