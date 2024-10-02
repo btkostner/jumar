@@ -24,7 +24,7 @@ defmodule Jumar.Supervisor do
       Jumar.PubSub,
       # Start the Event Bus system
       Jumar.Accounts.EventBusProducer,
-      Jumar.Audit.AccountEventBusConsumer,
+      Jumar.Audit.EventBusConsumer,
       # Start Finch
       {Finch, name: Jumar.Finch}
       # Start a worker by calling: Jumar.Worker.start_link(arg)

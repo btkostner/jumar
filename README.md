@@ -45,7 +45,7 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
 ### Event Layer
 
 - 🟨 Phoenix PubSub setup
-- 🟨 Adapter pattern for in application event bus
+- ✅ Internal event bus for cross context communication
 - 🟨 [Rabbitmq](https://www.rabbitmq.com/) for worker queue message producing
 - 🟨 [Broadway](https://elixir-broadway.org/) for worker queue message consuming
 - ✅ Document the difference between the three and when to use each
