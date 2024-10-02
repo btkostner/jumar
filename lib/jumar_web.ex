@@ -60,7 +60,7 @@ defmodule JumarWeb do
         layouts: [html: JumarWeb.Layouts]
 
       import Plug.Conn
-      import JumarWeb.Gettext
+      use Gettext, backend: JumarWeb.Gettext
 
       unquote(verified_routes())
     end
@@ -111,7 +111,7 @@ defmodule JumarWeb do
       import Phoenix.HTML
       # Core UI components and translation
       import JumarWeb.CoreComponents
-      import JumarWeb.Gettext
+      use Gettext, backend: JumarWeb.Gettext
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS
