@@ -6,6 +6,8 @@ defmodule Jumar.Audit.EventBusConsumer do
       {Jumar.Accounts.EventBusProducer, max_demand: 100}
     ]
 
+  require Logger
+
   @doc false
   @impl Jumar.EventBus.Consumer
   def handle_event(_event) do
