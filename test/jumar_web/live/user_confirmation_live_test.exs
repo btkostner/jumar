@@ -1,5 +1,5 @@
 defmodule JumarWeb.UserConfirmationLiveTest do
-  use JumarWeb.ConnCase
+  use JumarWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
   import Jumar.AccountsFixtures

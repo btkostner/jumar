@@ -19,9 +19,12 @@ defmodule Jumar.Supervisor do
       # Start the Ecto repository
       Jumar.Repo,
       # Start the Ecto reconnecting process
-      Jumar.RepoReconnector,
+      Jumar.Repo.Reconnector,
       # Start the PubSub system
-      {Phoenix.PubSub, name: Jumar.PubSub},
+      Jumar.PubSub,
+      # Start the Event Bus system
+      Jumar.Accounts.EventBusProducer,
+      Jumar.Audit.EventBusConsumer,
       # Start Finch
       {Finch, name: Jumar.Finch}
       # Start a worker by calling: Jumar.Worker.start_link(arg)

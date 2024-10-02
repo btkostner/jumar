@@ -53,7 +53,7 @@ defmodule Jumar.MixProject do
   defp elixirc_paths(_), do: ["lib"]
 
   # Specific default environments for non standard commands.
-  defp elixir_envs() do
+  defp elixir_envs do
     [
       benchmark: :test
     ]
@@ -76,6 +76,7 @@ defmodule Jumar.MixProject do
       {:ex_doc, "~> 0.34", only: :dev, runtime: false},
       {:finch, "~> 0.18"},
       {:floki, "~> 0.36", only: :test},
+      {:gen_stage, "~> 1.2"},
       {:gettext, "~> 0.25"},
       {:heroicons, "~> 0.5"},
       {:jason, "~> 1.2"},
@@ -146,7 +147,8 @@ defmodule Jumar.MixProject do
       "docs/database.md",
       "docs/deployment.md",
       "docs/development.md",
-      "docs/documentation.md"
+      "docs/documentation.md",
+      "docs/events.md"
     ]
   end
 
@@ -160,7 +162,8 @@ defmodule Jumar.MixProject do
       ],
       Decisions: [
         "docs/database.md",
-        "docs/documentation.md"
+        "docs/documentation.md",
+        "docs/events.md"
       ]
     ]
   end
