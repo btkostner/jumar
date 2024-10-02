@@ -11,7 +11,7 @@ defmodule JumarWeb.CoreComponents do
   """
   use Phoenix.Component
 
-  import JumarWeb.Gettext
+  use Gettext, backend: JumarWeb.Gettext
 
   alias Phoenix.LiveView.JS
 
