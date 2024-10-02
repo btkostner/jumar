@@ -1,5 +1,5 @@
 defmodule JumarWeb.PageControllerTest do
-  use JumarWeb.ConnCase
+  use JumarWeb.ConnCase, async: true
 
   test "GET /", %{conn: conn} do
     conn = get(conn, ~p"/")

@@ -1,4 +1,4 @@
-defmodule Jumar.RepoReconnector do
+defmodule Jumar.Repo.Reconnector do
   @moduledoc """
   Restarts the `Jumar.Repo` database pool every 30 minutes to ensure we are
   connected to the closest node. When a database node shuts down, ecto will
