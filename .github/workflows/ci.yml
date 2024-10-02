@@ -55,7 +55,7 @@ jobs:
 
       - if: ${{ github.event_name == 'pull_request' }}
         name: Suggest
-        uses: reviewdog/action-suggester@63b8f8cc21dfa052ac44436e65ed31edcffcb6c1 # v1
+        uses: reviewdog/action-suggester@db4abb16fbaabe386831e5addb7be1485d0d63d3 # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -74,7 +74,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Lint
-        uses: reviewdog/action-actionlint@4f8f9963ca57a41e5fd5b538dd79dbfbd3e0b38a # v1
+        uses: reviewdog/action-actionlint@7eeec1dd160c2301eb28e1568721837d084558ad # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -93,7 +93,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Lint
-        uses: reviewdog/action-alex@f95df9e356d97e67e4626f04ad125c4a99a906a9 # v1
+        uses: reviewdog/action-alex@73756e09c07d6025e86f0ac5605b65f2d4b4b78b # v1
         with:
           filter_mode: ${{ github.event_name == 'pull_request' && 'added' || 'nofilter' }}
           level: info
@@ -115,7 +115,7 @@ jobs:
         run: npm install stylelint stylelint-config-standard
 
       - name: Lint
-        uses: reviewdog/action-stylelint@9e1a9917f7d97c360463cd5d922385f84b9cc3a0 # v1
+        uses: reviewdog/action-stylelint@c1da6e75d890eba79f82a4294e867cbd720b52d9 # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -153,7 +153,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Lint
-        uses: reviewdog/action-hadolint@2d90b15b2b969e507fc2a31af6e29ca19a0f9516 # v1
+        uses: reviewdog/action-hadolint@73fec8b28091e5082c19df69815dd749d97b882a # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -193,7 +193,7 @@ jobs:
         run: npm install eslint-config-standard eslint-plugin-promise eslint-plugin-import eslint-plugin-n
 
       - name: Lint
-        uses: reviewdog/action-eslint@beb7a743eeb10db90a8529b5bc4031be52e90868 # v1
+        uses: reviewdog/action-eslint@9a6606695f1ef9709cce821919ca3b2a6d5e6bb5 # v1
         with:
           eslint_flags: --config .github/linters/.eslintrc.json .
           fail_on_error: true
@@ -213,7 +213,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Lint
-        uses: reviewdog/action-markdownlint@e9f3ab4fea1433280a4b0eddca17be1340dfea94 # v0
+        uses: reviewdog/action-markdownlint@28fb4224271253fedd5079b61de820d6228041fd # v0
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -254,7 +254,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Lint
-        uses: reviewdog/action-shellcheck@d99499e855260c9c56f7a1d066933b57326e9e7c # v1
+        uses: reviewdog/action-shellcheck@ccaafec556ffa154f112bfcb7b9c9574190b7091 # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -291,7 +291,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Lint
-        uses: reviewdog/action-yamllint@4e4ba96d03a0e12a0e71c29e5fef1db309d09201 # v1
+        uses: reviewdog/action-yamllint@e09f07780388032a624e9eb44a23fd1bbb4052cc # v1
         with:
           fail_on_error: true
           filter_mode: nofilter
@@ -323,7 +323,7 @@ jobs:
         run: mix sobelow --skip --format sarif > results.sarif
 
       - name: Upload Report
-        uses: github/codeql-action/upload-sarif@eb055d739abdc2e8de2e5f4ba1a8b246daa779aa # v3
+        uses: github/codeql-action/upload-sarif@e2b3eafc8d227b0241d48be5f425d47c2d750a13 # v3
         with:
           sarif_file: results.sarif
 
