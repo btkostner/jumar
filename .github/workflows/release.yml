@@ -1,8 +1,8 @@
 ---
 jobs:
-  Docs:
+  Documentation:
     environment:
-      name: Docs
+      name: Documentation
       url: ${{ steps.deployment.outputs.page_url }}
 
     permissions:

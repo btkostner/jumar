@@ -8,13 +8,14 @@ defmodule Jumar.Accounts.User do
   import Ecto.Changeset
 
   @type t :: %__MODULE__{
-          id: Jumar.Types.TypeId.t(),
-          email: String.t(),
-          password: String.t(),
-          hashed_password: String.t(),
-          confirmed_at: DateTime.t(),
-          inserted_at: DateTime.t(),
-          updated_at: DateTime.t()
+          __meta__: Ecto.Schema.Metadata.t(),
+          id: Jumar.Types.TypeId.t() | nil,
+          email: String.t() | nil,
+          password: String.t() | nil,
+          hashed_password: String.t() | nil,
+          confirmed_at: DateTime.t() | nil,
+          inserted_at: DateTime.t() | nil,
+          updated_at: DateTime.t() | nil
         }
 
   @primary_key {:id, Jumar.Types.TypeId, autogenerate: true, prefix: "user"}
@@ -172,7 +173,7 @@ defmodule Jumar.Accounts.User do
   @doc """
   Confirms the account by setting `confirmed_at`.
   """
-  @spec confirm_changeset(t()) :: Ecto.Changeset.t()
+  @spec confirm_changeset(t() | Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def confirm_changeset(user) do
     now = DateTime.utc_now() |> DateTime.truncate(:second)
     change(user, confirmed_at: now)

@@ -22,7 +22,8 @@ jobs:
       - name: Benchmark
         run: mix benchmark
 
-  Docs:
+  Build_Documentation:
+    name: Build (Documentation)
     runs-on: ubuntu-latest
 
     steps:
@@ -124,10 +125,6 @@ jobs:
 
   Lint_Credo:
     name: Lint (Credo)
-    permissions:
-      checks: write
-      contents: read
-      pull-requests: write
     runs-on: ubuntu-latest
 
     steps:
@@ -139,6 +136,20 @@ jobs:
 
       - name: Credo
         run: mix credo
+
+  Lint_Dialyzer:
+    name: Lint (Dialyzer)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
+
+      - name: Setup Elixir
+        uses: ./.github/actions/setup-elixir
+
+      - name: Dialyzer
+        run: mix dialyzer
 
   Lint_Docker:
     name: Lint (Docker)
@@ -161,10 +172,6 @@ jobs:
 
   Lint_Doctor:
     name: Lint (Doctor)
-    permissions:
-      checks: write
-      contents: read
-      pull-requests: write
     runs-on: ubuntu-latest
 
     steps:
@@ -298,7 +305,8 @@ jobs:
           reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'local' }}
           yamllint_flags: -c .github/linters/.yaml-lint.yml .
 
-  Sobelow:
+  Security_Sobelow:
+    name: Security (Sobelow)
     permissions:
       contents: read
       security-events: write

@@ -14,6 +14,8 @@ defmodule JumarCli do
 
   alias JumarCli.Command
 
+  @dialyzer {:no_return, {:start, 2}}
+
   @commands [
     JumarCli.Migrate,
     JumarCli.Rollback,

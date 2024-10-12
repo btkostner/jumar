@@ -11,6 +11,8 @@ defmodule Jumar.Accounts.EventBusProducer do
   can take the form of a transaction with a `user` key in the result map, or
   a simple `{:ok, user}` tuple. Everything else is ignored.
   """
+  @spec produce_from_result(result, atom()) :: result
+        when result: {:ok, %{user: Accounts.User.t()}} | {:ok, Accounts.User.t()} | any()
   def produce_from_result({:ok, %{user: %Accounts.User{} = user}} = result, event) do
     produce(event, user)
     result

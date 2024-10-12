@@ -78,7 +78,7 @@ defmodule Jumar.Types.TypeId do
         message: "#{__MODULE__} prefix must only container lowercase ascii characters."
     end
 
-    unless Code.ensure_compiled(Keyword.get(opts, :uuid_module)) do
+    with {:error, _} <- Code.ensure_compiled(Keyword.get(opts, :uuid_module)) do
       raise ArgumentError,
         message: "#{__MODULE__} was given an invalid UUID module."
     end

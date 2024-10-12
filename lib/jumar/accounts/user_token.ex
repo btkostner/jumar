@@ -9,15 +9,23 @@ defmodule Jumar.Accounts.UserToken do
 
   import Ecto.Query
 
+  alias Jumar.Accounts.User
   alias Jumar.Accounts.UserToken
 
+  @typedoc "Opaque binary data stored alongside the token."
+  @type context :: binary()
+
+  @typedoc "Cryptographically secure binary token."
+  @type token :: binary()
+
   @type t :: %__MODULE__{
-          id: Jumar.Types.TypeId.t(),
-          token: binary(),
-          context: String.t(),
-          sent_to: String.t(),
-          user: Jumar.Accounts.User.t(),
-          inserted_at: DateTime.t()
+          __meta__: Ecto.Schema.Metadata.t(),
+          id: Jumar.Types.TypeId.t() | nil,
+          token: token() | nil,
+          context: context() | nil,
+          sent_to: String.t() | nil,
+          user: User.t() | Ecto.Association.NotLoaded.t() | nil,
+          inserted_at: DateTime.t() | nil
         }
 
   @hash_algorithm :sha256
@@ -39,7 +47,7 @@ defmodule Jumar.Accounts.UserToken do
     field :context, :string
     field :sent_to, :string
 
-    belongs_to :user, Jumar.Accounts.User, prefix: "user"
+    belongs_to :user, User, prefix: "user"
 
     timestamps(updated_at: false)
   end
@@ -63,6 +71,7 @@ defmodule Jumar.Accounts.UserToken do
   and devices in the UI and allow users to explicitly expire any
   session they deem invalid.
   """
+  @spec build_session_token(User.t()) :: {token(), t()}
   def build_session_token(user) do
     token = :crypto.strong_rand_bytes(@rand_size)
     {token, %UserToken{token: token, context: "session", user_id: user.id}}
@@ -76,6 +85,7 @@ defmodule Jumar.Accounts.UserToken do
   The token is valid if it matches the value in the database and it has
   not expired (after @session_validity_in_days).
   """
+  @spec verify_session_token_query(token()) :: {:ok, Ecto.Query.t()}
   def verify_session_token_query(token) do
     query =
       from token in token_and_context_query(token, "session"),
@@ -99,6 +109,7 @@ defmodule Jumar.Accounts.UserToken do
   Users can easily adapt the existing code to provide other types of delivery methods,
   for example, by phone numbers.
   """
+  @spec build_email_token(User.t(), context()) :: {token(), t()}
   def build_email_token(user, context) do
     build_hashed_token(user, context, user.email)
   end
@@ -129,6 +140,7 @@ defmodule Jumar.Accounts.UserToken do
   for resetting the password. For verifying requests to change the email,
   see `verify_change_email_token_query/2`.
   """
+  @spec verify_email_token_query(token(), context()) :: {:ok, Ecto.Query.t()} | :error
   def verify_email_token_query(token, context) do
     case Base.url_decode64(token, padding: false) do
       {:ok, decoded_token} ->
@@ -165,6 +177,7 @@ defmodule Jumar.Accounts.UserToken do
   database and if it has not expired (after @change_email_validity_in_days).
   The context must always start with "change:".
   """
+  @spec verify_change_email_token_query(token(), context()) :: {:ok, Ecto.Query.t()} | :error
   def verify_change_email_token_query(token, "change:" <> _ = context) do
     case Base.url_decode64(token, padding: false) do
       {:ok, decoded_token} ->
@@ -184,6 +197,7 @@ defmodule Jumar.Accounts.UserToken do
   @doc """
   Returns the token struct for the given token value and context.
   """
+  @spec token_and_context_query(token(), context()) :: Ecto.Query.t()
   def token_and_context_query(token, context) do
     from UserToken, where: [token: ^token, context: ^context]
   end
@@ -191,6 +205,7 @@ defmodule Jumar.Accounts.UserToken do
   @doc """
   Gets all tokens for the given user for the given contexts.
   """
+  @spec user_and_contexts_query(User.t(), [context()] | :all) :: Ecto.Query.t()
   def user_and_contexts_query(user, :all) do
     from t in UserToken, where: t.user_id == ^user.id
   end
