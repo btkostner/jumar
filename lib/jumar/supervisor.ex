@@ -13,7 +13,7 @@ defmodule Jumar.Supervisor do
     Supervisor.start_link(__MODULE__, args, name: __MODULE__)
   end
 
-  @impl true
+  @impl Supervisor
   def init(_args) do
     children = [
       # Start the Ecto repository
@@ -23,8 +23,7 @@ defmodule Jumar.Supervisor do
       # Start the PubSub system
       Jumar.PubSub,
       # Start the Event Bus system
-      Jumar.Accounts.EventBusProducer,
-      Jumar.Audit.EventBusConsumer,
+      Jumar.EventBus.Supervisor,
       # Start Finch
       {Finch, name: Jumar.Finch}
       # Start a worker by calling: Jumar.Worker.start_link(arg)
