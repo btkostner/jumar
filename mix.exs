@@ -64,14 +64,14 @@ defmodule Jumar.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:argon2_elixir, "~> 4.0"},
-      {:bandit, "~> 1.3"},
+      {:argon2_elixir, "~> 4.1"},
+      {:bandit, "~> 1.5"},
       {:benchee, "~> 1.3", only: [:dev, :test]},
       {:boundary, "~> 0.10"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:doctor, "~> 0.21", only: [:dev, :test]},
-      {:ecto_sql, "~> 3.6"},
+      {:ecto_sql, "~> 3.12"},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:ex_doc, "~> 0.34", only: :dev, runtime: false},
       {:finch, "~> 0.19"},
@@ -79,25 +79,25 @@ defmodule Jumar.MixProject do
       {:gen_stage, "~> 1.2"},
       {:gettext, "~> 0.26"},
       {:heroicons, "~> 0.5"},
-      {:jason, "~> 1.2"},
+      {:jason, "~> 1.4"},
       {:opentelemetry_semantic_conventions, "~> 1.27"},
       {:phoenix, "~> 1.7"},
-      {:phoenix_ecto, "~> 4.4"},
+      {:phoenix_ecto, "~> 4.6"},
       {:phoenix_html, "~> 4.1"},
       {:phoenix_live_dashboard, "~> 0.8"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:phoenix_live_reload, "~> 1.5", only: :dev},
       {:phoenix_live_view, "~> 0.20"},
-      {:plug_cowboy, "~> 2.5"},
+      {:plug_cowboy, "~> 2.7"},
       {:postgrex, ">= 0.0.0"},
-      {:remote_ip, "~> 1.1"},
+      {:remote_ip, "~> 1.2"},
       {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false},
-      {:stream_data, "~> 1.0", only: [:dev, :test]},
-      {:swoosh, "~> 1.3"},
+      {:stream_data, "~> 1.1", only: [:dev, :test]},
+      {:swoosh, "~> 1.17"},
       {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
       {:tailwind_formatter, "~> 0.4", only: :dev, runtime: false},
-      {:telemetry, "~> 1.2"},
+      {:telemetry, "~> 1.3"},
       {:telemetry_metrics, "~> 1.0"},
-      {:telemetry_poller, "~> 1.0"}
+      {:telemetry_poller, "~> 1.1"}
     ]
   end
 
