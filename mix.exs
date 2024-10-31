@@ -70,7 +70,7 @@ defmodule Jumar.MixProject do
       {:boundary, "~> 0.10"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:doctor, "~> 0.21", only: [:dev, :test]},
+      {:doctor, "~> 0.22", only: [:dev, :test]},
       {:ecto_sql, "~> 3.12"},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:ex_doc, "~> 0.34", only: :dev, runtime: false},
