@@ -86,7 +86,7 @@ defmodule Jumar.MixProject do
       {:phoenix_html, "~> 4.1"},
       {:phoenix_live_dashboard, "~> 0.8"},
       {:phoenix_live_reload, "~> 1.5", only: :dev},
-      {:phoenix_live_view, "~> 0.20"},
+      {:phoenix_live_view, "~> 1.0"},
       {:plug_cowboy, "~> 2.7"},
       {:postgrex, ">= 0.0.0"},
       {:remote_ip, "~> 1.2"},
