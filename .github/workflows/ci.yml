@@ -58,7 +58,7 @@ jobs:
         name: Suggest
         uses: reviewdog/action-suggester@a3026c6020837c23b61a79d12db223a00df19e6a # v1
         with:
-          fail_on_error: true
+          fail_level: any
           filter_mode: nofilter
           tool_name: mix
 
@@ -77,7 +77,7 @@ jobs:
       - name: Lint
         uses: reviewdog/action-actionlint@db58217885f9a6570da9c71be4e40ec33fe44a1f # v1
         with:
-          fail_on_error: true
+          fail_level: any
           filter_mode: nofilter
           reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'local' }}
 
@@ -118,7 +118,7 @@ jobs:
       - name: Lint
         uses: reviewdog/action-stylelint@3957468a0ecd893d96e59774122c860fa98b0f82 # v1
         with:
-          fail_on_error: true
+          fail_level: any
           filter_mode: nofilter
           reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'local' }}
           stylelint_config: .github/linters/.stylelintrc.json
@@ -166,7 +166,7 @@ jobs:
       - name: Lint
         uses: reviewdog/action-hadolint@48e0d147329dca2fa1663f4a9b6b715b57dcfe28 # v1
         with:
-          fail_on_error: true
+          fail_level: any
           filter_mode: nofilter
           reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'local' }}
 
@@ -203,7 +203,7 @@ jobs:
         uses: reviewdog/action-eslint@9b5b0150e399e1f007ee3c27bc156549810a64e3 # v1
         with:
           eslint_flags: --config .github/linters/.eslintrc.json .
-          fail_on_error: true
+          fail_level: any
           filter_mode: nofilter
           reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'local' }}
 
@@ -222,7 +222,7 @@ jobs:
       - name: Lint
         uses: reviewdog/action-markdownlint@f901468edf9a3634dd39b35ba26cad0aad1a0bfd # v0
         with:
-          fail_on_error: true
+          fail_level: any
           filter_mode: nofilter
           markdownlint_flags: -c .github/linters/.markdown-lint.yml .
           reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'local' }}
@@ -242,7 +242,7 @@ jobs:
       - name: Lint
         uses: reviewdog/action-misspell@18ffb61effb93b47e332f185216be7e49592e7e1 # v1
         with:
-          fail_on_error: true
+          fail_level: any
           filter_mode: nofilter
           ignore: behaviour
           locale: US
@@ -263,7 +263,7 @@ jobs:
       - name: Lint
         uses: reviewdog/action-shellcheck@6e0e63d1750d02d761b3df0f2c5ba9f9ac4a9ed7 # v1
         with:
-          fail_on_error: true
+          fail_level: any
           filter_mode: nofilter
           reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'local' }}
 
@@ -282,7 +282,7 @@ jobs:
       - name: Lint
         uses: reviewdog/action-shfmt@f59386f08bd9a24ac1a746e69f026ddc2ed06710 # v1
         with:
-          fail_on_error: true
+          fail_level: any
           filter_mode: nofilter
 
   Lint_Yaml:
@@ -300,7 +300,7 @@ jobs:
       - name: Lint
         uses: reviewdog/action-yamllint@1dca3ad811867be18fbe293a9818d715a6c2cd46 # v1
         with:
-          fail_on_error: true
+          fail_level: any
           filter_mode: nofilter
           reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'local' }}
           yamllint_flags: -c .github/linters/.yaml-lint.yml .
