@@ -282,7 +282,7 @@ jobs:
       - name: Lint
         uses: reviewdog/action-shfmt@f59386f08bd9a24ac1a746e69f026ddc2ed06710 # v1
         with:
-          fail_level: any
+          fail_on_error: true
           filter_mode: nofilter
 
   Lint_Yaml:
