@@ -93,7 +93,7 @@ defmodule Jumar.MixProject do
       {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false},
       {:stream_data, "~> 1.1", only: [:dev, :test]},
       {:swoosh, "~> 1.17"},
-      {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.3", runtime: Mix.env() == :dev},
       {:tailwind_formatter, "~> 0.4", only: :dev, runtime: false},
       {:telemetry, "~> 1.3"},
       {:telemetry_metrics, "~> 1.0"},
