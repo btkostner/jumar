@@ -34,7 +34,7 @@ jobs:
         uses: ./.github/actions/setup-elixir
 
       - name: Build Docs
-        run: mix docs
+        run: mix docs --warnings-as-errors
 
   Format_Elixir:
     name: Format (Elixir)
