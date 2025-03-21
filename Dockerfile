@@ -7,17 +7,17 @@
 # This file is based on these images:
 #
 #   - https://hub.docker.com/r/hexpm/elixir/tags - for the build image
-#   - https://hub.docker.com/_/debian?tab=tags&page=1&name=bullseye-20240130-slim - for the release image
+#   - https://hub.docker.com/_/debian?tab=tags&page=1&name=bookworm-20250317-slim - for the release image
 #   - https://pkgs.org/ - resource for finding needed packages
-#   - Ex: hexpm/elixir:1.16.2-erlang-26.2.2-debian-bullseye-20240130-slim
+#   - Ex: hexpm/elixir:1.18.3-erlang-27.3-debian-bullseye-20240130-slim
 #
 # We explicitly set the image versions but do it in an odd way that hadolint does not like.
 # We also do not explicitly set package versions because nobody got time for that.
 # hadolint global ignore=DL3006,DL3008
 
-ARG ELIXIR_VERSION=1.17.0
-ARG OTP_VERSION=27.0
-ARG DEBIAN_VERSION=bullseye-20240612-slim
+ARG ELIXIR_VERSION=1.18.3
+ARG OTP_VERSION=27.3
+ARG DEBIAN_VERSION=bookworm-20250317-slim
 
 ARG BUILDER_IMAGE="docker.io/hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
 ARG RUNNER_IMAGE="docker.io/debian:${DEBIAN_VERSION}"
