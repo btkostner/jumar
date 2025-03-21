@@ -74,11 +74,6 @@ runs:
         restore-keys: |
           elixir-setup-deps-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-${{ inputs.cache-name }}-
 
-    - if: steps.cache_dependencies.outputs.cache-hit != 'true'
-      name: Install Dependencies
-      run: mix deps.get
-      shell: bash
-
     - name: Cache Build
       uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # v4
       with:
@@ -89,5 +84,17 @@ runs:
           elixir-setup-build-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-${{ inputs.cache-name }}-${{ hashFiles('mix.lock') }}-
           elixir-setup-build-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-${{ inputs.cache-name }}-
           elixir-setup-build-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-
+
+    - if: github.run_attempt != '1'
+      name: Clean Dependencies
+      run: |
+        mix deps.clean --all
+        mix clean
+      shell: bash
+
+    - if: steps.cache_dependencies.outputs.cache-hit != 'true'
+      name: Install Dependencies
+      run: mix deps.get
+      shell: bash
 
   using: composite
