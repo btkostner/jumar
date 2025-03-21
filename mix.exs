@@ -10,7 +10,7 @@ defmodule Jumar.MixProject do
       name: "Jumar",
       description: "Jumar is a heavily opinionated Elixir boilerplate repository",
       version: @version,
-      elixir: "~> 1.16",
+      elixir: "~> 1.18",
       source_url: "https://github.com/btkostner/jumar",
       homepage_url: "https://jumar.btkostner.io",
       compilers: [:boundary] ++ Mix.compilers(),
