@@ -89,7 +89,7 @@ defmodule Jumar.MixProject do
       {:phoenix_live_view, "~> 1.0"},
       {:postgrex, ">= 0.0.0"},
       {:remote_ip, "~> 1.2"},
-      {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false},
+      {:sobelow, "~> 0.14", only: [:dev, :test], runtime: false},
       {:stream_data, "~> 1.1", only: [:dev, :test]},
       {:swoosh, "~> 1.18"},
       {:tailwind, "~> 0.3", runtime: Mix.env() == :dev},
