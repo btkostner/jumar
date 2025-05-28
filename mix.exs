@@ -72,7 +72,7 @@ defmodule Jumar.MixProject do
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:doctor, "~> 0.22", only: [:dev, :test]},
       {:ecto_sql, "~> 3.12"},
-      {:esbuild, "~> 0.9", runtime: Mix.env() == :dev},
+      {:esbuild, "~> 0.10", runtime: Mix.env() == :dev},
       {:ex_doc, "~> 0.38", only: :dev, runtime: false},
       {:finch, "~> 0.19"},
       {:floki, "~> 0.37", only: :test},
