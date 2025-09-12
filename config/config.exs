@@ -7,19 +7,32 @@
 # General application configuration
 import Config
 
+config :jumar, :scopes,
+  user: [
+    default: true,
+    module: Jumar.Scope,
+    assign_key: :current_scope,
+    access_path: [:user, :id],
+    schema_key: :user_id,
+    schema_type: :binary_id,
+    schema_table: :users,
+    test_data_fixture: Jumar.AccountsFixtures,
+    test_setup_helper: :register_and_log_in_user
+  ]
+
 config :jumar, ecto_repos: [Jumar.Repo]
 
 config :jumar, :generators,
   binary_id: true,
+  migration_primary_key: [name: :uuid, type: :binary_id],
   migration_timestamps: [type: :utc_datetime],
-  sample_binary_id: "00000000-0000-0000-0000-000000000000"
+  sample_binary_id: "00000000-0000-0000-0000-000000000000",
+  timestamp_type: :utc_datetime
 
 # Configure the Database for better Cockroach support
 config :jumar, Jumar.Repo,
   after_connect: {Postgrex, :query!, ["SET SESSION application_name = \"Jumar\";", []]},
   migration_lock: false,
-  migration_primary_key: [name: :uuid, type: :binary_id],
-  migration_timestamps: [type: :utc_datetime],
   start_apps_before_migration: [:ssl],
   telemetry_prefix: [:repo]
 
@@ -46,30 +59,36 @@ config :jumar, Jumar.Mailer, adapter: Swoosh.Adapters.Local
 
 # Configure esbuild (the version is required)
 config :esbuild,
-  version: "0.14.41",
-  default: [
-    args:
-      ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
-    cd: Path.expand("../assets", __DIR__),
-    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
-  ]
+  jumar: [
+    args: ~w(
+      assets/js/app.js
+      --bundle
+      --target=es2022
+      --outdir=priv/static/assets/js
+      --external:assets/fonts/*
+      --external:assets/images/*
+      --alias:@=.
+    ),
+    cd: Path.expand("..", __DIR__),
+    env: %{"NODE_PATH" => [Path.expand("../deps", __DIR__), Mix.Project.build_path()]}
+  ],
+  version: "0.25.4"
 
 # Configure tailwind (the version is required)
 config :tailwind,
-  version: "3.2.4",
-  default: [
+  jumar: [
     args: ~w(
-      --config=tailwind.config.js
-      --input=css/app.css
-      --output=../priv/static/assets/app.css
+      --input=assets/css/app.css
+      --output=priv/static/assets/css/app.css
     ),
-    cd: Path.expand("../assets", __DIR__)
-  ]
+    cd: Path.expand("..", __DIR__)
+  ],
+  version: "4.1.7"
 
 # Configures Elixir's Logger
 config :logger, handle_otp_reports: true
 
-config :logger, :console,
+config :logger, :default_formatter,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 

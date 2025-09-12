@@ -87,3 +87,9 @@ Features marked with ✅ should be feature complete. Anything with 🟨 is a pla
 ## Documentation
 
 Documentation for this project is hosted at <https://jumar.btkostner.io>. It is built and published on every merge to the `main` branch.
+
+## License
+
+This project makes use of [Tailwind Plus](https://tailwindcss.com/plus), a paid commercial product. You **MUST** have a valid Tailwind Plus license to use this project. See the [Tailwind Plus license](https://tailwindcss.com/plus/license) for more information.
+
+Everything not under another license is licensed under the MIT License. See the [LICENSE](./LICENSE.md) file for more information.

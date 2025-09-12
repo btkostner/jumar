@@ -13,12 +13,12 @@ defmodule Jumar.MixProject do
       elixir: "~> 1.18",
       source_url: "https://github.com/btkostner/jumar",
       homepage_url: "https://jumar.btkostner.io",
-      compilers: [:boundary] ++ Mix.compilers(),
+      compilers: [:boundary, :phoenix_live_view] ++ Mix.compilers(),
+      listeners: [Phoenix.CodeReloader],
       releases: [{@app, release()}],
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       test_coverage: [summary: [threshold: 0]],
-      preferred_cli_env: elixir_envs(),
       aliases: aliases(),
       deps: deps(),
       docs: docs()
@@ -35,6 +35,17 @@ defmodule Jumar.MixProject do
     ]
   end
 
+  # Specific default environments for non standard commands.
+  def cli do
+    [
+      preferred_envs: [
+        benchmark: :test,
+        precommit: :test
+      ]
+    ]
+  end
+
+  # Configure mix release usage
   defp release do
     [
       applications: [runtime_tools: :permanent],
@@ -52,13 +63,6 @@ defmodule Jumar.MixProject do
   defp elixirc_paths(:test), do: ["lib", "benchmark/support", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
 
-  # Specific default environments for non standard commands.
-  defp elixir_envs do
-    [
-      benchmark: :test
-    ]
-  end
-
   # Specifies your project dependencies.
   #
   # Type `mix help deps` for examples and options.
@@ -72,21 +76,27 @@ defmodule Jumar.MixProject do
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:doctor, "~> 0.22", only: [:dev, :test]},
       {:ecto_sql, "~> 3.12"},
-      {:esbuild, "~> 0.9", runtime: Mix.env() == :dev},
+      {:esbuild, "~> 0.10", runtime: Mix.env() == :dev},
       {:ex_doc, "~> 0.38", only: :dev, runtime: false},
       {:finch, "~> 0.19"},
-      {:floki, "~> 0.37", only: :test},
       {:gen_stage, "~> 1.2"},
       {:gettext, "~> 0.26"},
-      {:heroicons, "~> 0.5"},
+      {:heroicons,
+       github: "tailwindlabs/heroicons",
+       tag: "v2.2.0",
+       sparse: "optimized",
+       app: false,
+       compile: false,
+       depth: 1},
       {:jason, "~> 1.4"},
+      {:lazy_html, ">= 0.0.0", only: :test},
       {:opentelemetry_semantic_conventions, "~> 1.27"},
-      {:phoenix, "~> 1.7"},
+      {:phoenix, "~> 1.8"},
       {:phoenix_ecto, "~> 4.6"},
       {:phoenix_html, "~> 4.2"},
       {:phoenix_live_dashboard, "~> 0.8"},
-      {:phoenix_live_reload, "~> 1.5", only: :dev},
-      {:phoenix_live_view, "~> 1.0"},
+      {:phoenix_live_reload, "~> 1.6", only: :dev},
+      {:phoenix_live_view, "~> 1.1"},
       {:postgrex, ">= 0.0.0"},
       {:remote_ip, "~> 1.2"},
       {:sobelow, "~> 0.14", only: [:dev, :test], runtime: false},
@@ -96,7 +106,8 @@ defmodule Jumar.MixProject do
       {:tailwind_formatter, "~> 0.4", only: :dev, runtime: false},
       {:telemetry, "~> 1.3"},
       {:telemetry_metrics, "~> 1.0"},
-      {:telemetry_poller, "~> 1.1"}
+      {:telemetry_poller, "~> 1.1"},
+      {:usage_rules, "~> 0.1", only: [:dev]}
     ]
   end
 
@@ -108,8 +119,12 @@ defmodule Jumar.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      "assets.build": ["tailwind default", "esbuild default"],
-      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"],
+      "assets.build": ["tailwind jumar", "esbuild jumar"],
+      "assets.deploy": [
+        "tailwind jumar --minify",
+        "esbuild jumar --minify",
+        "phx.digest"
+      ],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
@@ -120,7 +135,11 @@ defmodule Jumar.MixProject do
       ],
       docs: ["boundary.ex_doc_groups", "docs"],
       setup: ["deps.get", "ecto.setup", "assets.setup", "assets.build"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      "usage_rules.update": [
+        "usage_rules.sync AGENTS.md --all --inline usage_rules:all --link-to-folder deps"
+      ],
+      precommit: ["compile --warning-as-errors", "deps.unlock --unused", "format", "test"]
     ]
   end
 

@@ -13,6 +13,7 @@ defmodule JumarWeb.CoreComponents do
 
   use Gettext, backend: JumarWeb.Gettext
 
+  alias JumarWeb.ButtonComponents
   alias Phoenix.LiveView.JS
 
   @doc """
@@ -80,7 +81,7 @@ defmodule JumarWeb.CoreComponents do
                   class="-m-3 flex-none p-3 opacity-20 hover:opacity-40"
                   aria-label={gettext("close")}
                 >
-                  <Heroicons.x_mark solid class="h-5 w-5 stroke-current" />
+                  <.icon name="hero-x-mark-solid" class="h-5 w-5 stroke-current" />
                 </button>
               </div>
               <div id={"#{@id}-content"}>
@@ -98,7 +99,7 @@ defmodule JumarWeb.CoreComponents do
                 </header>
                 <%= render_slot(@inner_block) %>
                 <div :if={@confirm != [] or @cancel != []} class="mb-4 ml-6 flex items-center gap-5">
-                  <.button
+                  <ButtonComponents.button
                     :for={confirm <- @confirm}
                     id={"#{@id}-confirm"}
                     phx-click={@on_confirm}
@@ -106,7 +107,7 @@ defmodule JumarWeb.CoreComponents do
                     class="px-3 py-2"
                   >
                     <%= render_slot(confirm) %>
-                  </.button>
+                  </ButtonComponents.button>
                   <.link
                     :for={cancel <- @cancel}
                     phx-click={hide_modal(@on_cancel, @id)}
@@ -154,8 +155,8 @@ defmodule JumarWeb.CoreComponents do
       {@rest}
     >
       <p :if={@title} class="text-[0.8125rem] flex items-center gap-1.5 font-semibold leading-6">
-        <Heroicons.information_circle :if={@kind == :info} mini class="h-4 w-4" />
-        <Heroicons.exclamation_circle :if={@kind == :error} mini class="h-4 w-4" />
+        <.icon name="hero-information-circle-mini" :if={@kind == :info} class="h-4 w-4" />
+        <.icon name="hero-exclamation-circle-mini" :if={@kind == :error} class="h-4 w-4" />
         <%= @title %>
       </p>
       <p class="text-[0.8125rem] mt-2 leading-5"><%= msg %></p>
@@ -165,7 +166,7 @@ defmodule JumarWeb.CoreComponents do
         class="group absolute top-2 right-1 p-2"
         aria-label={gettext("close")}
       >
-        <Heroicons.x_mark solid class="h-5 w-5 stroke-current opacity-40 group-hover:opacity-70" />
+        <.icon name="hero-x-mark-solid" class="h-5 w-5 stroke-current opacity-40 group-hover:opacity-70" />
       </button>
     </div>
     """
@@ -193,7 +194,7 @@ defmodule JumarWeb.CoreComponents do
       phx-disconnected={show("#disconnected")}
       phx-connected={hide("#disconnected")}
     >
-      Attempting to reconnect <Heroicons.arrow_path class="ml-1 inline h-3 w-3 animate-spin" />
+      Attempting to reconnect <.icon name="hero-arrow-path" class="ml-1 inline h-3 w-3 animate-spin" />
     </.flash>
     """
   end
@@ -231,32 +232,6 @@ defmodule JumarWeb.CoreComponents do
         </div>
       </div>
     </.form>
-    """
-  end
-
-  @doc """
-  Renders a button.
-
-  ## Examples
-
-      <.button>Send!</.button>
-      <.button phx-click="go" class="ml-2">Send!</.button>
-  """
-  attr :type, :string, default: nil
-  attr :class, :string, default: nil
-  attr :rest, :global, include: ~w(disabled form name value)
-
-  slot :inner_block, required: true
-
-  def button(assigns) do
-    ~H"""
-    <button
-      type={@type}
-      class={["rounded-lg bg-zinc-900 px-3 py-2 hover:bg-zinc-700 phx-submit-loading:opacity-75", "text-sm font-semibold leading-6 text-white active:text-white/80", @class]}
-      {@rest}
-    >
-      <%= render_slot(@inner_block) %>
-    </button>
     """
   end
 
@@ -308,8 +283,8 @@ defmodule JumarWeb.CoreComponents do
       assign_new(assigns, :checked, fn -> Phoenix.HTML.Form.normalize_value("checkbox", value) end)
 
     ~H"""
-    <div phx-feedback-for={@name}>
-      <label class="flex items-center gap-4 text-sm leading-6 text-zinc-600">
+    <div phx-feedback-for={@name} class="my-4">
+      <label class="flex items-center gap-4 text-sm leading-6 text-zinc-600 dark:text-zinc-200">
         <input type="hidden" name={@name} value="false" />
         <input
           type="checkbox"
@@ -329,7 +304,7 @@ defmodule JumarWeb.CoreComponents do
 
   def input(%{type: "select"} = assigns) do
     ~H"""
-    <div phx-feedback-for={@name}>
+    <div phx-feedback-for={@name} class="my-4">
       <.label for={@id}><%= @label %></.label>
       <select
         id={@id}
@@ -348,7 +323,7 @@ defmodule JumarWeb.CoreComponents do
 
   def input(%{type: "textarea"} = assigns) do
     ~H"""
-    <div phx-feedback-for={@name}>
+    <div phx-feedback-for={@name} class="my-4">
       <.label for={@id}><%= @label %></.label>
       <textarea
         id={@id || @name}
@@ -363,14 +338,14 @@ defmodule JumarWeb.CoreComponents do
 
   def input(assigns) do
     ~H"""
-    <div phx-feedback-for={@name}>
+    <div phx-feedback-for={@name} class="my-4">
       <.label for={@id}><%= @label %></.label>
       <input
         type={@type}
         name={@name}
         id={@id || @name}
         value={Phoenix.HTML.Form.normalize_value(@type, @value)}
-        class={["py-[7px] px-[11px] mt-2 block w-full rounded-lg border-zinc-300", "text-zinc-900 focus:outline-none focus:ring-4 sm:text-sm sm:leading-6", "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:ring-zinc-800/5 phx-no-feedback:focus:border-zinc-400", "border-zinc-300 focus:ring-zinc-800/5 focus:border-zinc-400", @errors != [] && "border-rose-400 focus:ring-rose-400/10 focus:border-rose-400"]}
+        class={["-outline-offset-1 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:-outline-offset-2 focus:outline-2 focus:outline-orange-600 dark:bg-white/5 dark:outline-white/10 dark:text-white dark:placeholder:text-gray-500 dark:focus:outline-orange-500 sm:text-sm/6", "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:ring-zinc-800/5 phx-no-feedback:focus:border-zinc-400 dark:phx-no-feedback:focus:ring-zinc-200/5 dark:phx-no-feedback:focus:border-zinc-600", "border-zinc-300 focus:ring-zinc-800/5 focus:border-zinc-400 dark:border-zinc-700 dark:focus:ring-zinc-300/5", @errors != [] && "border-rose-400 focus:ring-rose-400/10 focus:border-rose-400"]}
         {@rest}
       />
       <.error :for={msg <- @errors}><%= msg %></.error>
@@ -386,7 +361,7 @@ defmodule JumarWeb.CoreComponents do
 
   def label(assigns) do
     ~H"""
-    <label for={@for} class="block text-sm font-semibold leading-6 text-zinc-800">
+    <label for={@for} class="text-sm/6 block font-medium dark:text-white">
       <%= render_slot(@inner_block) %>
     </label>
     """
@@ -400,7 +375,7 @@ defmodule JumarWeb.CoreComponents do
   def error(assigns) do
     ~H"""
     <p class="mt-3 flex gap-3 text-sm leading-6 text-rose-600 phx-no-feedback:hidden">
-      <Heroicons.exclamation_circle mini class="mt-0.5 h-5 w-5 flex-none fill-rose-500" />
+      <.icon name="hero-exclamation-circle-mini" class="mt-0.5 h-5 w-5 flex-none fill-rose-500" />
       <%= render_slot(@inner_block) %>
     </p>
     """
@@ -419,10 +394,10 @@ defmodule JumarWeb.CoreComponents do
     ~H"""
     <header class={[@actions != [] && "flex items-center justify-between gap-6", @class]}>
       <div>
-        <h1 class="text-lg font-semibold leading-8 text-zinc-800">
+        <h1 class="text-lg font-semibold leading-8 text-zinc-800 dark:text-zinc-100">
           <%= render_slot(@inner_block) %>
         </h1>
-        <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-zinc-600">
+        <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-zinc-600 dark:text-zinc-200">
           <%= render_slot(@subtitle) %>
         </p>
       </div>
@@ -551,10 +526,37 @@ defmodule JumarWeb.CoreComponents do
         navigate={@navigate}
         class="text-sm font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
       >
-        <Heroicons.arrow_left solid class="inline h-3 w-3 stroke-current" />
+        <.icon name="hero-arrow-left-solid" class="inline h-3 w-3 stroke-current" />
         <%= render_slot(@inner_block) %>
       </.link>
     </div>
+    """
+  end
+
+  @doc """
+  Renders a [Heroicon](https://heroicons.com).
+
+  Heroicons come in three styles – outline, solid, and mini.
+  By default, the outline style is used, but solid and mini may
+  be applied by using the `-solid` and `-mini` suffix.
+
+  You can customize the size and colors of the icons by setting
+  width, height, and background color classes.
+
+  Icons are extracted from the `deps/heroicons` directory and bundled within
+  your compiled app.css by the plugin in `assets/vendor/heroicons.js`.
+
+  ## Examples
+
+      <.icon name="hero-x-mark" />
+      <.icon name="hero-arrow-path" class="ml-1 size-3 motion-safe:animate-spin" />
+  """
+  attr :name, :string, required: true
+  attr :class, :string, default: "size-4"
+
+  def icon(%{name: "hero-" <> _} = assigns) do
+    ~H"""
+    <span class={[@name, @class]} data-slot="icon" />
     """
   end
 

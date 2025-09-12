@@ -1,0 +1,52 @@
+<JumarWeb.MarketingLayout.marketing_layout flash={@flash} current_scope={@current_scope}>
+  <h2>Button Colors</h2>
+  <div class="flex flex-wrap gap-4">
+    <JumarWeb.ButtonComponents.button color="dark/zinc">dark/zinc</JumarWeb.ButtonComponents.button>
+    <JumarWeb.ButtonComponents.button color="light">light</JumarWeb.ButtonComponents.button>
+    <JumarWeb.ButtonComponents.button color="dark/white">dark/white</JumarWeb.ButtonComponents.button>
+    <JumarWeb.ButtonComponents.button color="dark">dark</JumarWeb.ButtonComponents.button>
+    <JumarWeb.ButtonComponents.button color="white">white</JumarWeb.ButtonComponents.button>
+    <JumarWeb.ButtonComponents.button color="zinc">zinc</JumarWeb.ButtonComponents.button>
+    <JumarWeb.ButtonComponents.button color="indigo">indigo</JumarWeb.ButtonComponents.button>
+    <JumarWeb.ButtonComponents.button color="cyan">cyan</JumarWeb.ButtonComponents.button>
+    <JumarWeb.ButtonComponents.button color="red">red</JumarWeb.ButtonComponents.button>
+    <JumarWeb.ButtonComponents.button color="orange">orange</JumarWeb.ButtonComponents.button>
+    <JumarWeb.ButtonComponents.button color="amber">amber</JumarWeb.ButtonComponents.button>
+    <JumarWeb.ButtonComponents.button color="yellow">yellow</JumarWeb.ButtonComponents.button>
+    <JumarWeb.ButtonComponents.button color="lime">lime</JumarWeb.ButtonComponents.button>
+    <JumarWeb.ButtonComponents.button color="green">green</JumarWeb.ButtonComponents.button>
+    <JumarWeb.ButtonComponents.button color="emerald">emerald</JumarWeb.ButtonComponents.button>
+    <JumarWeb.ButtonComponents.button color="teal">teal</JumarWeb.ButtonComponents.button>
+    <JumarWeb.ButtonComponents.button color="sky">sky</JumarWeb.ButtonComponents.button>
+    <JumarWeb.ButtonComponents.button color="blue">blue</JumarWeb.ButtonComponents.button>
+    <JumarWeb.ButtonComponents.button color="violet">violet</JumarWeb.ButtonComponents.button>
+    <JumarWeb.ButtonComponents.button color="purple">purple</JumarWeb.ButtonComponents.button>
+    <JumarWeb.ButtonComponents.button color="fuchsia">fuchsia</JumarWeb.ButtonComponents.button>
+    <JumarWeb.ButtonComponents.button color="pink">pink</JumarWeb.ButtonComponents.button>
+    <JumarWeb.ButtonComponents.button color="rose">rose</JumarWeb.ButtonComponents.button>
+  </div>
+
+  <h2>Outline Button Colors</h2>
+  <div class="flex flex-wrap gap-4">
+    <JumarWeb.ButtonComponents.button outline>outline</JumarWeb.ButtonComponents.button>
+  </div>
+
+  <h2>Plain Button Colors</h2>
+  <div class="flex flex-wrap gap-4">
+    <JumarWeb.ButtonComponents.button plain>plain</JumarWeb.ButtonComponents.button>
+  </div>
+
+  <h2>Modals</h2>
+  <div>
+    <button phx-click={JumarWeb.ModalComponents.show_modal("test-dialog")}>
+      Show Modal
+    </button>
+
+    <JumarWeb.ModalComponents.modal id="test-dialog" on_cancel={JS.add_class("bg-black", to: "body")}>
+      <:title>Demo Alert</:title>
+      This is a demo alert component. You can customize the content and actions.
+      <:cancel>Close</:cancel>
+      <:confirm>Confirm</:confirm>
+    </JumarWeb.ModalComponents.modal>
+  </div>
+</JumarWeb.MarketingLayout.marketing_layout>
