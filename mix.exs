@@ -77,7 +77,7 @@ defmodule Jumar.MixProject do
       {:finch, "~> 0.20"},
       {:floki, "~> 0.38", only: :test},
       {:gen_stage, "~> 1.2"},
-      {:gettext, "~> 0.26"},
+      {:gettext, "~> 1.0"},
       {:heroicons, "~> 0.5"},
       {:jason, "~> 1.4"},
       {:opentelemetry_semantic_conventions, "~> 1.27"},
