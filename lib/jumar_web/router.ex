@@ -17,7 +17,7 @@ defmodule JumarWeb.Router do
         Enum.join(
           [
             "default-src 'self'",
-            "img-src 'self' data:",
+            "img-src 'self' data: https://www.gravatar.com",
             "style-src 'self' 'unsafe-inline'",
             "script-src 'self' 'sha256-S1Sne09edf8uhvsPo+itNfbi9dDte7VsfQkNbcGAd4I='"
           ],

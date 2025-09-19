@@ -1,9 +1,10 @@
 defmodule JumarWeb.UserLive.SettingsTest do
   use JumarWeb.ConnCase, async: true
 
-  alias Jumar.Accounts
   import Phoenix.LiveViewTest
   import Jumar.AccountsFixtures
+
+  alias Jumar.Accounts
 
   describe "Settings page" do
     test "renders settings page", %{conn: conn} do

@@ -8,6 +8,35 @@ defmodule JumarWeb.AvatarComponents do
   import JumarWeb.ButtonComponents, only: [touch_target: 1]
 
   @doc """
+  Renders an avatar image based on gravatar email address.
+
+  This component displays a circular or square avatar.
+
+  ## Examples
+
+      <.gravatar email="test@example.com" />
+  """
+  attr :email, :string, required: true
+  attr :size, :string, default: "64"
+  attr :square, :boolean, default: false
+  attr :class, :string, default: nil
+  attr :rest, :global
+
+  def gravatar(assigns) do
+    hash =
+      :crypto.hash(:sha256, String.downcase(String.trim(assigns.email)))
+      |> Base.encode16(case: :lower)
+
+    url = "https://www.gravatar.com/avatar/#{hash}?s=#{assigns.size}&d=identicon"
+
+    assigns = assign(assigns, hash: hash, url: url)
+
+    ~H"""
+    <.avatar src={@url} square={@square} alt={"Avatar for #{@email}"} class={@class} {@rest} />
+    """
+  end
+
+  @doc """
   Renders an avatar image or initials.
 
   This component displays a circular or square avatar. It can show an image from a given `src` URL, or display initials if no `src` is provided.

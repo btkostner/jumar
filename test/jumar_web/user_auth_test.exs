@@ -1,12 +1,12 @@
 defmodule JumarWeb.UserAuthTest do
   use JumarWeb.ConnCase, async: true
 
-  alias Phoenix.LiveView
-  alias Jumar.Accounts
-  alias Jumar.Accounts.Scope
-  alias JumarWeb.UserAuth
-
   import Jumar.AccountsFixtures
+
+  alias Jumar.Accounts
+  alias Jumar.Scope
+  alias JumarWeb.UserAuth
+  alias Phoenix.LiveView
 
   @remember_me_cookie "_jumar_web_user_remember_me"
   @remember_me_cookie_max_age 60 * 60 * 24 * 14

@@ -8,7 +8,7 @@ defmodule JumarWeb.UserLive.Confirmation do
     ~H"""
     <JumarWeb.AuthLayout.auth_layout flash={@flash} current_scope={@current_scope}>
       <div class="mx-auto max-w-sm">
-        <div class="text-center">
+        <div class="mb-8 text-center">
           <.header>Welcome {@user.email}</.header>
         </div>
 

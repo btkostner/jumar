@@ -2,6 +2,7 @@ defmodule JumarWeb.UserSessionControllerTest do
   use JumarWeb.ConnCase, async: true
 
   import Jumar.AccountsFixtures
+
   alias Jumar.Accounts
 
   setup do

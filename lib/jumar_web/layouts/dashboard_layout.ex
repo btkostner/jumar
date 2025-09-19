@@ -6,6 +6,7 @@ defmodule JumarWeb.DashboardLayout do
   use JumarWeb, :verified_routes
   use Phoenix.Component
 
+  import JumarWeb.AvatarComponents, only: [gravatar: 1]
   import JumarWeb.ButtonComponents, only: [touch_target: 1]
   import JumarWeb.CoreComponents, only: [flash_group: 1]
 
@@ -110,7 +111,8 @@ defmodule JumarWeb.DashboardLayout do
       <div class="border-zinc-950/5 [&>[data-slot=section]+[data-slot=section]]:mt-2.5 flex flex-col border-t p-4 dark:border-white/5">
         <el-dropdown>
           <.sidebar_item>
-            {@current_scope.user.email}
+            <.gravatar email={@current_scope.user.email} size="48" />
+            <span>{@current_scope.user.email}</span>
           </.sidebar_item>
 
           <el-menu anchor="top start" popover class="outline-black/5 transition-discrete [--anchor-gap:--spacing(2)] w-56 origin-top-right rounded-md bg-white shadow-lg outline-1 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
