@@ -9,7 +9,7 @@ defmodule JumarWeb.UserLive.Settings do
   def render(assigns) do
     ~H"""
     <JumarWeb.DashboardLayout.dashboard_layout flash={@flash} current_scope={@current_scope}>
-      <div class="max-w-2xl mx-auto">
+      <div class="mx-auto max-w-2xl">
         <div class="mb-8 text-center">
           <.header>
             Account Settings
@@ -28,7 +28,7 @@ defmodule JumarWeb.UserLive.Settings do
           <.button color="orange" phx-disable-with="Changing...">Change Email</.button>
         </.form>
 
-        <div class="py-4 divider" />
+        <div class="divider py-4" />
 
         <.form
           for={@password_form}

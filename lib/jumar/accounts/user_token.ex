@@ -1,4 +1,10 @@
 defmodule Jumar.Accounts.UserToken do
+  @moduledoc """
+  Any cryptographicly secure token that is associated with a user.
+  This can be for password resets, logins, email confirmations,
+  or other activities.
+  """
+
   use Ecto.Schema
 
   import Ecto.Query

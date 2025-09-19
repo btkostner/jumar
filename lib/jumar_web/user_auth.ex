@@ -1,4 +1,8 @@
 defmodule JumarWeb.UserAuth do
+  @moduledoc """
+  Handles user authentication, session management, and "remember me" functionality.
+  """
+
   use JumarWeb, :verified_routes
 
   import Plug.Conn

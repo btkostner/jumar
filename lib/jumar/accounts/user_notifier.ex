@@ -1,8 +1,12 @@
 defmodule Jumar.Accounts.UserNotifier do
+  @moduledoc """
+  Email sending functionality for user accounts.
+  """
+
   import Swoosh.Email
 
-  alias Jumar.Mailer
   alias Jumar.Accounts.User
+  alias Jumar.Mailer
 
   # Delivers the email using the application mailer.
   defp deliver(recipient, subject, body) do

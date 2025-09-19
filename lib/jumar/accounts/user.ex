@@ -1,4 +1,8 @@
 defmodule Jumar.Accounts.User do
+  @moduledoc """
+  Database schema for each individual registered user account.
+  """
+
   use Ecto.Schema
 
   import Ecto.Changeset
