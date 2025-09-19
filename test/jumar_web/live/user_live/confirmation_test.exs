@@ -28,8 +28,11 @@ defmodule JumarWeb.UserLive.ConfirmationTest do
         end)
 
       {:ok, _lv, html} = live(conn, ~p"/users/log-in/#{token}")
-      refute html =~ "Confirm my account"
-      assert html =~ "Log in"
+
+      refute html =~ "Confirm and stay logged in"
+      refute html =~ "Confirm and log in only this time"
+      assert html =~ "Keep me logged in on this device"
+      assert html =~ "Log me in only this time"
     end
 
     test "confirms the given token once", %{conn: conn, unconfirmed_user: user} do

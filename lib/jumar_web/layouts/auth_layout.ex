@@ -6,6 +6,8 @@ defmodule JumarWeb.AuthLayout do
 
   use Phoenix.Component
 
+  import JumarWeb.CoreComponents, only: [flash_group: 1]
+
   @doc """
   Renders the auth layout.
 
@@ -27,6 +29,8 @@ defmodule JumarWeb.AuthLayout do
   def auth_layout(assigns) do
     ~H"""
     <main class="min-h-dvh flex grow items-center justify-center p-6 lg:p-10">
+      <.flash_group flash={@flash} />
+
       {render_slot(@inner_block)}
     </main>
     """

@@ -10,7 +10,7 @@ defmodule Jumar.AccountsFixtures do
   alias Jumar.Scope
 
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
-  def valid_user_password, do: "hello world!"
+  def valid_user_password, do: "h3ll0 worlD!!!"
 
   def valid_user_attributes(attrs \\ %{}) do
     Enum.into(attrs, %{
@@ -50,9 +50,9 @@ defmodule Jumar.AccountsFixtures do
     Scope.for_user(user)
   end
 
-  def set_password(user) do
+  def set_password(user, password \\ valid_user_password()) do
     {:ok, {user, _expired_tokens}} =
-      Accounts.update_user_password(user, %{password: valid_user_password()})
+      Accounts.update_user_password(user, %{password: password})
 
     user
   end
