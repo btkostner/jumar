@@ -5,8 +5,6 @@ defmodule JumarWeb.DialogComponents do
 
   use Phoenix.Component
 
-  import JumarWeb.TextComponents
-
   @sizes %{
     "xs" => "sm:max-w-xs",
     "sm" => "sm:max-w-sm",
@@ -29,11 +27,11 @@ defmodule JumarWeb.DialogComponents do
     ~H"""
     <div
       :if={@show}
-      {@rest}
       class={["fixed inset-0 z-50 overflow-y-auto", @class]}
       aria-labelledby="dialog-title"
       role="dialog"
       aria-modal="true"
+      {@rest}
     >
       <div class="bg-zinc-950/25 fixed inset-0 dark:bg-zinc-950/50" />
       <div class="fixed inset-0 w-screen overflow-y-auto pt-6 sm:pt-0">
@@ -57,8 +55,8 @@ defmodule JumarWeb.DialogComponents do
     ~H"""
     <h2
       id="dialog-title"
-      {@rest}
       class={["text-lg/6 text-balance font-semibold text-zinc-950 dark:text-white sm:text-base/6", @class]}
+      {@rest}
     >
       <%= render_slot(@inner_block) %>
     </h2>
@@ -71,9 +69,9 @@ defmodule JumarWeb.DialogComponents do
 
   def dialog_description(assigns) do
     ~H"""
-    <.text {@rest} class={Enum.join(["text-pretty mt-2", @class], "  ")}>
+    <p class={["text-base/6 text-zinc-500 dark:text-zinc-400 sm:text-sm/6 text-pretty mt-2", @class]} {@rest}>
       <%= render_slot(@inner_block) %>
-    </.text>
+    </p>
     """
   end
 
@@ -83,7 +81,7 @@ defmodule JumarWeb.DialogComponents do
 
   def dialog_body(assigns) do
     ~H"""
-    <div {@rest} class={["mt-6", @class]}>
+    <div class={["mt-6", @class]} {@rest}>
       <%= render_slot(@inner_block) %>
     </div>
     """
@@ -96,8 +94,8 @@ defmodule JumarWeb.DialogComponents do
   def dialog_actions(assigns) do
     ~H"""
     <div
-      {@rest}
       class={["mt-8 flex flex-col-reverse items-center justify-end gap-3 *:w-full sm:flex-row sm:*:w-auto", @class]}
+      {@rest}
     >
       <%= render_slot(@inner_block) %>
     </div>
