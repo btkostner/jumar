@@ -35,7 +35,6 @@ defmodule JumarWeb.Router do
   scope "/", JumarWeb do
     pipe_through :browser
 
-    get "/components", MarketingController, :components
     get "/", MarketingController, :home
   end
 
