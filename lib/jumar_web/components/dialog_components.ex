@@ -69,7 +69,7 @@ defmodule JumarWeb.DialogComponents do
 
   def dialog_description(assigns) do
     ~H"""
-    <p class={["text-base/6 text-zinc-500 dark:text-zinc-400 sm:text-sm/6 text-pretty mt-2", @class]} {@rest}>
+    <p class={["text-base/6 text-pretty mt-2 text-zinc-500 dark:text-zinc-400 sm:text-sm/6", @class]} {@rest}>
       <%= render_slot(@inner_block) %>
     </p>
     """
