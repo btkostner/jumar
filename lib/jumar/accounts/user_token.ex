@@ -11,6 +11,22 @@ defmodule Jumar.Accounts.UserToken do
 
   alias Jumar.Accounts.UserToken
 
+  @typedoc "Opaque binary data stored alongside the token."
+  @type context :: binary()
+
+  @typedoc "Cryptographically secure binary token."
+  @type token :: binary()
+
+  @type t :: %__MODULE__{
+          __meta__: Ecto.Schema.Metadata.t(),
+          id: Jumar.Types.TypeId.t() | nil,
+          token: token() | nil,
+          context: context() | nil,
+          sent_to: String.t() | nil,
+          user: User.t() | Ecto.Association.NotLoaded.t() | nil,
+          inserted_at: DateTime.t() | nil
+        }
+
   @hash_algorithm :sha256
   @rand_size 32
 
@@ -20,15 +36,17 @@ defmodule Jumar.Accounts.UserToken do
   @change_email_validity_in_days 7
   @session_validity_in_days 14
 
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
+  @primary_key {:id, Jumar.Types.TypeId, autogenerate: true, prefix: "token"}
+  @foreign_key_type Jumar.Types.TypeId
+  @timestamps_opts [type: :utc_datetime]
 
   schema "users_tokens" do
     field :token, :binary
     field :context, :string
     field :sent_to, :string
     field :authenticated_at, :utc_datetime
-    belongs_to :user, Jumar.Accounts.User
+
+    belongs_to :user, Jumar.Accounts.User, prefix: "user"
 
     timestamps(type: :utc_datetime, updated_at: false)
   end

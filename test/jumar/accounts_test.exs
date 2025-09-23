@@ -39,7 +39,7 @@ defmodule Jumar.AccountsTest do
   describe "get_user!/1" do
     test "raises if id is invalid" do
       assert_raise Ecto.NoResultsError, fn ->
-        Accounts.get_user!("00000000-0000-0000-0000-000000000000")
+        Accounts.get_user!("user_00000000000000000000000000")
       end
     end
 

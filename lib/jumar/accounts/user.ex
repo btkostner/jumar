@@ -7,8 +7,20 @@ defmodule Jumar.Accounts.User do
 
   import Ecto.Changeset
 
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
+  @type t :: %__MODULE__{
+          __meta__: Ecto.Schema.Metadata.t(),
+          id: Jumar.Types.TypeId.t() | nil,
+          email: String.t() | nil,
+          password: String.t() | nil,
+          hashed_password: String.t() | nil,
+          confirmed_at: DateTime.t() | nil,
+          inserted_at: DateTime.t() | nil,
+          updated_at: DateTime.t() | nil
+        }
+
+  @primary_key {:id, Jumar.Types.TypeId, autogenerate: true, prefix: "user"}
+  @foreign_key_type Jumar.Types.TypeId
+  @timestamps_opts [type: :utc_datetime]
 
   schema "users" do
     field :email, :string
