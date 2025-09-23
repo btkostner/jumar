@@ -11,7 +11,7 @@ defmodule JumarWeb.AlertComponents do
   ## Examples
 
       <.alert title="Error">
-        <p>An error has occured!</p>
+        <p>An error has occurred!</p>
       </.alert>
   """
   attr :title, :string

@@ -47,7 +47,7 @@ defmodule JumarWeb.UserLive.Confirmation do
           phx-trigger-action={@trigger_submit}
         >
           <input type="hidden" name={@form[:token].name} value={@form[:token].value} />
-          <%= if @current_scope do %>
+          <%= if @current_scope.user do %>
             <.button phx-disable-with="Logging in..." class="btn btn-primary w-full">
               Log in
             </.button>

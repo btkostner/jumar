@@ -86,7 +86,7 @@ defmodule JumarWeb.MarketingLayout do
             </button>
           </div>
           <div class="hidden lg:flex lg:gap-x-4">
-            <%= if @current_scope do %>
+            <%= if @current_scope.user do %>
               <.link
                 href={~p"/users/log-out"}
                 method="delete"
@@ -163,7 +163,7 @@ defmodule JumarWeb.MarketingLayout do
                     </a>
                   </div>
                   <div class="py-6">
-                    <%= if @current_scope do %>
+                    <%= if @current_scope.user do %>
                       <.link href={~p"/users/settings"} class="text-base/7 -mx-3 block rounded-lg px-3 py-2.5 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">
                         Profile
                       </.link>

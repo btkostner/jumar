@@ -180,7 +180,7 @@ defmodule JumarWeb.UserAuthTest do
       _ = Accounts.generate_user_session_token(user)
       conn = UserAuth.fetch_current_scope_for_user(conn, [])
       refute get_session(conn, :user_token)
-      refute conn.assigns.current_scope
+      refute conn.assigns.current_scope.user
     end
 
     test "reissues a new token after a few days and refreshes cookie", %{conn: conn, user: user} do
@@ -225,23 +225,23 @@ defmodule JumarWeb.UserAuthTest do
       assert updated_socket.assigns.current_scope.user.id == user.id
     end
 
-    test "assigns nil to current_scope assign if there isn't a valid user_token", %{conn: conn} do
+    test "assigns nil to current_scope user if there isn't a valid user_token", %{conn: conn} do
       user_token = "invalid_token"
       session = conn |> put_session(:user_token, user_token) |> get_session()
 
       {:cont, updated_socket} =
         UserAuth.on_mount(:mount_current_scope, %{}, session, %LiveView.Socket{})
 
-      assert updated_socket.assigns.current_scope == nil
+      assert updated_socket.assigns.current_scope.user == nil
     end
 
-    test "assigns nil to current_scope assign if there isn't a user_token", %{conn: conn} do
+    test "assigns nil to current_scope user if there isn't a user_token", %{conn: conn} do
       session = conn |> get_session()
 
       {:cont, updated_socket} =
         UserAuth.on_mount(:mount_current_scope, %{}, session, %LiveView.Socket{})
 
-      assert updated_socket.assigns.current_scope == nil
+      assert updated_socket.assigns.current_scope.user == nil
     end
   end
 
@@ -266,7 +266,7 @@ defmodule JumarWeb.UserAuthTest do
       }
 
       {:halt, updated_socket} = UserAuth.on_mount(:require_authenticated, %{}, session, socket)
-      assert updated_socket.assigns.current_scope == nil
+      assert updated_socket.assigns.current_scope.user == nil
     end
 
     test "redirects to login page if there isn't a user_token", %{conn: conn} do
@@ -278,7 +278,7 @@ defmodule JumarWeb.UserAuthTest do
       }
 
       {:halt, updated_socket} = UserAuth.on_mount(:require_authenticated, %{}, session, socket)
-      assert updated_socket.assigns.current_scope == nil
+      assert updated_socket.assigns.current_scope.user == nil
     end
   end
 
