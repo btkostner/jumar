@@ -1,4 +1,6 @@
 defmodule JumarWeb.UserLive.Confirmation do
+  @doc false
+
   use JumarWeb, :live_view
 
   alias Jumar.Accounts

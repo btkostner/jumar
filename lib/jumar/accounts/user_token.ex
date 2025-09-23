@@ -9,6 +9,7 @@ defmodule Jumar.Accounts.UserToken do
 
   import Ecto.Query
 
+  alias Jumar.Accounts.User
   alias Jumar.Accounts.UserToken
 
   @typedoc "Opaque binary data stored alongside the token."
@@ -46,7 +47,7 @@ defmodule Jumar.Accounts.UserToken do
     field :sent_to, :string
     field :authenticated_at, :utc_datetime
 
-    belongs_to :user, Jumar.Accounts.User, prefix: "user"
+    belongs_to :user, User, prefix: "user"
 
     timestamps(type: :utc_datetime, updated_at: false)
   end

@@ -1,4 +1,6 @@
 defmodule JumarWeb.UserLive.Settings do
+  @doc false
+
   use JumarWeb, :live_view
 
   on_mount {JumarWeb.UserAuth, :require_sudo_mode}

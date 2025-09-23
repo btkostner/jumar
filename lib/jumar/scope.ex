@@ -18,6 +18,10 @@ defmodule Jumar.Scope do
 
   alias Jumar.Accounts.User
 
+  @type t :: %__MODULE__{
+          user: User.t() | nil
+        }
+
   defstruct user: nil
 
   @doc """
@@ -25,9 +29,10 @@ defmodule Jumar.Scope do
 
   Returns nil if no user is given.
   """
+  @spec for_user(User.t() | nil) :: t()
   def for_user(%User{} = user) do
     %__MODULE__{user: user}
   end
 
-  def for_user(nil), do: nil
+  def for_user(nil), do: %__MODULE__{}
 end
