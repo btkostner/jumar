@@ -146,7 +146,7 @@ defmodule Jumar.MixProject do
   # ExUnit documentation
   defp docs do
     [
-      assets: "docs/assets",
+      assets: %{"docs/assets" => "assets"},
       canonical: "https://jumar.btkostner.io",
       extras: extras(),
       formatters: ["html", "epub"],
@@ -162,6 +162,7 @@ defmodule Jumar.MixProject do
   defp extras do
     [
       "README.md",
+      "LICENSE.md",
       "CHANGELOG.md",
       "docs/database.md",
       "docs/deployment.md",
@@ -175,6 +176,7 @@ defmodule Jumar.MixProject do
     [
       Introduction: [
         "README.md",
+        "LICENSE.md",
         "CHANGELOG.md",
         "docs/development.md",
         "docs/deployment.md"

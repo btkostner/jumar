@@ -1,6 +1,6 @@
-# MIT License (MIT)
+# License
 
----
+MIT License (MIT)
 
 - **Copyright © 2025 Blake Kostner**
 
