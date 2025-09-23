@@ -1,9 +1,10 @@
-defmodule JumarWeb.UserSettingsLiveTest do
+defmodule JumarWeb.UserLive.SettingsTest do
   use JumarWeb.ConnCase, async: true
 
-  alias Jumar.Accounts
   import Phoenix.LiveViewTest
   import Jumar.AccountsFixtures
+
+  alias Jumar.Accounts
 
   describe "Settings page" do
     test "renders settings page", %{conn: conn} do
@@ -13,26 +14,37 @@ defmodule JumarWeb.UserSettingsLiveTest do
         |> live(~p"/users/settings")
 
       assert html =~ "Change Email"
-      assert html =~ "Change Password"
+      assert html =~ "Save Password"
     end
 
     test "redirects if user is not logged in", %{conn: conn} do
       assert {:error, redirect} = live(conn, ~p"/users/settings")
 
       assert {:redirect, %{to: path, flash: flash}} = redirect
-      assert path == ~p"/users/log_in"
+      assert path == ~p"/users/log-in"
       assert %{"error" => "You must log in to access this page."} = flash
+    end
+
+    test "redirects if user is not in sudo mode", %{conn: conn} do
+      {:ok, conn} =
+        conn
+        |> log_in_user(user_fixture(),
+          token_authenticated_at: DateTime.add(DateTime.utc_now(:second), -11, :minute)
+        )
+        |> live(~p"/users/settings")
+        |> follow_redirect(conn, ~p"/users/log-in")
+
+      assert conn.resp_body =~ "You must re-authenticate to access this page."
     end
   end
 
   describe "update email form" do
     setup %{conn: conn} do
-      password = valid_user_password()
-      user = user_fixture(%{password: password})
-      %{conn: log_in_user(conn, user), user: user, password: password}
+      user = user_fixture()
+      %{conn: log_in_user(conn, user), user: user}
     end
 
-    test "updates the user email", %{conn: conn, password: password, user: user} do
+    test "updates the user email", %{conn: conn, user: user} do
       new_email = unique_user_email()
 
       {:ok, lv, _html} = live(conn, ~p"/users/settings")
@@ -40,7 +52,6 @@ defmodule JumarWeb.UserSettingsLiveTest do
       result =
         lv
         |> form("#email_form", %{
-          "current_password" => password,
           "user" => %{"email" => new_email}
         })
         |> render_submit()
@@ -57,7 +68,6 @@ defmodule JumarWeb.UserSettingsLiveTest do
         |> element("#email_form")
         |> render_change(%{
           "action" => "update_email",
-          "current_password" => "invalid",
           "user" => %{"email" => "with spaces"}
         })
 
@@ -71,32 +81,28 @@ defmodule JumarWeb.UserSettingsLiveTest do
       result =
         lv
         |> form("#email_form", %{
-          "current_password" => "invalid",
           "user" => %{"email" => user.email}
         })
         |> render_submit()
 
       assert result =~ "Change Email"
       assert result =~ "did not change"
-      assert result =~ "is not valid"
     end
   end
 
   describe "update password form" do
     setup %{conn: conn} do
-      password = valid_user_password()
-      user = user_fixture(%{password: password})
-      %{conn: log_in_user(conn, user), user: user, password: password}
+      user = user_fixture()
+      %{conn: log_in_user(conn, user), user: user}
     end
 
-    test "updates the user password", %{conn: conn, user: user, password: password} do
+    test "updates the user password", %{conn: conn, user: user} do
       new_password = valid_user_password()
 
       {:ok, lv, _html} = live(conn, ~p"/users/settings")
 
       form =
         form(lv, "#password_form", %{
-          "current_password" => password,
           "user" => %{
             "email" => user.email,
             "password" => new_password,
@@ -125,14 +131,13 @@ defmodule JumarWeb.UserSettingsLiveTest do
         lv
         |> element("#password_form")
         |> render_change(%{
-          "current_password" => "invalid",
           "user" => %{
             "password" => "too short",
             "password_confirmation" => "does not match"
           }
         })
 
-      assert result =~ "Change Password"
+      assert result =~ "Save Password"
       assert result =~ "should be at least 12 character(s)"
       assert result =~ "does not match password"
     end
@@ -143,7 +148,6 @@ defmodule JumarWeb.UserSettingsLiveTest do
       result =
         lv
         |> form("#password_form", %{
-          "current_password" => "invalid",
           "user" => %{
             "password" => "too short",
             "password_confirmation" => "does not match"
@@ -151,10 +155,9 @@ defmodule JumarWeb.UserSettingsLiveTest do
         })
         |> render_submit()
 
-      assert result =~ "Change Password"
+      assert result =~ "Save Password"
       assert result =~ "should be at least 12 character(s)"
       assert result =~ "does not match password"
-      assert result =~ "is not valid"
     end
   end
 
@@ -172,7 +175,7 @@ defmodule JumarWeb.UserSettingsLiveTest do
     end
 
     test "updates the user email once", %{conn: conn, user: user, token: token, email: email} do
-      {:error, redirect} = live(conn, ~p"/users/settings/confirm_email/#{token}")
+      {:error, redirect} = live(conn, ~p"/users/settings/confirm-email/#{token}")
 
       assert {:live_redirect, %{to: path, flash: flash}} = redirect
       assert path == ~p"/users/settings"
@@ -182,7 +185,7 @@ defmodule JumarWeb.UserSettingsLiveTest do
       assert Accounts.get_user_by_email(email)
 
       # use confirm token again
-      {:error, redirect} = live(conn, ~p"/users/settings/confirm_email/#{token}")
+      {:error, redirect} = live(conn, ~p"/users/settings/confirm-email/#{token}")
       assert {:live_redirect, %{to: path, flash: flash}} = redirect
       assert path == ~p"/users/settings"
       assert %{"error" => message} = flash
@@ -190,7 +193,7 @@ defmodule JumarWeb.UserSettingsLiveTest do
     end
 
     test "does not update email with invalid token", %{conn: conn, user: user} do
-      {:error, redirect} = live(conn, ~p"/users/settings/confirm_email/oops")
+      {:error, redirect} = live(conn, ~p"/users/settings/confirm-email/oops")
       assert {:live_redirect, %{to: path, flash: flash}} = redirect
       assert path == ~p"/users/settings"
       assert %{"error" => message} = flash
@@ -200,9 +203,9 @@ defmodule JumarWeb.UserSettingsLiveTest do
 
     test "redirects if user is not logged in", %{token: token} do
       conn = build_conn()
-      {:error, redirect} = live(conn, ~p"/users/settings/confirm_email/#{token}")
+      {:error, redirect} = live(conn, ~p"/users/settings/confirm-email/#{token}")
       assert {:redirect, %{to: path, flash: flash}} = redirect
-      assert path == ~p"/users/log_in"
+      assert path == ~p"/users/log-in"
       assert %{"error" => message} = flash
       assert message == "You must log in to access this page."
     end

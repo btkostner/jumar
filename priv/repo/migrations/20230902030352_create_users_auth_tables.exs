@@ -5,8 +5,9 @@ defmodule Jumar.Repo.Migrations.CreateUsersAuthTables do
     create table(:users, primary_key: false) do
       add :id, :binary_id, primary_key: true
       add :email, :"STRING COLLATE en_u_ks_level2", null: false
-      add :hashed_password, :string, null: false
+      add :hashed_password, :string
       add :confirmed_at, :utc_datetime
+
       timestamps(type: :utc_datetime)
     end
 
@@ -18,6 +19,8 @@ defmodule Jumar.Repo.Migrations.CreateUsersAuthTables do
       add :token, :binary, null: false
       add :context, :string, null: false
       add :sent_to, :"STRING COLLATE en_u_ks_level2"
+      add :authenticated_at, :utc_datetime
+
       timestamps(type: :utc_datetime, updated_at: false)
     end
 
