@@ -1,10 +1,13 @@
 defmodule Jumar.Repo.Migrations.CreateUsersAuthTables do
   use Ecto.Migration
 
+  @disable_ddl_transaction true
+  @disable_migration_lock true
+
   def change do
     create table(:users, primary_key: false) do
       add :id, :binary_id, primary_key: true
-      add :email, :"STRING COLLATE en_u_ks_level2", null: false
+      add :email, :citext, null: false
       add :hashed_password, :string
       add :confirmed_at, :utc_datetime
 
@@ -18,7 +21,7 @@ defmodule Jumar.Repo.Migrations.CreateUsersAuthTables do
       add :user_id, references(:users, type: :binary_id, on_delete: :delete_all), null: false
       add :token, :binary, null: false
       add :context, :string, null: false
-      add :sent_to, :"STRING COLLATE en_u_ks_level2"
+      add :sent_to, :citext
       add :authenticated_at, :utc_datetime
 
       timestamps(type: :utc_datetime, updated_at: false)

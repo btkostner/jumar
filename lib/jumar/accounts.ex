@@ -4,7 +4,6 @@ defmodule Jumar.Accounts do
   """
 
   import Ecto.Query, warn: false
-  import Jumar.Query, only: [citext: 1]
 
   alias Jumar.Accounts.EventBusProducer
   alias Jumar.Accounts.User
@@ -27,7 +26,7 @@ defmodule Jumar.Accounts do
 
   """
   def get_user_by_email(email) when is_binary(email) do
-    query = from u in User, where: citext(u.email) == ^email
+    query = from u in User, where: u.email == ^email
     Repo.one(query)
   end
 
@@ -45,7 +44,7 @@ defmodule Jumar.Accounts do
   """
   def get_user_by_email_and_password(email, password)
       when is_binary(email) and is_binary(password) do
-    query = from u in User, where: citext(u.email) == ^email
+    query = from u in User, where: u.email == ^email
     user = Repo.one(query)
     if User.valid_password?(user, password), do: user
   end
