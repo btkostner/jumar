@@ -1,7 +1,9 @@
 %Doctor.Config{
   ignore_modules: [
     ~r/Controller$/,
+    ~r/Layout$/,
     ~r/Live$/,
+    ~r/Live\..*/,
     ~r/View$/
   ],
   ignore_paths: [],

@@ -55,12 +55,11 @@ defmodule JumarWeb do
   """
   def controller do
     quote do
-      use Phoenix.Controller,
-        formats: [:html, :json],
-        layouts: [html: JumarWeb.Layouts]
+      use Phoenix.Controller, formats: [:html, :json]
+
+      use Gettext, backend: JumarWeb.Gettext
 
       import Plug.Conn
-      use Gettext, backend: JumarWeb.Gettext
 
       unquote(verified_routes())
     end
@@ -71,8 +70,7 @@ defmodule JumarWeb do
   """
   def live_view do
     quote do
-      use Phoenix.LiveView,
-        layout: {JumarWeb.Layouts, :app}
+      use Phoenix.LiveView
 
       unquote(html_helpers())
     end
@@ -107,11 +105,15 @@ defmodule JumarWeb do
 
   defp html_helpers do
     quote do
+      # Multi language support
+      use Gettext, backend: JumarWeb.Gettext
+
       # HTML escaping functionality
       import Phoenix.HTML
-      # Core UI components and translation
+      # Core UI components. This mirrors standard Phoenix core
+      # component imports but are split between files.
+      import JumarWeb.ButtonComponents, only: [button: 1]
       import JumarWeb.CoreComponents
-      use Gettext, backend: JumarWeb.Gettext
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS

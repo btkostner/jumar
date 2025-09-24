@@ -1,4 +1,4 @@
-defmodule JumarWeb.UserRegistrationLiveTest do
+defmodule JumarWeb.UserLive.RegistrationTest do
   use JumarWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
@@ -17,7 +17,7 @@ defmodule JumarWeb.UserRegistrationLiveTest do
         conn
         |> log_in_user(user_fixture())
         |> live(~p"/users/register")
-        |> follow_redirect(conn, "/")
+        |> follow_redirect(conn, ~p"/")
 
       assert {:ok, _conn} = result
     end
@@ -28,30 +28,26 @@ defmodule JumarWeb.UserRegistrationLiveTest do
       result =
         lv
         |> element("#registration_form")
-        |> render_change(user: %{"email" => "with spaces", "password" => "too short"})
+        |> render_change(user: %{"email" => "with spaces"})
 
       assert result =~ "Register"
       assert result =~ "must have the @ sign and no spaces"
-      assert result =~ "should be at least 12 character"
     end
   end
 
   describe "register user" do
-    test "creates account and logs the user in", %{conn: conn} do
+    test "creates account but does not log in", %{conn: conn} do
       {:ok, lv, _html} = live(conn, ~p"/users/register")
 
       email = unique_user_email()
       form = form(lv, "#registration_form", user: valid_user_attributes(email: email))
-      render_submit(form)
-      conn = follow_trigger_action(form, conn)
 
-      assert redirected_to(conn) == ~p"/"
+      {:ok, _lv, html} =
+        render_submit(form)
+        |> follow_redirect(conn, ~p"/users/log-in")
 
-      # Now do a logged in request and assert on the menu
-      conn = get(conn, "/")
-      response = html_response(conn, 200)
-      assert response =~ "Profile"
-      assert response =~ "Log out"
+      assert html =~
+               ~r/An email was sent to .*, please access it to confirm your account/
     end
 
     test "renders errors for duplicated email", %{conn: conn} do
@@ -62,7 +58,7 @@ defmodule JumarWeb.UserRegistrationLiveTest do
       result =
         lv
         |> form("#registration_form",
-          user: %{"email" => user.email, "password" => "valid_password"}
+          user: %{"email" => user.email}
         )
         |> render_submit()
 
@@ -76,9 +72,9 @@ defmodule JumarWeb.UserRegistrationLiveTest do
 
       {:ok, _login_live, login_html} =
         lv
-        |> element(~s|main a:fl-contains("Sign in")|)
+        |> element("main a", "Log in")
         |> render_click()
-        |> follow_redirect(conn, ~p"/users/log_in")
+        |> follow_redirect(conn, ~p"/users/log-in")
 
       assert login_html =~ "Log in"
     end

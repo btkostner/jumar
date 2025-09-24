@@ -1,4 +1,4 @@
-defmodule JumarWeb.PageController do
+defmodule JumarWeb.MarketingController do
   @moduledoc false
 
   use JumarWeb, :controller
