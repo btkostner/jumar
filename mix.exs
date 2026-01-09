@@ -14,6 +14,7 @@ defmodule Jumar.MixProject do
       source_url: "https://github.com/btkostner/jumar",
       homepage_url: "https://jumar.btkostner.io",
       compilers: [:boundary, :phoenix_live_view] ++ Mix.compilers(),
+      consolidate_protocols: Mix.env() == :prod,
       listeners: [Phoenix.CodeReloader],
       releases: [{@app, release()}],
       elixirc_paths: elixirc_paths(Mix.env()),

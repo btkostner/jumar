@@ -19,10 +19,11 @@ defmodule Jumar.Scope do
   alias Jumar.Accounts.User
 
   @type t :: %__MODULE__{
+          role: :admin | :user,
           user: User.t() | nil
         }
 
-  defstruct user: nil
+  defstruct role: :user, user: nil
 
   @doc """
   Creates a scope for the given user.

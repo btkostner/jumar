@@ -148,3 +148,9 @@ defmodule Jumar.Accounts.User do
     false
   end
 end
+
+defimpl Jumar.Authorization.Policy, for: Jumar.Accounts.User do
+  def permit?(_resource, _action, %{role: :admin}, _params), do: true
+  def permit?(%{id: user_id}, _action, %{user: %{id: user_id}}, _params), do: true
+  def permit?(_scope, _action, _resource, _params), do: false
+end

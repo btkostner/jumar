@@ -184,3 +184,9 @@ defmodule Jumar.Accounts.UserToken do
     from UserToken, where: [token: ^token, context: ^context]
   end
 end
+
+defimpl Jumar.Authorization.Policy, for: Jumar.Accounts.UserToken do
+  def permit?(_resource, _action, %{role: :admin}, _params), do: true
+  def permit?(%{user_id: user_id}, _action, %{user: %{id: user_id}}, _params), do: true
+  def permit?(_resource, _action, _scope, _params), do: false
+end

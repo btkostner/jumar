@@ -15,7 +15,7 @@
 # We also do not explicitly set package versions because nobody got time for that.
 # hadolint global ignore=DL3006,DL3008
 
-ARG ELIXIR_VERSION=1.18.3
+ARG ELIXIR_VERSION=1.19.5
 ARG OTP_VERSION=27.3
 ARG DEBIAN_VERSION=bookworm-20250317-slim
 
